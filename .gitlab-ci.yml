@@ -4,7 +4,7 @@ build-job:
     - echo "Hello, $GITLAB_USER_LOGIN!"
   only:
     refs:
-      -spring_build
+      -build
 
 test-job1:
   stage: test
