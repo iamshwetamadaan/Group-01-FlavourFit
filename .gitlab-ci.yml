@@ -3,7 +3,6 @@ build-job:
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
   only:
-    refs:
       -build
 
 test-job1:
