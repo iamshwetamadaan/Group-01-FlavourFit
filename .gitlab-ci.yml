@@ -1,4 +1,4 @@
-image: java:17
+image: maven:latest
 
 build-job:
   stage: build
