@@ -2,7 +2,8 @@ image: maven:latest
 
 build-job:
   stage: build
-  script: chmod +x mvnw && ./mvnw package
+  script: mvn clean install
+#  script: chmod +x mvnw && ./mvnw package
   artifacts:
     paths:
       - ./target/FlavourFit-0.0.1-SNAPSHOT.jar
