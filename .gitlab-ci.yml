@@ -2,7 +2,9 @@ image: maven:latest
 
 build-job:
   stage: build
-  script: ./mvnw package
+  script:
+      -chmod +x mvnw
+      -./mvnw package
   artifacts:
     paths:
       - target/build.jar
