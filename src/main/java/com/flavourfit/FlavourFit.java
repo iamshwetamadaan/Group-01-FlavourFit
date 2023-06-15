@@ -12,4 +12,8 @@ public class FlavourFit {
 //        SpringApplication.run(FlavourFit.class, args);
     }
 
+    public static boolean connection(){
+        return true;
+    }
+
 }

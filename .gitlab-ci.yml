@@ -13,5 +13,7 @@ build-job:
 test-job:
   stage: test
   script:
-    - echo "This job tests something"
+    - mvn test
+  only:
+    - build
 
