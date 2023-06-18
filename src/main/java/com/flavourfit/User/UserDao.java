@@ -6,6 +6,9 @@ import java.util.Map;
 public class UserDao {
     Map<String, User> usersList;
 
+    /**
+     * This constructor mocks the users in the usersList map
+     */
     public UserDao() {
         usersList = new HashMap<>();
 
@@ -23,6 +26,11 @@ public class UserDao {
         }
     }
 
+    /**
+     * Method to check if a user exists in the list
+     * @param userId -- String id of the user to be found
+     * @return -- true if the user exists
+     */
     public boolean userExists(String userId) {
         if (userId == null || userId.isEmpty()) {
             return false;
@@ -33,5 +41,20 @@ public class UserDao {
         }
 
         return true;
+    }
+
+    /**
+     * Method to get a user from list by userId
+     * @param userId -- String id of the user to be found
+     * @return -- User Object containing the user details if the user exists
+     */
+    public User getUserById(String userId) {
+        if (userId == null || userId.isEmpty()) {
+            return null;
+        }
+
+        User user = usersList.get(userId);
+
+        return user;
     }
 }
