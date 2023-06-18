@@ -8,14 +8,14 @@ build-job:
     paths:
       - ./target/FlavourFit-0.0.1-SNAPSHOT.jar
   only:
-      - main
+      - bh626198-test
 
 test-job:
   stage: test
   script:
     - mvn test
   only:
-    - main
+    - bh626198-test
 
 deploy-job:
   stage: deploy
@@ -23,5 +23,5 @@ deploy-job:
     - echo "Deploying application..."
     - echo "Application successfully deployed."
   only:
-    - main
+    - bh626198-test
 
