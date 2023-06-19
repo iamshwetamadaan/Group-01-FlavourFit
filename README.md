@@ -2,6 +2,7 @@
 
 Our application will help improve the lifestyle of people through customized diet and fitness plan based on the body regime.
 Features include:
+
     - Customized health plan
     - Feature to upload customized recipes.
     - Search and Save amongst existing recipes.
