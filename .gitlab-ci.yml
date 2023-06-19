@@ -1,3 +1,7 @@
+#References
+#https://gitlab.com/gitlab-examples/spring-gitlab-cf-deploy-demo/-/blob/master/.gitlab-ci.yml
+#https://www.digitalocean.com/community/tutorials/maven-commands-options-cheat-sheet
+
 image: maven:latest
 
 build-job:
