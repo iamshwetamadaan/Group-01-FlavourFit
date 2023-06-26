@@ -17,6 +17,7 @@ public class UserDto {
     private double currentWeight;
     private double targetWeight;
     private String type;
+    private String password;
 
     public int getUserId() {
         return userId;
@@ -120,5 +121,13 @@ public class UserDto {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
