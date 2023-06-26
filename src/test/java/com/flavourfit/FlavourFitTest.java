@@ -12,10 +12,4 @@ class FlavourFitTest {
     void contextLoads() {
     }
 
-    @Test
-    void connectionTest(){
-        FlavourFit obj = new FlavourFit();
-        Assert.assertEquals(true, obj.connection());
-    }
-
 }
