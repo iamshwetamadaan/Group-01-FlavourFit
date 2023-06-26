@@ -102,8 +102,8 @@ public class UserDaoImpl implements IUserDao {
 
             logger.info("Creating a prepared statement to insert record.");
             String query = "INSERT INTO Users (First_name, Last_name, Phone, Email, Age, Street_address, "
-                    + " City, State, Zip_code, Current_weight, Target_weight, Type) "
-                    + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+                    + " City, State, Zip_code, Current_weight, Target_weight, Type, Password) "
+                    + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             logger.info("Replacing values in prepared statement with actual values to be inserted");
             this.replaceStatementPlaceholders(user, preparedStatement);
@@ -136,6 +136,7 @@ public class UserDaoImpl implements IUserDao {
         preparedStatement.setDouble(10, user.getCurrentWeight());
         preparedStatement.setDouble(11, user.getTargetWeight());
         preparedStatement.setString(12, user.getType());
+        preparedStatement.setString(13, user.getPassword());
     }
 
     private UserDto extractUserFromResult(ResultSet resultSet) throws SQLException {
@@ -154,6 +155,7 @@ public class UserDaoImpl implements IUserDao {
             user.setCurrentWeight(resultSet.getDouble("Current_weight"));
             user.setTargetWeight(resultSet.getDouble("Target_Weight"));
             user.setType(resultSet.getString("Type"));
+            user.setPassword(resultSet.getString("Password"));
         }
         return user;
     }
