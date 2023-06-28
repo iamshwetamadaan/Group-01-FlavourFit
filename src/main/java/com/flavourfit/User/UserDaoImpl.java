@@ -104,7 +104,7 @@ public class UserDaoImpl implements IUserDao {
             String query = "INSERT INTO Users (First_name, Last_name, Phone, Email, Age, Street_address, "
                     + " City, State, Zip_code, Current_weight, Target_weight, Type, Password) "
                     + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             logger.info("Replacing values in prepared statement with actual values to be inserted");
             this.replaceStatementPlaceholders(user, preparedStatement);
             logger.info("Execute the insertion of record to the table");
@@ -114,7 +114,7 @@ public class UserDaoImpl implements IUserDao {
             long insertedUserId;
             while (keys.next()) {
                 insertedUserId = keys.getLong(1);
-                logger.info("Added User {} to the Users table!", insertedUserId);
+                logger.info("Added User with userId: {}, to the Users table!", insertedUserId);
             }
         }
     }

@@ -130,4 +130,24 @@ public class UserDto {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "userId=" + userId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                ", streetAddress='" + streetAddress + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", currentWeight=" + currentWeight +
+                ", targetWeight=" + targetWeight +
+                ", type='" + type + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }
