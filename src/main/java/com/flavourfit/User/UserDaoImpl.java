@@ -4,18 +4,24 @@ import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class UserDaoImpl implements IUserDao {
     private static Logger logger = LoggerFactory.getLogger(DatabaseManagerImpl.class);
-    IDatabaseManager database;
+
+    private final IDatabaseManager database;
 
     public UserDaoImpl(IDatabaseManager database) {
         this.database = database;
     }
+
 
     /**
      * Method to fetch all users from the database
@@ -102,9 +108,9 @@ public class UserDaoImpl implements IUserDao {
 
             logger.info("Creating a prepared statement to insert record.");
             String query = "INSERT INTO Users (First_name, Last_name, Phone, Email, Age, Street_address, "
-                    + " City, State, Zip_code, Current_weight, Target_weight, Type) "
-                    + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+                    + " City, State, Zip_code, Current_weight, Target_weight, Type, Password) "
+                    + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             logger.info("Replacing values in prepared statement with actual values to be inserted");
             this.replaceStatementPlaceholders(user, preparedStatement);
             logger.info("Execute the insertion of record to the table");
@@ -114,7 +120,7 @@ public class UserDaoImpl implements IUserDao {
             long insertedUserId;
             while (keys.next()) {
                 insertedUserId = keys.getLong(1);
-                logger.info("Added User {} to the Users table!", insertedUserId);
+                logger.info("Added User with userId: {}, to the Users table!", insertedUserId);
             }
         }
     }
@@ -136,6 +142,7 @@ public class UserDaoImpl implements IUserDao {
         preparedStatement.setDouble(10, user.getCurrentWeight());
         preparedStatement.setDouble(11, user.getTargetWeight());
         preparedStatement.setString(12, user.getType());
+        preparedStatement.setString(13, user.getPassword());
     }
 
     private UserDto extractUserFromResult(ResultSet resultSet) throws SQLException {
@@ -154,6 +161,7 @@ public class UserDaoImpl implements IUserDao {
             user.setCurrentWeight(resultSet.getDouble("Current_weight"));
             user.setTargetWeight(resultSet.getDouble("Target_Weight"));
             user.setType(resultSet.getString("Type"));
+            user.setPassword(resultSet.getString("Password"));
         }
         return user;
     }

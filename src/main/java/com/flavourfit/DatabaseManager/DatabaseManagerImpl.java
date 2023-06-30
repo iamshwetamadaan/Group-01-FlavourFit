@@ -2,6 +2,7 @@ package com.flavourfit.DatabaseManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
+@Component
 public class DatabaseManagerImpl implements IDatabaseManager {
     private static Logger logger = LoggerFactory.getLogger(DatabaseManagerImpl.class);
 
