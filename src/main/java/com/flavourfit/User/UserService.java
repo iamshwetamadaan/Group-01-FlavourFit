@@ -8,13 +8,14 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService implements IUserService {
     private final IUserDao userDao;
 
     public UserService(IUserDao userDao) {
         this.userDao = userDao;
     }
 
+    @Override
     public String fetchAllUsers() throws SQLException {
         List<UserDto> users = this.userDao.getAllUsers();
         StringBuilder usersStr = new StringBuilder();
@@ -24,7 +25,6 @@ public class UserService {
         }
         return usersStr.toString();
     }
-
 
 
 }
