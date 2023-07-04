@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 
-//import static com.mysql.cj.conf.PropertyKey.logger;
-
 @RestController
 @RequestMapping("/users")
 public class UserController {

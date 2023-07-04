@@ -3,7 +3,7 @@ package com.flavourfit.Trackers;
 import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import com.flavourfit.Helpers.DateHelpers;
-import com.flavourfit.Responses.PutResponse;
+import com.flavourfit.ResponsesDTO.PutResponse;
 import com.flavourfit.Trackers.Calories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
