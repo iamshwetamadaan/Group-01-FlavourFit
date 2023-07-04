@@ -1,5 +1,6 @@
 package com.flavourfit.User;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -9,6 +10,7 @@ import java.util.List;
 public class UserService implements IUserService {
     private final IUserDao userDao;
 
+    @Autowired
     public UserService(IUserDao userDao) {
         this.userDao = userDao;
     }

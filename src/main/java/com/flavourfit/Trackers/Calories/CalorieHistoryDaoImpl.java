@@ -3,6 +3,7 @@ package com.flavourfit.Trackers.Calories;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -13,6 +14,7 @@ public class CalorieHistoryDaoImpl implements ICalorieHistoryDao {
 
     private final IDatabaseManager database;
 
+    @Autowired
     public CalorieHistoryDaoImpl(IDatabaseManager database) {
         this.database = database;
     }

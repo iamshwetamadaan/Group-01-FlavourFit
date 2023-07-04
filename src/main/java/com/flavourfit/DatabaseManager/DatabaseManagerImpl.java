@@ -19,6 +19,10 @@ public class DatabaseManagerImpl implements IDatabaseManager {
 
     private Connection connection = null;
 
+    public DatabaseManagerImpl(){
+        this.connect();
+    }
+
     /**
      * Method to connect to the project database
      *
@@ -93,5 +97,11 @@ public class DatabaseManagerImpl implements IDatabaseManager {
         statement.execute("USE " + schema);
         logger.info("Schema set successfully");
 
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        this.disconnect();
     }
 }
