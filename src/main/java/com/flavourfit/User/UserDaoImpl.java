@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public class UserDaoImpl implements IUserDao {
-    private static Logger logger = LoggerFactory.getLogger(DatabaseManagerImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
     private final IDatabaseManager database;
 
@@ -89,7 +89,7 @@ public class UserDaoImpl implements IUserDao {
 
     @Override
     public void addUser(UserDto user) throws SQLException {
-        logger.info("Started getUserById() method");
+        logger.info("Started addUser() method");
 
         if (user == null) {
             logger.error("User object not valid!!");
