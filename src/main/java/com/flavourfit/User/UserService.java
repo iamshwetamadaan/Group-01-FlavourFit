@@ -1,6 +1,6 @@
 package com.flavourfit.User;
 
-import com.flavourfit.DatabaseManager.IDatabaseManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -9,8 +9,8 @@ import java.util.List;
 @Service
 public class UserService implements IUserService {
     private final IUserDao userDao;
-    private IDatabaseManager database;
 
+    @Autowired
     public UserService(IUserDao userDao) {
         this.userDao = userDao;
 

@@ -7,6 +7,7 @@ import com.flavourfit.ResponsesDTO.PutResponse;
 import com.flavourfit.Trackers.Calories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,15 +21,12 @@ public class TrackersController {
     private static Logger logger = LoggerFactory.getLogger(TrackersController.class);
 
     private ICalorieHistoryService calorieHistoryService;
-    private ICalorieHistoryDao calorieHistoryDao;
-    private IDatabaseManager database;
 
-    public TrackersController() {
-        this.database = new DatabaseManagerImpl();
-        this.database.connect();
-        this.calorieHistoryDao = new CalorieHistoryDaoImpl(this.database);
-        this.calorieHistoryService = new CalorieHistoryServiceImpl(this.calorieHistoryDao);
+    @Autowired
+    public TrackersController(ICalorieHistoryService calorieHistoryService) {
+        this.calorieHistoryService = calorieHistoryService;
     }
+
 
     @PutMapping("/record-calories")
     public ResponseEntity<Object> recordCalories(@RequestBody Map<String, Object> request) {
