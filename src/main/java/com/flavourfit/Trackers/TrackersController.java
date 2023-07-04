@@ -4,10 +4,7 @@ import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import com.flavourfit.Helpers.DateHelpers;
 import com.flavourfit.Responses.PutResponse;
-import com.flavourfit.Trackers.Calories.CalorieHistoryDaoImpl;
-import com.flavourfit.Trackers.Calories.CalorieHistoryServiceImpl;
-import com.flavourfit.Trackers.Calories.ICalorieHistoryDao;
-import com.flavourfit.Trackers.Calories.ICalorieHistoryService;
+import com.flavourfit.Trackers.Calories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +40,8 @@ public class TrackersController {
             Map<String, Object> data = new HashMap<>();
 
             logger.info("Fetching the total calorie count for current date.");
-            double todaysCalorieCount = this.calorieHistoryService.fetchCalorieCountByDate(DateHelpers.getCurrentDateString(), 1);
-            data.put("todaysCalorieCount", todaysCalorieCount);
+            CalorieHistoryDto todaysCalorieCount = this.calorieHistoryService.fetchCalorieByUserIdDate(DateHelpers.getCurrentDateString(), 1);
+            data.put("todaysCalorieCount", todaysCalorieCount.getCalorieCount());
 
             logger.info("Updated record count. Returning response through api");
             return ResponseEntity.ok().body(new PutResponse(true, "Successfully recorded calorie count", data));

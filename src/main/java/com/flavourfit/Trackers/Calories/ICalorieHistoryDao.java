@@ -4,6 +4,6 @@ import java.sql.SQLException;
 
 public interface ICalorieHistoryDao {
     public void addCalorieCount(CalorieHistoryDto calorieHistoryDto) throws SQLException;
-
-    public double getCalorieByDate(String date, int userId) throws SQLException;
+    
+    CalorieHistoryDto getCalorieByUserIdDate(String date, int userId) throws SQLException;
 }

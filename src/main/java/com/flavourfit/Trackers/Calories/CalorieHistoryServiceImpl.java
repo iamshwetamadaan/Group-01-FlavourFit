@@ -37,14 +37,14 @@ public class CalorieHistoryServiceImpl implements ICalorieHistoryService {
     }
 
     @Override
-    public double fetchCalorieCountByDate(String date, int userId) throws SQLException {
+    public CalorieHistoryDto fetchCalorieByUserIdDate(String date, int userId) throws SQLException {
         logger.info("Started fetchCalorieCountByDate() method!");
 
-        double calorieCount = 0.0d;
+        CalorieHistoryDto calorieHistoryDto = null;
         logger.info("Using calorieHistoryDao to get calorie count for given date!!");
-        calorieCount = this.calorieHistoryDao.getCalorieByDate(date, 1);
+        calorieHistoryDto = this.calorieHistoryDao.getCalorieByUserIdDate(date, 1);
 
         logger.info("Exiting fetchCalorieCountByDate() method!");
-        return calorieCount;
+        return calorieHistoryDto;
     }
 }
