@@ -1,7 +1,5 @@
 package com.flavourfit.User;
 
-import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
-import com.flavourfit.DatabaseManager.IDatabaseManager;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
