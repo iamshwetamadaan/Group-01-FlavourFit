@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService implements IUserService {
     private final IUserDao userDao;
     private IDatabaseManager database;
 
@@ -17,6 +17,7 @@ public class UserService {
 
     }
 
+    @Override
     public String fetchAllUsers() throws SQLException {
         List<UserDto> users = this.userDao.getAllUsers();
         StringBuilder usersStr = new StringBuilder();
@@ -27,11 +28,9 @@ public class UserService {
         return usersStr.toString();
     }
 
-    public int UpdateUser(UserDto user) throws SQLException{
+    public int updateUser(UserDto user) throws SQLException{
         return this.userDao.updateUser(user);
-
     }
-
 
 
 }

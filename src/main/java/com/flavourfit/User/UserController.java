@@ -3,14 +3,9 @@ package com.flavourfit.User;
 import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 //import static com.mysql.cj.conf.PropertyKey.logger;
 
@@ -63,7 +58,7 @@ public class UserController {
      */
     @PutMapping("/update-user")
     public JSONObject editUser(@RequestBody UserDto user) throws SQLException{
-        int count = userService.UpdateUser(user);
+        int count = userService.updateUser(user);
         JSONObject res = new JSONObject();
         if(count==0){
             res.put("success",false);

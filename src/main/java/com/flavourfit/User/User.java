@@ -4,7 +4,7 @@ package com.flavourfit.User;
  * Data object for User table
  **/
 public class User {
-    private String userId;
+    private int userId;
     private String firstName;
     private String lastName;
     private String email;
@@ -12,9 +12,11 @@ public class User {
     private double currentWeight;
     private double height;
 
+
     private double targetWeight;
 
-    public String getUserId() {
+    public int getUserId() {
+
         return userId;
     }
 
@@ -42,9 +44,11 @@ public class User {
         return height;
     }
 
+
     public double getTargetWeight(){return targetWeight;}
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
+
         this.userId = userId;
     }
 
