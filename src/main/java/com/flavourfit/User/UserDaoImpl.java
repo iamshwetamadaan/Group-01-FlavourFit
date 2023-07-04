@@ -4,6 +4,7 @@ import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -16,6 +17,7 @@ public class UserDaoImpl implements IUserDao {
 
     private final IDatabaseManager database;
 
+    @Autowired
     public UserDaoImpl(IDatabaseManager database) {
         this.database = database;
     }

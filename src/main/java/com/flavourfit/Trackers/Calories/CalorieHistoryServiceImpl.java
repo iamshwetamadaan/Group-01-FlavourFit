@@ -3,6 +3,7 @@ package com.flavourfit.Trackers.Calories;
 import com.flavourfit.Helpers.DateHelpers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -12,6 +13,7 @@ public class CalorieHistoryServiceImpl implements ICalorieHistoryService {
     private static Logger logger = LoggerFactory.getLogger(CalorieHistoryServiceImpl.class);
     private final ICalorieHistoryDao calorieHistoryDao;
 
+    @Autowired
     public CalorieHistoryServiceImpl(ICalorieHistoryDao calorieHistoryDao) {
         this.calorieHistoryDao = calorieHistoryDao;
     }

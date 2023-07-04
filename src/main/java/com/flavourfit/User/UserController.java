@@ -13,25 +13,15 @@ import java.sql.SQLException;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private UserService userService;
-    private IUserDao userDao;
-    private IDatabaseManager database;
+    private IUserService userService;
 
-    public UserController() {
-        this.database = new DatabaseManagerImpl();
-        this.database.connect();
-        this.userDao = new UserDaoImpl(this.database);
-        this.userService = new UserService(this.userDao);
+    @Autowired
+    public UserController(IUserService userService) {
+        this.userService = userService;
     }
 
     @RequestMapping("/fetch-all")
     public String fetchAllUsers() throws SQLException {
         return userService.fetchAllUsers();
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        this.database.disconnect();
     }
 }
