@@ -3,7 +3,8 @@ package com.flavourfit.User;
 /**
  * Data Transfer Object(DTO) for the users table
  */
-public class UserDto {
+public class
+UserDto {
     private int userId;
     private String firstName;
     private String lastName;

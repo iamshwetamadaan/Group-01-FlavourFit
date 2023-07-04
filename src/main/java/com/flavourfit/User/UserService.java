@@ -10,9 +10,11 @@ import java.util.List;
 @Service
 public class UserService {
     private final IUserDao userDao;
+    private IDatabaseManager database;
 
     public UserService(IUserDao userDao) {
         this.userDao = userDao;
+
     }
 
     public String fetchAllUsers() throws SQLException {
@@ -23,6 +25,11 @@ public class UserService {
             usersStr.append("\n");
         }
         return usersStr.toString();
+    }
+
+    public int UpdateUser(UserDto user) throws SQLException{
+        return this.userDao.updateUser(user);
+
     }
 
 
