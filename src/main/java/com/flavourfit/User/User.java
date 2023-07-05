@@ -12,7 +12,11 @@ public class User {
     private double currentWeight;
     private double height;
 
+
+    private double targetWeight;
+
     public int getUserId() {
+
         return userId;
     }
 
@@ -40,7 +44,11 @@ public class User {
         return height;
     }
 
+
+    public double getTargetWeight(){return targetWeight;}
+
     public void setUserId(int userId) {
+
         this.userId = userId;
     }
 
@@ -67,4 +75,5 @@ public class User {
     public void setHeight(double height) {
         this.height = height;
     }
+    public void setTargetWeight(double targetWeight){this.targetWeight = targetWeight;}
 }

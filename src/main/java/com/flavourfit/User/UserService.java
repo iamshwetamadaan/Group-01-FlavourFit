@@ -13,6 +13,7 @@ public class UserService implements IUserService {
     @Autowired
     public UserService(IUserDao userDao) {
         this.userDao = userDao;
+
     }
 
     @Override
@@ -24,6 +25,10 @@ public class UserService implements IUserService {
             usersStr.append("\n");
         }
         return usersStr.toString();
+    }
+
+    public int updateUser(UserDto user) throws SQLException{
+        return this.userDao.updateUser(user);
     }
 
 
