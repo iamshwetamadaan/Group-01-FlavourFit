@@ -26,5 +26,8 @@ public class UserService implements IUserService {
         return usersStr.toString();
     }
 
+    public boolean resetPassword(int userID,String newPassword) throws SQLException {
+        return this.userDao.resetUserPassword(userID, newPassword);
+    }
 
 }
