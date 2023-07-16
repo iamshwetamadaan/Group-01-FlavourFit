@@ -93,11 +93,11 @@ public class UserController {
     }
 
     @RequestMapping("/getuser-premiummember")
-    public ResponseEntity<PutResponse> getUserBymembership() {//@RequestBody Map<Integer, Object> request){
-      //  int userID = (int) request.get("userID");
+    public ResponseEntity<PutResponse> getUserBymembership(@RequestBody Map<Integer, Object> request){
+        int userID = (int) request.get("userID");
         try {
             Map<String, Object> userdata = new HashMap<>();
-            PremiumUserDto premiumuserDto = this.userService.getUserBymembership(1);// ("userID");
+            PremiumUserDto premiumuserDto = this.userService.getUserBymembership(userID);
             if (premiumuserDto != null) {
                 userdata.put("Premium user details", premiumuserDto);
                 return ResponseEntity.ok().body(new PutResponse(true, "Successfully loaded premium user details", userdata));
