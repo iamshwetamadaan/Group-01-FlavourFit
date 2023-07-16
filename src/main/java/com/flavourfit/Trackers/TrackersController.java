@@ -5,6 +5,8 @@ import com.flavourfit.DatabaseManager.IDatabaseManager;
 import com.flavourfit.Helpers.DateHelpers;
 import com.flavourfit.ResponsesDTO.PutResponse;
 import com.flavourfit.Trackers.Calories.*;
+import com.flavourfit.Trackers.Water.IWaterHistoryService;
+import com.flavourfit.Trackers.Water.WaterHistoryDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,21 +22,38 @@ import java.util.Map;
 public class TrackersController {
     private static Logger logger = LoggerFactory.getLogger(TrackersController.class);
 
-    private ICalorieHistoryService calorieHistoryService;
+   // private ICalorieHistoryService calorieHistoryService;
+    private IWaterHistoryService waterHistoryService;
 
     @Autowired
-    public TrackersController(ICalorieHistoryService calorieHistoryService) {
+    public TrackersController(IWaterHistoryService waterHistoryService ) {
+      //  this.calorieHistoryService = calorieHistoryService; ICalorieHistoryService calorieHistoryService,
+        this.waterHistoryService = waterHistoryService;
+    }
+/*
+
+    public TrackersController(IWaterHistoryService waterHistoryService) {
+        this.waterHistoryService = waterHistoryService;
+    }*/
+
+   /* @Autowired
+    public void setCalorieHistoryService(ICalorieHistoryService calorieHistoryService) {
         this.calorieHistoryService = calorieHistoryService;
     }
 
+    @Autowired
+    public void setWaterHistoryService(IWaterHistoryService waterHistoryService) {
+        this.waterHistoryService = waterHistoryService;
+    }
+*/
 
-    @PutMapping("/record-calories")
-    public ResponseEntity<Object> recordCalories(@RequestBody Map<String, Object> request) {
+   /* @PutMapping("/record-calories")
+    public ResponseEntity<Object> recordCalories(){//@RequestBody Map<String, Object> request) {
         logger.info("Entered controlled method recordCalories()");
-        double calorieCount = (Double) request.get("calorieCount");
+       // double calorieCount = (Double) request.get("calorieCount");
         try {
             logger.info("Updating calorie count through calorieHistoryService.");
-            this.calorieHistoryService.recordCalorieUpdate(calorieCount, 1);
+            this.calorieHistoryService.recordCalorieUpdate(2.0, 1);
             Map<String, Object> data = new HashMap<>();
 
             logger.info("Fetching the total calorie count for current date.");
@@ -46,6 +65,26 @@ public class TrackersController {
         } catch (SQLException e) {
             logger.error("Bad api request during recordCalorieCount()");
             return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to record calorieCount"));
+        }
+    }*/
+    @PutMapping("/record-waterIntake")
+    public ResponseEntity<Object> recordWaterIntake() {
+        logger.info("Entered controller method recordWaterIntake()");
+     //   double water_intake = (Double) request.get("waterIntake");
+        try {
+            logger.info("Updating water intake through waterHistoryService.");
+            this.waterHistoryService.recordWaterIntake(200.00, 1);
+            Map<String, Object> data = new HashMap<>();
+
+            logger.info("Fetching the total water intake for current date.");
+            WaterHistoryDto todaysWaterIntake = this.waterHistoryService.fetchWaterIntakeByUserIdDate(DateHelpers.getCurrentDateString(), 1);
+            data.put("todaysWaterIntake", todaysWaterIntake.getWaterIntake());
+
+            logger.info("Updated record count. Returning response through api");
+            return ResponseEntity.ok().body(new PutResponse(true, "Successfully recorded Water intake", data));
+        } catch (SQLException e) {
+            logger.error("Bad api request during recordWaterIntake()");
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to record Water intake"));
         }
     }
 }
