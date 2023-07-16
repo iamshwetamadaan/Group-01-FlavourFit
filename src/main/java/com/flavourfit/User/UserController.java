@@ -12,6 +12,7 @@ import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -56,6 +57,11 @@ public class UserController {
      *     }
      * }
      */
+    @PostMapping("/user/update-user")
+    public void registerUser(@RequestBody UserDto user) throws SQLException{
+        userService.registerUser(user);
+    }
+
     @PutMapping("/update-user")
     public JSONObject editUser(@RequestBody UserDto user) throws SQLException{
         int count = userService.updateUser(user);

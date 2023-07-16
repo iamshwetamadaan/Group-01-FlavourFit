@@ -13,7 +13,6 @@ public class UserService implements IUserService {
     @Autowired
     public UserService(IUserDao userDao) {
         this.userDao = userDao;
-
     }
 
     @Override
@@ -29,6 +28,17 @@ public class UserService implements IUserService {
 
     public int updateUser(UserDto user) throws SQLException{
         return this.userDao.updateUser(user);
+    }
+
+    public void registerUser(UserDto user) throws RuntimeException {
+        try{
+            if(userDao.getUserById(user.getUserId()) == null){
+                this.userDao.addUser(user);
+            }
+        }
+        catch (Exception e){
+            throw  new RuntimeException("User already exists");
+        }
     }
 
 
