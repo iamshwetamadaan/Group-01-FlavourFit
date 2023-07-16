@@ -22,21 +22,16 @@ import java.util.Map;
 public class TrackersController {
     private static Logger logger = LoggerFactory.getLogger(TrackersController.class);
 
-   // private ICalorieHistoryService calorieHistoryService;
+    private ICalorieHistoryService calorieHistoryService;
     private IWaterHistoryService waterHistoryService;
 
     @Autowired
-    public TrackersController(IWaterHistoryService waterHistoryService ) {
-      //  this.calorieHistoryService = calorieHistoryService; ICalorieHistoryService calorieHistoryService,
+    public TrackersController(ICalorieHistoryService calorieHistoryService, IWaterHistoryService waterHistoryService) {
+        this.calorieHistoryService = calorieHistoryService;
         this.waterHistoryService = waterHistoryService;
     }
-/*
 
-    public TrackersController(IWaterHistoryService waterHistoryService) {
-        this.waterHistoryService = waterHistoryService;
-    }*/
-
-   /* @Autowired
+    @Autowired
     public void setCalorieHistoryService(ICalorieHistoryService calorieHistoryService) {
         this.calorieHistoryService = calorieHistoryService;
     }
@@ -45,15 +40,15 @@ public class TrackersController {
     public void setWaterHistoryService(IWaterHistoryService waterHistoryService) {
         this.waterHistoryService = waterHistoryService;
     }
-*/
 
-   /* @PutMapping("/record-calories")
-    public ResponseEntity<Object> recordCalories(){//@RequestBody Map<String, Object> request) {
+
+    @PutMapping("/record-calories")
+    public ResponseEntity<Object> recordCalories(@RequestBody Map<String, Object> request) {
         logger.info("Entered controlled method recordCalories()");
-       // double calorieCount = (Double) request.get("calorieCount");
+        double calorieCount = (Double) request.get("calorieCount");
         try {
             logger.info("Updating calorie count through calorieHistoryService.");
-            this.calorieHistoryService.recordCalorieUpdate(2.0, 1);
+            this.calorieHistoryService.recordCalorieUpdate(calorieCount, 1);
             Map<String, Object> data = new HashMap<>();
 
             logger.info("Fetching the total calorie count for current date.");
@@ -66,14 +61,15 @@ public class TrackersController {
             logger.error("Bad api request during recordCalorieCount()");
             return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to record calorieCount"));
         }
-    }*/
+    }
+
     @PutMapping("/record-waterIntake")
-    public ResponseEntity<Object> recordWaterIntake() {
+    public ResponseEntity<Object> recordWaterIntake(@RequestBody Map<String, Object> request) {
         logger.info("Entered controller method recordWaterIntake()");
-     //   double water_intake = (Double) request.get("waterIntake");
+        double waterIntake = (Double) request.get("waterIntake");
         try {
             logger.info("Updating water intake through waterHistoryService.");
-            this.waterHistoryService.recordWaterIntake(200.00, 1);
+            this.waterHistoryService.recordWaterIntake(waterIntake, 1);
             Map<String, Object> data = new HashMap<>();
 
             logger.info("Fetching the total water intake for current date.");
