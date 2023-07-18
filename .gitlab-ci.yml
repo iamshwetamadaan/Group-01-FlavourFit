@@ -29,8 +29,7 @@ build-backend:
   image: maven:latest
   script:
     - cd Backend
-    - mvn package -DskipTests
-    - docker build -t flavour-fit-app .
+    - mvn clean install
   artifacts:
     paths:
       - Backend/target/*.jar
