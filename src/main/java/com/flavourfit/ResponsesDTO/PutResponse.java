@@ -1,4 +1,4 @@
-package com.flavourfit.Responses;
+package com.flavourfit.ResponsesDTO;
 
 import java.util.HashMap;
 import java.util.Map;

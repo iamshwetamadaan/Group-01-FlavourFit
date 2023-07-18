@@ -89,6 +89,40 @@ public class UserDaoImpl implements IUserDao {
         return null;
     }
 
+//    Updating user info to the table
+    @Override
+    public int updateUser(UserDto user) throws SQLException {
+        int count=0;
+        logger.info("Started updateUser() method");
+
+        if (user == null) {
+            logger.error("User object not valid!!");
+            throw new SQLException("User object not valid!!");
+        }
+
+        if (database != null) {
+            Connection connection = this.database.getConnection();
+
+            if (connection == null) {
+                logger.error("SQL connection not found!");
+                throw new SQLException("SQL connection not found!");
+            }
+
+            logger.info("Creating a prepared statement update the record");
+            String query = "Update Users set First_name=?, Last_name=?, Phone=?, Email=?, Age=?" +
+                    ",Street_address=?, City=?,State=?, Zip_code=?, Current_weight=?, Target_weight=?" +
+                    "where User_id=?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            logger.info("Replacing values in prepared statement with actual values to be inserted");
+            this.replaceStatementPlaceholders(user, preparedStatement,12);
+            preparedStatement.setDouble(11,user.getTargetWeight());
+            preparedStatement.setInt(12,user.getUserId());
+            logger.info("Executing the update user request");
+            count = preparedStatement.executeUpdate();
+        }
+        return count;
+    }
+
     @Override
     public void addUser(UserDto user) throws SQLException {
         logger.info("Started addUser() method");
@@ -112,7 +146,7 @@ public class UserDaoImpl implements IUserDao {
                     + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             logger.info("Replacing values in prepared statement with actual values to be inserted");
-            this.replaceStatementPlaceholders(user, preparedStatement);
+            this.replaceStatementPlaceholders(user, preparedStatement,13);
             logger.info("Execute the insertion of record to the table");
             preparedStatement.executeUpdate();
 
@@ -166,7 +200,7 @@ public class UserDaoImpl implements IUserDao {
         return passwordReset;
     }
 
-    private void replaceStatementPlaceholders(UserDto user, PreparedStatement preparedStatement) throws SQLException {
+    private void replaceStatementPlaceholders(UserDto user, PreparedStatement preparedStatement, int count) throws SQLException {
         if (user == null || preparedStatement == null) {
             return;
         }
@@ -183,7 +217,10 @@ public class UserDaoImpl implements IUserDao {
         preparedStatement.setDouble(10, user.getCurrentWeight());
         preparedStatement.setDouble(11, user.getTargetWeight());
         preparedStatement.setString(12, user.getType());
-        preparedStatement.setString(13, user.getPassword());
+        if(count>12){
+            preparedStatement.setString(13, user.getPassword());
+        }
+
     }
 
     private UserDto extractUserFromResult(ResultSet resultSet) throws SQLException {

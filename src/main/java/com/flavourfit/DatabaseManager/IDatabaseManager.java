@@ -1,7 +1,6 @@
 package com.flavourfit.DatabaseManager;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
 public interface IDatabaseManager {
     public boolean connect() throws RuntimeException;

@@ -13,6 +13,7 @@ public class UserService implements IUserService {
     @Autowired
     public UserService(IUserDao userDao) {
         this.userDao = userDao;
+
     }
 
     @Override
@@ -28,6 +29,9 @@ public class UserService implements IUserService {
 
     public boolean resetPassword(int userID,String newPassword) throws SQLException {
         return this.userDao.resetUserPassword(userID, newPassword);
+    }
+    public int updateUser(UserDto user) throws SQLException{
+        return this.userDao.updateUser(user);
     }
 
 }

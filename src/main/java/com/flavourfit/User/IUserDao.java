@@ -9,5 +9,9 @@ public interface IUserDao {
     public UserDto getUserById(int userId) throws SQLException;
 
     public void addUser(UserDto user) throws SQLException;
-    public boolean resetUserPassword(int userID,String newPassword) throws SQLException;
+
+    public boolean resetUserPassword(int userID, String newPassword) throws SQLException;
+
+    public int updateUser(UserDto user) throws SQLException;
+
 }
