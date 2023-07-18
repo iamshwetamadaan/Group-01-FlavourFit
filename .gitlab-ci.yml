@@ -53,7 +53,6 @@ deploy-backend:
   stage: deploy-backend
   script:
     - echo "Deploying to Render"
-    - # Add commands to deploy Docker image to Render
   only:
     - develop
 
@@ -61,6 +60,5 @@ deploy-frontend:
   stage: deploy-frontend
   script:
     - echo "Deploying to Netlify"
-    - # Add commands to deploy frontend build to Netlify
   only:
     - develop
