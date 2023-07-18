@@ -1,6 +1,5 @@
 package com.flavourfit.User;
 
-import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,6 +81,33 @@ public class UserDaoImpl implements IUserDao {
 
             while (resultSet.next()) {
                 user = this.extractUserFromResult(resultSet);
+            }
+            logger.info("Returning received user as response");
+            return user;
+        }
+        return null;
+    }
+
+
+    @Override
+    public PremiumUserDto getUserBymembership(int userId) throws SQLException {
+        logger.info("Started getUserById() method");
+        if (database != null) {
+            PremiumUserDto user = null;
+            Connection connection = this.database.getConnection();
+
+            if (connection == null) {
+                logger.error("SQL connection not found!");
+                throw new SQLException("SQL connection not found!");
+            }
+
+            logger.info("Running select query to get premium user by userId");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Users U inner join Premium_Memberships PM on U.User_id =  PM.User_id WHERE U.User_id=? and PM.Is_active = 1  ");
+            preparedStatement.setInt(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                user = this.extractPremiumUserFromResult(resultSet);
             }
             logger.info("Returning received user as response");
             return user;
@@ -240,6 +266,31 @@ public class UserDaoImpl implements IUserDao {
             user.setTargetWeight(resultSet.getDouble("Target_Weight"));
             user.setType(resultSet.getString("Type"));
             user.setPassword(resultSet.getString("Password"));
+        }
+        return user;
+    }
+
+    private PremiumUserDto extractPremiumUserFromResult(ResultSet resultSet) throws SQLException {
+        PremiumUserDto user = new PremiumUserDto();
+        if (resultSet != null) {
+            user.setUserId(resultSet.getInt("User_id"));
+            user.setFirstName(resultSet.getString("First_name"));
+            user.setLastName(resultSet.getString("Last_name"));
+            user.setPhone(resultSet.getString("Phone"));
+            user.setEmail(resultSet.getString("Email"));
+            user.setAge(resultSet.getInt("Age"));
+            user.setStreetAddress(resultSet.getString("Street_address"));
+            user.setCity(resultSet.getString("City"));
+            user.setState(resultSet.getString("State"));
+            user.setZipCode(resultSet.getString("Zip_code"));
+            user.setCurrentWeight(resultSet.getDouble("Current_weight"));
+            user.setTargetWeight(resultSet.getDouble("Target_Weight"));
+            user.setType(resultSet.getString("Type"));
+            user.setPassword(resultSet.getString("Password"));
+            user.setMembership_ID(resultSet.getInt("Premium_membership_id"));
+            user.setStart_date(resultSet.getString("Start_date"));
+            user.setExpiry_date(resultSet.getString("Expiry_date"));
+            user.setIs_active(resultSet.getInt("Is_active"));
         }
         return user;
     }
