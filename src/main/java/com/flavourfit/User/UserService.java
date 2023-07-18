@@ -1,5 +1,6 @@
 package com.flavourfit.User;
 
+import com.flavourfit.Exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,14 +27,26 @@ public class UserService implements IUserService {
         return usersStr.toString();
     }
 
-    public boolean resetPassword(int userID,String newPassword) throws SQLException {
+    @Override
+    public int updateUser(UserDto user) throws SQLException {
+        return this.userDao.updateUser(user);
+    }
+
+    @Override
+    public UserDto fetchUserById(int id) throws UserNotFoundException {
+        try {
+            UserDto user = this.userDao.getUserById(id);
+            return user;
+        } catch (SQLException e) {
+            throw new UserNotFoundException(e);
+        }
+    }
+
+    public boolean resetPassword(int userID, String newPassword) throws SQLException {
         if (newPassword == null || newPassword.isEmpty()) {
             throw new RuntimeException("Invalid Password");
         }
         return this.userDao.resetUserPassword(userID, newPassword);
-    }
-    public int updateUser(UserDto user) throws SQLException{
-        return this.userDao.updateUser(user);
     }
 
     public void registerUser(UserDto user) throws SQLException {
@@ -43,19 +56,28 @@ public class UserService implements IUserService {
             } else {
                 throw new RuntimeException("User already exists");
             }
-        }else{
+        } else {
             throw new RuntimeException("Invalid details");
         }
     }
 
     @Override
-    public UserDto getUserbyID(int user) throws SQLException{
+    public UserDto getUserbyID(int user) throws SQLException {
         return this.userDao.getUserById(user);
     }
 
     @Override
-    public PremiumUserDto getUserBymembership(int user) throws SQLException{
+    public PremiumUserDto getUserBymembership(int user) throws SQLException {
         return this.userDao.getUserBymembership(user);
     }
 
+    @Override
+    public UserDto fetchUserByEmail(String email) throws UserNotFoundException {
+        try {
+            UserDto user = this.userDao.getUserByEmail(email);
+            return user;
+        } catch (SQLException e) {
+            throw new UserNotFoundException(e);
+        }
+    }
 }

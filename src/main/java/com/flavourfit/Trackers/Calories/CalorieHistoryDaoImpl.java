@@ -14,9 +14,14 @@ public class CalorieHistoryDaoImpl implements ICalorieHistoryDao {
 
     private final IDatabaseManager database;
 
+    private Connection connection;
+
     @Autowired
     public CalorieHistoryDaoImpl(IDatabaseManager database) {
         this.database = database;
+        if (database != null) {
+            this.connection = database.getConnection();
+        }
     }
 
     /**
@@ -42,39 +47,30 @@ public class CalorieHistoryDaoImpl implements ICalorieHistoryDao {
             }
         }
 
-        if (database == null) {
-            logger.error("No database object found!!");
-            throw new SQLException("No database object found!!");
+        this.testConnection();
+
+        CalorieHistoryDto existingCalorieHistoryDto = this.getCalorieByUserIdDate(
+                calorieHistoryDto.getUpdateDate(), calorieHistoryDto.getUserId());
+        if (existingCalorieHistoryDto == null) {
+            logger.info("Creating a prepared statement to insert record.");
+            String query = "INSERT INTO Calorie_History (Calorie_Count,Update_Date,User_id) "
+                    + " VALUES(?,?,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            logger.info("Replacing values in prepared statement with actual values to be inserted");
+            preparedStatement.setDouble(1, calorieHistoryDto.getCalorieCount());
+            preparedStatement.setString(2, calorieHistoryDto.getUpdateDate());
+            preparedStatement.setInt(3, calorieHistoryDto.getUserId());
+
+            logger.info("Execute the insertion of record to the table");
+            preparedStatement.executeUpdate();
         } else {
-
-            Connection connection = this.database.getConnection();
-
-            if (connection == null) {
-                logger.error("SQL connection not found!");
-                throw new SQLException("SQL connection not found!");
-            }
-
-            CalorieHistoryDto existingCalorieHistoryDto = this.getCalorieByUserIdDate(calorieHistoryDto.getUpdateDate(), calorieHistoryDto.getUserId());
-            if (existingCalorieHistoryDto == null) {
-                logger.info("Creating a prepared statement to insert record.");
-                String query = "INSERT INTO Calorie_History (Calorie_Count,Update_Date,User_id) "
-                        + " VALUES(?,?,?)";
-                PreparedStatement preparedStatement = connection.prepareStatement(query);
-                logger.info("Replacing values in prepared statement with actual values to be inserted");
-                preparedStatement.setDouble(1, calorieHistoryDto.getCalorieCount());
-                preparedStatement.setString(2, calorieHistoryDto.getUpdateDate());
-                preparedStatement.setInt(3, calorieHistoryDto.getUserId());
-
-                logger.info("Execute the insertion of record to the table");
-                preparedStatement.executeUpdate();
-            } else {
-                logger.info("If calorie history row exists Execute the update of record to the table");
-                double updatedCalories = existingCalorieHistoryDto.getCalorieCount() + calorieHistoryDto.getCalorieCount();
-                existingCalorieHistoryDto.setCalorieCount(updatedCalories);
-                this.updateCalorieHistory(existingCalorieHistoryDto);
-            }
-            logger.info("Added Calories to the Calorie history table!");
+            logger.info("If calorie history row exists Execute the update of record to the table");
+            double updatedCalories = existingCalorieHistoryDto.getCalorieCount() + calorieHistoryDto.getCalorieCount();
+            existingCalorieHistoryDto.setCalorieCount(updatedCalories);
+            this.updateCalorieHistory(existingCalorieHistoryDto);
         }
+        logger.info("Added Calories to the Calorie history table!");
+
     }
 
     public void updateCalorieHistory(CalorieHistoryDto calorieHistoryDto) throws SQLException {
@@ -85,68 +81,46 @@ public class CalorieHistoryDaoImpl implements ICalorieHistoryDao {
             throw new SQLException("Invalid data while updating calorie history!!");
         }
 
-        if (database == null) {
-            logger.error("No database object found!!");
-            throw new SQLException("No database object found!!");
-        } else {
+        this.testConnection();
 
-            Connection connection = this.database.getConnection();
+        logger.info("Creating a prepared statement to insert record.");
+        String query = "UPDATE Calorie_History SET Calorie_Count=? WHERE Calorie_history_id=?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        logger.info("Replacing values in prepared statement with actual values to be updated");
+        preparedStatement.setDouble(1, calorieHistoryDto.getCalorieCount());
+        preparedStatement.setInt(2, calorieHistoryDto.getCalorieHistoryId());
 
-            if (connection == null) {
-                logger.error("SQL connection not found!");
-                throw new SQLException("SQL connection not found!");
-            }
+        logger.info("Execute the update of record to the table");
+        preparedStatement.executeUpdate();
 
-            logger.info("Creating a prepared statement to insert record.");
-            String query = "UPDATE Calorie_History SET Calorie_Count=? WHERE Calorie_history_id=?";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            logger.info("Replacing values in prepared statement with actual values to be updated");
-            preparedStatement.setDouble(1, calorieHistoryDto.getCalorieCount());
-            preparedStatement.setInt(2, calorieHistoryDto.getCalorieHistoryId());
-
-            logger.info("Execute the update of record to the table");
-            preparedStatement.executeUpdate();
-        }
     }
 
     @Override
     public CalorieHistoryDto getCalorieByUserIdDate(String date, int userId) throws SQLException {
         logger.info("Started getCalorieByUserIdDate() method");
 
-        if (date.isEmpty()) {
+        if (date == null || date.isEmpty()) {
             logger.error("Invalid date input while fetching calorie history!!");
             throw new SQLException("Invalid date input while fetching calorie history!!");
         }
 
-        if (database == null) {
-            logger.error("No database object found!!");
-            throw new SQLException("No database object found!!");
-        } else {
+        this.testConnection();
 
-            Connection connection = this.database.getConnection();
+        CalorieHistoryDto calorieHistoryDto = null;
+        String query = "SELECT * FROM Calorie_History WHERE Update_Date=? AND User_id=?";
 
-            if (connection == null) {
-                logger.error("SQL connection not found!");
-                throw new SQLException("SQL connection not found!");
-            }
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        logger.info("Replacing values in prepared statement with actual values for date and user id.");
+        preparedStatement.setString(1, date);
+        preparedStatement.setInt(2, userId);
 
-            CalorieHistoryDto calorieHistoryDto = null;
-            String query = "SELECT * FROM Calorie_History WHERE Update_Date=? AND User_id=?";
+        logger.info("Execute the query to get calorie count for date.");
+        ResultSet resultSet = preparedStatement.executeQuery();
 
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            logger.info("Replacing values in prepared statement with actual values for date and user id.");
-            preparedStatement.setString(1, date);
-            preparedStatement.setInt(2, userId);
+        logger.info("Iterate result set to get total calorie count.");
+        calorieHistoryDto = this.extractResult(resultSet);
 
-            logger.info("Execute the query to get calorie count for date.");
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            logger.info("Iterate result set to get total calorie count.");
-            calorieHistoryDto = this.extractResult(resultSet);
-
-            return calorieHistoryDto;
-        }
-
+        return calorieHistoryDto;
     }
 
     private CalorieHistoryDto extractResult(ResultSet resultSet) throws SQLException {
@@ -164,5 +138,20 @@ public class CalorieHistoryDaoImpl implements ICalorieHistoryDao {
         }
 
         return calorieHistoryDto;
+    }
+
+    private void testConnection() throws SQLException {
+        if (database == null && connection == null) {
+            logger.error("SQL connection not found!");
+            throw new SQLException("SQL connection not found!");
+        }
+
+
+        if (connection == null && this.database.getConnection() == null) {
+            logger.error("SQL connection not found!");
+            throw new SQLException("SQL connection not found!");
+        } else {
+            this.connection = this.database.getConnection();
+        }
     }
 }

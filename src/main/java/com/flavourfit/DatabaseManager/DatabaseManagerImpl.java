@@ -1,5 +1,8 @@
 package com.flavourfit.DatabaseManager;
 
+import com.flavourfit.Exceptions.DatabaseException;
+import com.flavourfit.Resources.Constants;
+import com.flavourfit.Resources.Helpers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -7,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -19,8 +23,13 @@ public class DatabaseManagerImpl implements IDatabaseManager {
 
     private Connection connection = null;
 
-    public DatabaseManagerImpl(){
-        this.connect();
+    public DatabaseManagerImpl() {
+        try {
+            this.connect();
+        } catch (DatabaseException e) {
+            logger.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -30,37 +39,33 @@ public class DatabaseManagerImpl implements IDatabaseManager {
      * @throws RuntimeException
      */
     @Override
-    public boolean connect() throws RuntimeException {
+    public boolean connect() throws DatabaseException {
         logger.info("Entered connect() method");
 
-        Properties dbProperties = new Properties();
         try {
             logger.info("Retrieving database credentials from properties file.");
-            InputStream stream = new FileInputStream("src/main/resources/application.properties");
-            dbProperties.load(stream);
-            String username = dbProperties.getProperty("db.username");
-            String password = dbProperties.getProperty("db.password");
-            String dbUrl = dbProperties.getProperty("db.url");
+            Properties appProperties = Helpers.getAppProperties();
+
+            String username = appProperties.getProperty("db.username");
+            String password = appProperties.getProperty("db.password");
+            String dbUrl = appProperties.getProperty("db.url");
 
             logger.info("Creating a database connection using the retrieved credentials.");
             Class.forName("com.mysql.cj.jdbc.Driver");
             this.connection = DriverManager.getConnection(dbUrl, username, password);
             logger.info("Database connection successful");
 
-            String schema = dbProperties.getProperty("db.schema");
+            String schema = appProperties.getProperty("db.schema");
             this.setSchema(this.connection, schema);
 
             logger.info("Connect() method Ended");
             return true;
         } catch (IOException e) {
-            logger.error(e.getMessage());
-            throw new RuntimeException(e);
+            throw new DatabaseException(e);
         } catch (SQLException e) {
-            logger.error(e.getMessage());
-            throw new RuntimeException(e);
+            throw new DatabaseException(e);
         } catch (ClassNotFoundException e) {
-            logger.error(e.getMessage());
-            throw new RuntimeException(e);
+            throw new DatabaseException(e);
         }
     }
 
@@ -71,7 +76,7 @@ public class DatabaseManagerImpl implements IDatabaseManager {
      * @throws RuntimeException
      */
     @Override
-    public boolean disconnect() throws RuntimeException {
+    public boolean disconnect() throws DatabaseException {
         if (this.connection != null) {
             try {
                 logger.warn("Disconnecting from the database!!");
@@ -80,7 +85,7 @@ public class DatabaseManagerImpl implements IDatabaseManager {
                 return true;
             } catch (SQLException e) {
                 logger.error(e.getMessage());
-                throw new RuntimeException(e);
+                throw new DatabaseException(e);
             }
         }
         return true;

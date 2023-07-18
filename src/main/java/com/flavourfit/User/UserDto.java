@@ -1,10 +1,15 @@
 package com.flavourfit.User;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.Objects;
+
 /**
  * Data Transfer Object(DTO) for the users table
  */
-public class
-UserDto {
+public class UserDto implements UserDetails {
     private int userId;
     private String firstName;
     private String lastName;
@@ -125,12 +130,98 @@ UserDto {
         this.type = type;
     }
 
+
     public String getPassword() {
         return password;
     }
 
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getFullName() {
+        return this.firstName + this.lastName;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+
+    /**
+     * @return
+     */
+    @Override
+    public String getUsername() {
+        return this.getEmail();
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, this.getFullName(), password, userId);
+    }
+
+    /**
+     * @param user
+     * @return
+     */
+    @Override
+    public boolean equals(Object user) {
+        if (this == user) {
+            return true;
+        }
+
+        if (user == null) {
+            return false;
+        }
+
+        if (getClass() != user.getClass()) {
+            return false;
+        }
+
+        UserDto userDto = (UserDto) user;
+        return Objects.equals(this.email, userDto.email) && Objects.equals(this.password, userDto.password)
+                && Objects.equals(this.userId, userDto.userId);
     }
 
     @Override

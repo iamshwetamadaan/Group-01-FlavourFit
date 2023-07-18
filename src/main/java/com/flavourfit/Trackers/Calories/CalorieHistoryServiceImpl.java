@@ -44,7 +44,7 @@ public class CalorieHistoryServiceImpl implements ICalorieHistoryService {
 
         CalorieHistoryDto calorieHistoryDto = null;
         logger.info("Using calorieHistoryDao to get calorie count for given date!!");
-        calorieHistoryDto = this.calorieHistoryDao.getCalorieByUserIdDate(date, 1);
+        calorieHistoryDto = this.calorieHistoryDao.getCalorieByUserIdDate(date, userId);
 
         logger.info("Exiting fetchCalorieCountByDate() method!");
         return calorieHistoryDto;
