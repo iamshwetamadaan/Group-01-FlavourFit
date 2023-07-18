@@ -7,6 +7,8 @@ import com.flavourfit.ResponsesDTO.AuthResponse;
 import com.flavourfit.Security.JwtService;
 import com.flavourfit.User.IUserDao;
 import com.flavourfit.User.UserDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +24,7 @@ public class AuthService implements IAuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private static Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     public AuthService(
@@ -42,10 +45,13 @@ public class AuthService implements IAuthService {
      */
     @Override
     public AuthResponse authenticateUser(UserDto user) {
+        logger.info("Entered service method authenticateUser()");
         if (!Helpers.isValidUser(user)) {
+            logger.error("Invalid user");
             throw new UserNotFoundException("Invalid user");
         }
 
+        logger.info("Authenticating user.");
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
 
@@ -59,8 +65,10 @@ public class AuthService implements IAuthService {
                 response.setToken(authToken);
                 response.setEmail(currentUser.getEmail());
                 response.setSuccess(true);
+                logger.info("Successfully authenticated user");
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new UserNotFoundException(e);
         }
 
@@ -75,9 +83,11 @@ public class AuthService implements IAuthService {
      */
     @Override
     public AuthResponse registerUser(UserDto user) {
+        logger.info("Entered service method registerUser()");
         AuthResponse response = new AuthResponse();
 
         if (!Helpers.isValidUser(user)) {
+            logger.error("Invalid user.");
             throw new UserNotFoundException("Invalid user");
         }
 
@@ -89,7 +99,9 @@ public class AuthService implements IAuthService {
             response.setToken(authToken);
             response.setEmail(user.getEmail());
             response.setSuccess(true);
+            logger.info("User added successfully.");
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DuplicateUserException(e);
         }
         return response;

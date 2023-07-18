@@ -2,12 +2,17 @@ package com.flavourfit.Authentication;
 
 import com.flavourfit.Exceptions.UserNotFoundException;
 import com.flavourfit.ResponsesDTO.AuthResponse;
+import com.flavourfit.ResponsesDTO.PutResponse;
 import com.flavourfit.User.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -37,9 +42,28 @@ public class AuthController {
         } catch (UserNotFoundException e) {
             logger.error(e.getMessage());
             return ResponseEntity.badRequest().body("Invalid credentials");
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
             return ResponseEntity.badRequest().body("Invalid credentials");
+        }
+    }
+
+    @PostMapping("/register-user")
+    public ResponseEntity<Object> registerUser(
+            @RequestBody UserDto user, @RequestHeader("Authorization") String token
+    ) {
+        logger.info("Entered controlled method registerUser()");
+        try {
+            logger.info("Updating calorie count through calorieHistoryService.");
+            int userId = this.authService.extractUserIdFromToken(token);
+            user.setUserId(userId);
+            AuthResponse response = authService.registerUser(user);
+
+            logger.info("Added user. Returning response through api");
+            return ResponseEntity.ok().body(response);
+        } catch (RuntimeException e) {
+            logger.error("Bad api request during registerUser()");
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to register user"));
         }
     }
 }

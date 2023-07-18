@@ -54,23 +54,6 @@ public class UserService implements IUserService {
         return this.userDao.resetUserPassword(userID, newPassword);
     }
 
-    public void registerUser(UserDto user) throws SQLException {
-        logger.info("Started registerUser() method");
-
-        if (user.getEmail() != null && user.getPassword() != null) {
-            if (userDao.getUserById(user.getUserId()) == null) {
-                logger.info("Calling method addUser() of UserDao");
-                this.userDao.addUser(user);
-            } else {
-                logger.error("User already exists");
-                throw new RuntimeException("User already exists");
-            }
-        } else {
-            logger.error("Invalid details");
-            throw new RuntimeException("Invalid details");
-        }
-    }
-
     @Override
     public PremiumUserDto getUserBymembership(int user) throws SQLException {
         logger.info("Started getUserByMembership() method");
