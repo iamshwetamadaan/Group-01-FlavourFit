@@ -1,5 +1,6 @@
 package com.flavourfit.User;
 
+import com.flavourfit.Exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +28,28 @@ public class UserService implements IUserService {
         return usersStr.toString();
     }
 
-    public int updateUser(UserDto user) throws SQLException{
+    @Override
+    public int updateUser(UserDto user) throws SQLException {
         return this.userDao.updateUser(user);
     }
 
+    @Override
+    public UserDto fetchUserById(int id) throws UserNotFoundException {
+        try {
+            UserDto user = this.userDao.getUserById(id);
+            return user;
+        } catch (SQLException e) {
+            throw new UserNotFoundException(e);
+        }
+    }
 
+    @Override
+    public UserDto fetchUserByEmail(String email) throws UserNotFoundException {
+        try {
+            UserDto user = this.userDao.getUserByEmail(email);
+            return user;
+        } catch (SQLException e) {
+            throw new UserNotFoundException(e);
+        }
+    }
 }

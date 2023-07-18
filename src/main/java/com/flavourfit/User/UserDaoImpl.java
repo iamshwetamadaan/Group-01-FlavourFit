@@ -1,6 +1,5 @@
 package com.flavourfit.User;
 
-import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +16,12 @@ public class UserDaoImpl implements IUserDao {
 
     private final IDatabaseManager database;
 
+    private Connection connection;
+
     @Autowired
     public UserDaoImpl(IDatabaseManager database) {
         this.database = database;
+        this.connection = database.getConnection();
     }
 
 
@@ -34,24 +36,17 @@ public class UserDaoImpl implements IUserDao {
         logger.info("Started getAllUsers() method");
         List<UserDto> users = new ArrayList<>();
 
-        if (database != null) {
-            Connection connection = this.database.getConnection();
+        this.testConnection();
 
-            if (connection == null) {
-                logger.error("SQL connection not found!");
-                throw new SQLException("SQL connection not found!");
-            }
+        Statement statement = connection.createStatement();
 
-            Statement statement = connection.createStatement();
-
-            logger.info("Running select query to get all users");
-            ResultSet resultSet = statement.executeQuery("SELECT * from Users;");
-            while (resultSet.next()) {
-                UserDto userDto = this.extractUserFromResult(resultSet);
-                users.add(userDto);
-            }
-            logger.info("Received data from db and added users to users list.");
+        logger.info("Running select query to get all users");
+        ResultSet resultSet = statement.executeQuery("SELECT * from Users;");
+        while (resultSet.next()) {
+            UserDto userDto = this.extractUserFromResult(resultSet);
+            users.add(userDto);
         }
+        logger.info("Received data from db and added users to users list.");
 
         return users;
     }
@@ -66,33 +61,26 @@ public class UserDaoImpl implements IUserDao {
     @Override
     public UserDto getUserById(int userId) throws SQLException {
         logger.info("Started getUserById() method");
-        if (database != null) {
-            UserDto user = null;
-            Connection connection = this.database.getConnection();
+        UserDto user = null;
 
-            if (connection == null) {
-                logger.error("SQL connection not found!");
-                throw new SQLException("SQL connection not found!");
-            }
+        this.testConnection();
 
-            logger.info("Running select query to get user by userId");
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Users WHERE User_id=?");
-            preparedStatement.setInt(1, userId);
-            ResultSet resultSet = preparedStatement.executeQuery();
+        logger.info("Running select query to get user by userId");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Users WHERE User_id=?");
+        preparedStatement.setInt(1, userId);
+        ResultSet resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()) {
-                user = this.extractUserFromResult(resultSet);
-            }
-            logger.info("Returning received user as response");
-            return user;
+        while (resultSet.next()) {
+            user = this.extractUserFromResult(resultSet);
         }
-        return null;
+        logger.info("Returning received user as response");
+        return user;
     }
 
-//    Updating user info to the table
+    //    Updating user info to the table
     @Override
     public int updateUser(UserDto user) throws SQLException {
-        int count=0;
+        int count = 0;
         logger.info("Started updateUser() method");
 
         if (user == null) {
@@ -100,26 +88,19 @@ public class UserDaoImpl implements IUserDao {
             throw new SQLException("User object not valid!!");
         }
 
-        if (database != null) {
-            Connection connection = this.database.getConnection();
+        this.testConnection();
 
-            if (connection == null) {
-                logger.error("SQL connection not found!");
-                throw new SQLException("SQL connection not found!");
-            }
-
-            logger.info("Creating a prepared statement update the record");
-            String query = "Update Users set First_name=?, Last_name=?, Phone=?, Email=?, Age=?" +
-                    ",Street_address=?, City=?,State=?, Zip_code=?, Current_weight=?, Target_weight=?" +
-                    "where User_id=?";
-            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            logger.info("Replacing values in prepared statement with actual values to be inserted");
-            this.replaceStatementPlaceholders(user, preparedStatement,12);
-            preparedStatement.setDouble(11,user.getTargetWeight());
-            preparedStatement.setInt(12,user.getUserId());
-            logger.info("Executing the update user request");
-            count = preparedStatement.executeUpdate();
-        }
+        logger.info("Creating a prepared statement update the record");
+        String query = "Update Users set First_name=?, Last_name=?, Phone=?, Email=?, Age=?" +
+                ",Street_address=?, City=?,State=?, Zip_code=?, Current_weight=?, Target_weight=?" +
+                "where User_id=?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        logger.info("Replacing values in prepared statement with actual values to be inserted");
+        this.replaceStatementPlaceholders(user, preparedStatement, 12);
+        preparedStatement.setDouble(11, user.getTargetWeight());
+        preparedStatement.setInt(12, user.getUserId());
+        logger.info("Executing the update user request");
+        count = preparedStatement.executeUpdate();
         return count;
     }
 
@@ -132,34 +113,56 @@ public class UserDaoImpl implements IUserDao {
             throw new SQLException("User object not valid!!");
         }
 
-        if (database != null) {
-            Connection connection = this.database.getConnection();
+        this.testConnection();
 
-            if (connection == null) {
-                logger.error("SQL connection not found!");
-                throw new SQLException("SQL connection not found!");
-            }
+        logger.info("Creating a prepared statement to insert record.");
+        String query = "INSERT INTO Users (First_name, Last_name, Phone, Email, Age, Street_address, "
+                + " City, State, Zip_code, Current_weight, Target_weight, Type, Password) "
+                + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        logger.info("Replacing values in prepared statement with actual values to be inserted");
+        this.replaceStatementPlaceholders(user, preparedStatement, 13);
+        logger.info("Execute the insertion of record to the table");
+        preparedStatement.executeUpdate();
 
-            logger.info("Creating a prepared statement to insert record.");
-            String query = "INSERT INTO Users (First_name, Last_name, Phone, Email, Age, Street_address, "
-                    + " City, State, Zip_code, Current_weight, Target_weight, Type, Password) "
-                    + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            logger.info("Replacing values in prepared statement with actual values to be inserted");
-            this.replaceStatementPlaceholders(user, preparedStatement,13);
-            logger.info("Execute the insertion of record to the table");
-            preparedStatement.executeUpdate();
-
-            ResultSet keys = preparedStatement.getGeneratedKeys();
-            long insertedUserId;
-            while (keys.next()) {
-                insertedUserId = keys.getLong(1);
-                logger.info("Added User with userId: {}, to the Users table!", insertedUserId);
-            }
+        ResultSet keys = preparedStatement.getGeneratedKeys();
+        long insertedUserId;
+        while (keys.next()) {
+            insertedUserId = keys.getLong(1);
+            logger.info("Added User with userId: {}, to the Users table!", insertedUserId);
         }
     }
 
-    private void replaceStatementPlaceholders(UserDto user, PreparedStatement preparedStatement, int count) throws SQLException {
+    /**
+     * Method to fetch a user from database by their User_id
+     *
+     * @param email -- String email of the user
+     * @return -- User received from the
+     * @throws SQLException
+     */
+    @Override
+    public UserDto getUserByEmail(String email) throws SQLException {
+        logger.info("Started getUserById() method");
+
+        this.testConnection();
+
+        UserDto user = null;
+
+        logger.info("Running select query to get user by userId");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Users WHERE Email=?");
+        preparedStatement.setString(1, email);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            user = this.extractUserFromResult(resultSet);
+        }
+        logger.info("Returning received user as response");
+        return user;
+
+    }
+
+    private void replaceStatementPlaceholders(UserDto user, PreparedStatement preparedStatement, int count) throws
+                                                                                                            SQLException {
         if (user == null || preparedStatement == null) {
             return;
         }
@@ -176,7 +179,7 @@ public class UserDaoImpl implements IUserDao {
         preparedStatement.setDouble(10, user.getCurrentWeight());
         preparedStatement.setDouble(11, user.getTargetWeight());
         preparedStatement.setString(12, user.getType());
-        if(count>12){
+        if (count > 12) {
             preparedStatement.setString(13, user.getPassword());
         }
 
@@ -201,5 +204,20 @@ public class UserDaoImpl implements IUserDao {
             user.setPassword(resultSet.getString("Password"));
         }
         return user;
+    }
+
+    private void testConnection() throws SQLException {
+        if (database == null && connection == null) {
+            logger.error("SQL connection not found!");
+            throw new SQLException("SQL connection not found!");
+        }
+
+
+        if (connection == null && this.database.getConnection() == null) {
+            logger.error("SQL connection not found!");
+            throw new SQLException("SQL connection not found!");
+        } else {
+            this.connection = this.database.getConnection();
+        }
     }
 }

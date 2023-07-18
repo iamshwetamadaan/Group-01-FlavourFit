@@ -11,4 +11,6 @@ public interface IUserDao {
     public void addUser(UserDto user) throws SQLException;
 
     public int updateUser(UserDto user) throws SQLException;
+
+    UserDto getUserByEmail(String email) throws SQLException;
 }
