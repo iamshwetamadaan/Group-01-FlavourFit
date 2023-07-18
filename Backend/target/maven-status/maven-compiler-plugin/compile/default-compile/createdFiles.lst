@@ -1,0 +1,9 @@
+com\flavourfit\User\User.class
+com\flavourfit\User\UserDto.class
+com\flavourfit\DatabaseManager\IDatabaseManager.class
+com\flavourfit\User\IUserDao.class
+com\flavourfit\User\UserService.class
+com\flavourfit\User\UserController.class
+com\flavourfit\DatabaseManager\DatabaseManagerImpl.class
+com\flavourfit\User\UserDaoImpl.class
+com\flavourfit\FlavourFit.class
