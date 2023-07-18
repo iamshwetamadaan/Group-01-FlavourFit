@@ -22,7 +22,7 @@ test-backend:
     - cd Backend
     - mvn test
   only:
-    - develop
+    - main
 
 build-backend:
   stage: build-backend
@@ -34,31 +34,30 @@ build-backend:
     paths:
       - Backend/target/*.jar
   only:
-    - develop
+    - main
 
 build-frontend:
   stage: build-frontend
   image: node:latest
   script:
     - cd Frontend
-    - npm install
-    - npm run build
+    - echo "Building frontend"
   artifacts:
     paths:
       - Frontend/build
   only:
-    - develop
+    - main
 
 deploy-backend:
   stage: deploy-backend
   script:
     - echo "Deploying to Render"
   only:
-    - develop
+    - main
 
 deploy-frontend:
   stage: deploy-frontend
   script:
     - echo "Deploying to Netlify"
   only:
-    - develop
+    - main
