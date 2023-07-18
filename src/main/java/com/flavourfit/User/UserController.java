@@ -92,5 +92,22 @@ public class UserController {
         }
     }
 
+    @RequestMapping("/getuser-premiummember")
+    public ResponseEntity<PutResponse> getUserBymembership(@RequestBody Map<Integer, Object> request){
+        int userID = (int) request.get("userID");
+        try {
+            Map<String, Object> userdata = new HashMap<>();
+            PremiumUserDto premiumuserDto = this.userService.getUserBymembership(userID);
+            if (premiumuserDto != null) {
+                userdata.put("Premium user details", premiumuserDto);
+                return ResponseEntity.ok().body(new PutResponse(true, "Successfully loaded premium user details", userdata));
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (SQLException e) {
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to load user details"));
+
+        }
+    }
 
 }

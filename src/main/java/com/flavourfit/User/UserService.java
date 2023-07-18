@@ -36,4 +36,9 @@ public class UserService implements IUserService {
         return this.userDao.getUserById(user);
     }
 
+    @Override
+    public PremiumUserDto getUserBymembership(int user) throws SQLException{
+        return this.userDao.getUserBymembership(user);
+    }
+
 }
