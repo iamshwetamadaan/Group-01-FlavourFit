@@ -1,13 +1,22 @@
 package com.flavourfit.User;
 
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
+import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.Helpers.DateHelpers;
 import com.flavourfit.ResponsesDTO.PutResponse;
+import com.flavourfit.Trackers.Calories.CalorieHistoryDto;
+import com.flavourfit.Trackers.TrackersController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.json.simple.JSONObject;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -17,6 +26,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+    private static Logger logger = LoggerFactory.getLogger(UserController.class);
     private IUserService userService;
 
     @Autowired
@@ -29,6 +39,20 @@ public class UserController {
         return userService.fetchAllUsers();
     }
 
+    @PutMapping({"/reset-password"})
+    public ResponseEntity<Object> resetPassword(@RequestBody Map<String, Object> request) throws SQLException {
+        logger.info("Entered controlled method resetPassword()");
+        int userID = 1;
+        String newPassword = (String) request.get("newPassword");
+        try {
+            logger.info("Updated controlled method resetPassword()");
+            this.userService.resetPassword(userID, newPassword);
+            return ResponseEntity.ok().body(new PutResponse(true, "Successfully updated password"));
+        } catch (Exception e) {
+            logger.error("Bad api request during resetPassword()");
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to update password"));
+        }
+    }
 //    Method to edit user details.
 
     /**

@@ -185,6 +185,47 @@ public class UserDaoImpl implements IUserDao {
         }
     }
 
+    @Override
+    public boolean resetUserPassword(int userId, String newPassword) throws SQLException {
+
+        boolean passwordReset = false;
+
+        logger.info("Started resetUserPassword() method");
+
+        if (userId == 0) {
+            logger.error("User object not valid!!");
+            throw new SQLException("User object not valid!!");
+        }
+
+        if (database != null) {
+            Connection connection = this.database.getConnection();
+
+            if (connection == null) {
+                logger.error("SQL connection not found!");
+                throw new SQLException("SQL connection not found!");
+            }
+
+            logger.info("Creating a prepared statement to update record.");
+            String query = "UPDATE Users SET Password = ? where User_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            logger.info("Replacing values in prepared statement with actual values to be inserted");
+            preparedStatement.setString(1, newPassword);
+            preparedStatement.setInt(2, userId);
+            logger.info("Execute the update of record to the table");
+            preparedStatement.executeUpdate();
+
+            ResultSet keys = preparedStatement.getGeneratedKeys();
+            long updateUserIdPassword;
+            while (keys.next()) {
+                updateUserIdPassword = keys.getLong(1);
+                logger.info("Updated Password with userId: {}, to the Users table!", updateUserIdPassword);
+            }
+            passwordReset = true;
+        }
+
+        return passwordReset;
+    }
+
     private void replaceStatementPlaceholders(UserDto user, PreparedStatement preparedStatement, int count) throws SQLException {
         if (user == null || preparedStatement == null) {
             return;

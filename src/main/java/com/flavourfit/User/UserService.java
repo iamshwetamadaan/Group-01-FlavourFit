@@ -27,6 +27,12 @@ public class UserService implements IUserService {
         return usersStr.toString();
     }
 
+    public boolean resetPassword(int userID,String newPassword) throws SQLException {
+        if (newPassword == null || newPassword.isEmpty()) {
+            throw new RuntimeException("Invalid Password");
+        }
+        return this.userDao.resetUserPassword(userID, newPassword);
+    }
     public int updateUser(UserDto user) throws SQLException{
         return this.userDao.updateUser(user);
     }
