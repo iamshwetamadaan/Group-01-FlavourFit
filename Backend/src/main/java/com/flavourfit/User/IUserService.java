@@ -13,7 +13,6 @@ public interface IUserService {
     UserDto fetchUserById(int id) throws UserNotFoundException;
 
     UserDto fetchUserByEmail(String email) throws UserNotFoundException;
-    public void registerUser(UserDto user) throws SQLException;
 
     public PremiumUserDto getUserBymembership(int user) throws SQLException;
 }

@@ -48,27 +48,6 @@ public class UserController {
         }
     }
 
-    //    Method to edit user details.
-    @PostMapping("/register-user")
-    public ResponseEntity<Object> registerUser(
-            @RequestBody UserDto user, @RequestHeader("Authorization") String token
-    ) {
-        logger.info("Entered controlled method registerUser()");
-        try {
-            logger.info("Updating calorie count through calorieHistoryService.");
-            int userId = this.authService.extractUserIdFromToken(token);
-            user.setUserId(userId);
-            userService.registerUser(user);
-            Map<String, Object> data = new HashMap<>();
-
-            logger.info("Added user. Returning response through api");
-            return ResponseEntity.ok().body(new PutResponse(true, "Successfully registered user", data));
-        } catch (SQLException e) {
-            logger.error("Bad api request during registerUser()");
-            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to register user"));
-        }
-    }
-
     @PutMapping("/update-user")
     public ResponseEntity<Object> editUser(
             @RequestBody UserDto user, @RequestHeader("Authorization") String token
@@ -89,7 +68,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping("/get-current-user")
+    @GetMapping("/get-current-user")
     public ResponseEntity<PutResponse> getUserByID(@RequestHeader("Authorization") String token) {
         logger.info("Entered controller method getUserById()");
         int userID = this.authService.extractUserIdFromToken(token);
@@ -110,7 +89,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping("/get-premium-membership")
+    @GetMapping("/get-premium-membership")
     public ResponseEntity<PutResponse> getUserByMembership(@RequestHeader("Authorization") String token) {
         logger.info("Entered controller method getUserByMembership()");
         int userID = this.authService.extractUserIdFromToken(token);
