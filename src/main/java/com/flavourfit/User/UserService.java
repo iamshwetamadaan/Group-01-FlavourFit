@@ -14,7 +14,6 @@ public class UserService implements IUserService {
     @Autowired
     public UserService(IUserDao userDao) {
         this.userDao = userDao;
-
     }
 
     @Override
@@ -41,6 +40,35 @@ public class UserService implements IUserService {
         } catch (SQLException e) {
             throw new UserNotFoundException(e);
         }
+    }
+
+    public boolean resetPassword(int userID, String newPassword) throws SQLException {
+        if (newPassword == null || newPassword.isEmpty()) {
+            throw new RuntimeException("Invalid Password");
+        }
+        return this.userDao.resetUserPassword(userID, newPassword);
+    }
+
+    public void registerUser(UserDto user) throws SQLException {
+        if (user.getEmail() != null && user.getPassword() != null) {
+            if (userDao.getUserById(user.getUserId()) == null) {
+                this.userDao.addUser(user);
+            } else {
+                throw new RuntimeException("User already exists");
+            }
+        } else {
+            throw new RuntimeException("Invalid details");
+        }
+    }
+
+    @Override
+    public UserDto getUserbyID(int user) throws SQLException {
+        return this.userDao.getUserById(user);
+    }
+
+    @Override
+    public PremiumUserDto getUserBymembership(int user) throws SQLException {
+        return this.userDao.getUserBymembership(user);
     }
 
     @Override

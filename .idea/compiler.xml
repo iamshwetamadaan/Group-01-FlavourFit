@@ -10,9 +10,11 @@
         <module name="Group01Project" />
         <module name="FlavourFitBackend" />
         <module name="FlavourFit" />
-        <module name="group01" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="group01" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
@@ -20,7 +22,7 @@
       <module name="FlavourFitBackend" options="-parameters" />
       <module name="Group01Project" options="-parameters" />
       <module name="Project" options="-parameters" />
-      <module name="group01" options="-parameters" />
+      <module name="group01" options="" />
     </option>
   </component>
 </project>

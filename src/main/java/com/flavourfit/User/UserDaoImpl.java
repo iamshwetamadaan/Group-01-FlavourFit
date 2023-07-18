@@ -77,7 +77,35 @@ public class UserDaoImpl implements IUserDao {
         return user;
     }
 
-    //    Updating user info to the table
+    @Override
+    public PremiumUserDto getUserBymembership(int userId) throws SQLException {
+        logger.info("Started getUserById() method");
+        if (database != null) {
+            PremiumUserDto user = null;
+            Connection connection = this.database.getConnection();
+
+            if (connection == null) {
+                logger.error("SQL connection not found!");
+                throw new SQLException("SQL connection not found!");
+            }
+
+            logger.info("Running select query to get premium user by userId");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM Users U inner join Premium_Memberships PM on U.User_id =  PM.User_id WHERE U.User_id=? and PM.Is_active = 1  ");
+            preparedStatement.setInt(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                user = this.extractPremiumUserFromResult(resultSet);
+            }
+            logger.info("Returning received user as response");
+            return user;
+        }
+        return null;
+    }
+
+//    Updating user info to the table
+
     @Override
     public int updateUser(UserDto user) throws SQLException {
         int count = 0;
@@ -161,6 +189,47 @@ public class UserDaoImpl implements IUserDao {
 
     }
 
+    @Override
+    public boolean resetUserPassword(int userId, String newPassword) throws SQLException {
+
+        boolean passwordReset = false;
+
+        logger.info("Started resetUserPassword() method");
+
+        if (userId == 0) {
+            logger.error("User object not valid!!");
+            throw new SQLException("User object not valid!!");
+        }
+
+        if (database != null) {
+            Connection connection = this.database.getConnection();
+
+            if (connection == null) {
+                logger.error("SQL connection not found!");
+                throw new SQLException("SQL connection not found!");
+            }
+
+            logger.info("Creating a prepared statement to update record.");
+            String query = "UPDATE Users SET Password = ? where User_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            logger.info("Replacing values in prepared statement with actual values to be inserted");
+            preparedStatement.setString(1, newPassword);
+            preparedStatement.setInt(2, userId);
+            logger.info("Execute the update of record to the table");
+            preparedStatement.executeUpdate();
+
+            ResultSet keys = preparedStatement.getGeneratedKeys();
+            long updateUserIdPassword;
+            while (keys.next()) {
+                updateUserIdPassword = keys.getLong(1);
+                logger.info("Updated Password with userId: {}, to the Users table!", updateUserIdPassword);
+            }
+            passwordReset = true;
+        }
+
+        return passwordReset;
+    }
+
     private void replaceStatementPlaceholders(UserDto user, PreparedStatement preparedStatement, int count) throws
                                                                                                             SQLException {
         if (user == null || preparedStatement == null) {
@@ -219,5 +288,30 @@ public class UserDaoImpl implements IUserDao {
         } else {
             this.connection = this.database.getConnection();
         }
+    }
+
+    private PremiumUserDto extractPremiumUserFromResult(ResultSet resultSet) throws SQLException {
+        PremiumUserDto user = new PremiumUserDto();
+        if (resultSet != null) {
+            user.setUserId(resultSet.getInt("User_id"));
+            user.setFirstName(resultSet.getString("First_name"));
+            user.setLastName(resultSet.getString("Last_name"));
+            user.setPhone(resultSet.getString("Phone"));
+            user.setEmail(resultSet.getString("Email"));
+            user.setAge(resultSet.getInt("Age"));
+            user.setStreetAddress(resultSet.getString("Street_address"));
+            user.setCity(resultSet.getString("City"));
+            user.setState(resultSet.getString("State"));
+            user.setZipCode(resultSet.getString("Zip_code"));
+            user.setCurrentWeight(resultSet.getDouble("Current_weight"));
+            user.setTargetWeight(resultSet.getDouble("Target_Weight"));
+            user.setType(resultSet.getString("Type"));
+            user.setPassword(resultSet.getString("Password"));
+            user.setMembership_ID(resultSet.getInt("Premium_membership_id"));
+            user.setStart_date(resultSet.getString("Start_date"));
+            user.setExpiry_date(resultSet.getString("Expiry_date"));
+            user.setIs_active(resultSet.getInt("Is_active"));
+        }
+        return user;
     }
 }

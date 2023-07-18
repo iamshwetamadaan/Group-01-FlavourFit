@@ -1,15 +1,13 @@
 package com.flavourfit.User;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Objects;
 
 /**
  * Data Transfer Object(DTO) for the users table
  */
-public class UserDto implements UserDetails {
+public class
+
+PremiumUserDto {
     private int userId;
     private String firstName;
     private String lastName;
@@ -23,6 +21,15 @@ public class UserDto implements UserDetails {
     private double currentWeight;
     private double targetWeight;
     private String type;
+
+    private int membership_ID;
+
+    private String Start_date;
+
+    private String Expiry_date;
+
+    private int Is_active;
+
     private String password;
 
 
@@ -130,101 +137,47 @@ public class UserDto implements UserDetails {
         this.type = type;
     }
 
-
     public String getPassword() {
         return password;
     }
-
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getFullName() {
-        return this.firstName + this.lastName;
+    public int getMembership_ID() {
+        return membership_ID;
     }
 
-    /**
-     * @return
-     */
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    public String getStart_date() {
+        return Start_date;
     }
 
-
-    /**
-     * @return
-     */
-    @Override
-    public String getUsername() {
-        return this.getEmail();
+    public String getExpiry_date() {
+        return Expiry_date;
     }
 
-    /**
-     * @return
-     */
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
+    public int getIs_active() {
+        return Is_active;
     }
 
-    /**
-     * @return
-     */
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
+    public void setMembership_ID(int membership_ID) {
+        this.membership_ID = membership_ID;
     }
 
-    /**
-     * @return
-     */
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
+    public void setStart_date(String start_date) {
+        Start_date = start_date;
     }
 
-    /**
-     * @return
-     */
-    @Override
-    public boolean isEnabled() {
-        return true;
+    public void setExpiry_date(String expiry_date) {
+        Expiry_date = expiry_date;
     }
 
-    /**
-     * @return
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(email, this.getFullName(), password, userId);
+    public void setIs_active(int is_active) {
+        Is_active = is_active;
     }
 
-    /**
-     * @param user
-     * @return
-     */
-    @Override
-    public boolean equals(Object user) {
-        if (this == user) {
-            return true;
-        }
-
-        if (user == null) {
-            return false;
-        }
-
-        if (getClass() != user.getClass()) {
-            return false;
-        }
-
-        UserDto userDto = (UserDto) user;
-        return Objects.equals(this.email, userDto.email) && Objects.equals(this.password, userDto.password)
-                && Objects.equals(this.userId, userDto.userId);
-    }
-
-    @Override
+    /*@Override
     public String toString() {
         return "UserDto{" +
                 "userId=" + userId +
@@ -241,6 +194,30 @@ public class UserDto implements UserDetails {
                 ", targetWeight=" + targetWeight +
                 ", type='" + type + '\'' +
                 ", password='" + password + '\'' +
+                '}';
+    }*/
+
+    @Override
+    public String toString() {
+        return "PremiumUserDto{" +
+                "userId=" + userId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                ", streetAddress='" + streetAddress + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", currentWeight=" + currentWeight +
+                ", targetWeight=" + targetWeight +
+                ", type='" + type + '\'' +
+                ", password='" + password + '\'' +
+                ", Membership_ID='" + membership_ID + '\'' +
+                ", Start_date='" + Start_date + '\'' +
+                ", Expiry_Date='" + Expiry_date + '\'' +
+                ", Is_Active='" + Is_active + '\''+
                 '}';
     }
 }
