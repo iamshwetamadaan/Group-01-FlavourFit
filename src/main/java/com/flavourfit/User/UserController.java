@@ -2,32 +2,33 @@ package com.flavourfit.User;
 
 import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
-import com.flavourfit.Helpers.DateHelpers;
 import com.flavourfit.ResponsesDTO.PutResponse;
-import com.flavourfit.Trackers.Calories.CalorieHistoryDto;
 import com.flavourfit.Trackers.TrackersController;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import com.flavourfit.Helpers.DateHelpers;
+import com.flavourfit.Trackers.Calories.CalorieHistoryDto;
+import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import org.json.simple.JSONObject;
-
 import org.springframework.web.bind.annotation.*;
-
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
     private IUserService userService;
+    private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     public UserController(IUserService userService) {
@@ -82,6 +83,23 @@ public class UserController {
      * }
      * }
      */
+    @PostMapping("/register-user")
+    public ResponseEntity<Object> registerUser(@RequestBody UserDto user) throws SQLException{
+        logger.info("Entered controlled method registerUser()");
+        try {
+            logger.info("Updating calorie count through calorieHistoryService.");
+            userService.registerUser(user);
+            //yet to add functionality
+            Map<String, Object> data = new HashMap<>();
+
+            logger.info("Added user. Returning response through api");
+            return ResponseEntity.ok().body(new PutResponse(true, "Successfully registered user", data));
+        }catch (SQLException e) {
+            logger.error("Bad api request during registerUser()");
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to register user"));
+        }
+    }
+
     @PutMapping("/update-user")
     public JSONObject editUser(@RequestBody UserDto user) throws SQLException {
         int count = userService.updateUser(user);

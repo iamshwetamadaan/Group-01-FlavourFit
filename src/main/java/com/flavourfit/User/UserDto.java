@@ -20,6 +20,7 @@ UserDto {
     private String type;
     private String password;
 
+
     public int getUserId() {
         return userId;
     }
