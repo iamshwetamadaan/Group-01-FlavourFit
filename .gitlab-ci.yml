@@ -1,31 +1,63 @@
-#References
-#https://gitlab.com/gitlab-examples/spring-gitlab-cf-deploy-demo/-/blob/master/.gitlab-ci.yml
-#https://www.digitalocean.com/community/tutorials/maven-commands-options-cheat-sheet
+image: docker:latest
 
-image: maven:latest
+services:
+  - docker:dind
 
-build-job:
-  stage: build
-  script: mvn clean install
-#  script: chmod +x mvnw && ./mvnw package
-  artifacts:
-    paths:
-      - ./target/FlavourFit-0.0.1-SNAPSHOT.jar
-  only:
-      - main
+stages:
+  - test-backend
+  - build-backend
+  - build-frontend
+  - deploy-backend
+  - deploy-frontend
 
-test-job:
-  stage: test
+variables:
+  DOCKER_DRIVER: overlay2
+  SPRING_OUTPUT_DIRECTORY: target
+  REACT_OUTPUT_DIRECTORY: build
+
+test-backend:
+  stage: test-backend
+  image: maven:latest
   script:
+    - cd Backend
     - mvn test
   only:
     - main
 
-deploy-job:
-  stage: deploy
+build-backend:
+  stage: build-backend
+  image: maven:latest
   script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
+    - cd Backend
+    - mvn clean install
+  artifacts:
+    paths:
+      - Backend/target/*.jar
   only:
     - main
 
+build-frontend:
+  stage: build-frontend
+  image: node:latest
+  script:
+    - cd Frontend
+    - echo "Building frontend"
+  artifacts:
+    paths:
+      - Frontend/build
+  only:
+    - main
+
+deploy-backend:
+  stage: deploy-backend
+  script:
+    - echo "Deploying to Render"
+  only:
+    - main
+
+deploy-frontend:
+  stage: deploy-frontend
+  script:
+    - echo "Deploying to Netlify"
+  only:
+    - main
