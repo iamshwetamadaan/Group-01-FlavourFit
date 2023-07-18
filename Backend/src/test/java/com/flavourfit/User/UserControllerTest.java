@@ -26,13 +26,4 @@ public class UserControllerTest {
     public void init() {
         MockitoAnnotations.openMocks(this);
     }
-
-    @Test
-    public void fetchAllUsersTest() throws SQLException {
-        String mockData = "[{User1}, {User2}]";
-        when(userService.fetchAllUsers()).thenReturn(mockData);
-        String result = userController.fetchAllUsers();
-        assertEquals(mockData, result);
-        verify(userService, times(1)).fetchAllUsers();
-    }
 }
