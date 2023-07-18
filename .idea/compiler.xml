@@ -9,6 +9,7 @@
         <module name="Project" />
         <module name="Group01Project" />
         <module name="FlavourFitBackend" />
+        <module name="FlavourFit" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
