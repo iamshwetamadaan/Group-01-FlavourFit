@@ -89,6 +89,7 @@ public class UserDaoImpl implements IUserDao {
         return null;
     }
 
+
 //    Updating user info to the table
     @Override
     public int updateUser(UserDto user) throws SQLException {

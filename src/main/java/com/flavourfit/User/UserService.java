@@ -31,5 +31,9 @@ public class UserService implements IUserService {
         return this.userDao.updateUser(user);
     }
 
+    @Override
+    public UserDto getUserbyID(int user) throws SQLException{
+        return this.userDao.getUserById(user);
+    }
 
 }
