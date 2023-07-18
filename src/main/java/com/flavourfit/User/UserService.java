@@ -30,16 +30,15 @@ public class UserService implements IUserService {
         return this.userDao.updateUser(user);
     }
 
-    public void registerUser(UserDto user) throws RuntimeException {
-        try{
-            if(userDao.getUserById(user.getUserId()) == null){
+    public void registerUser(UserDto user) throws SQLException {
+        if (user.getEmail() != null && user.getPassword() != null) {
+            if (userDao.getUserById(user.getUserId()) == null) {
                 this.userDao.addUser(user);
+            } else {
+                throw new RuntimeException("User already exists");
             }
-        }
-        catch (Exception e){
-            throw  new RuntimeException("User already exists");
+        }else{
+            throw new RuntimeException("Invalid details");
         }
     }
-
-
 }
