@@ -1,5 +1,7 @@
 package com.flavourfit.User;
 
+import com.flavourfit.Authentication.IAuthService;
+import com.flavourfit.Exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.flavourfit.ResponsesDTO.PutResponse;
 import org.slf4j.LoggerFactory;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.json.simple.JSONObject;
+
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,126 +22,113 @@ import java.util.Map;
 public class UserController {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
     private IUserService userService;
+    private IAuthService authService;
 
     @Autowired
-    public UserController(IUserService userService) {
+    public UserController(IUserService userService, IAuthService authService) {
         this.userService = userService;
-    }
-
-    @RequestMapping("/fetch-all")
-    public String fetchAllUsers() throws SQLException {
-        return userService.fetchAllUsers();
+        this.authService = authService;
     }
 
     @PutMapping({"/reset-password"})
-    public ResponseEntity<Object> resetPassword(@RequestBody Map<String, Object> request) throws SQLException {
+    public ResponseEntity<Object> resetPassword(
+            @RequestBody Map<String, Object> request, @RequestHeader("Authorization") String token
+    ) {
         logger.info("Entered controlled method resetPassword()");
-        int userID = 1;
+        int userId = authService.extractUserIdFromToken(token);
+        ;
         String newPassword = (String) request.get("newPassword");
         try {
             logger.info("Updated controlled method resetPassword()");
-            this.userService.resetPassword(userID, newPassword);
+            this.userService.resetPassword(userId, newPassword);
             return ResponseEntity.ok().body(new PutResponse(true, "Successfully updated password"));
         } catch (Exception e) {
             logger.error("Bad api request during resetPassword()");
             return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to update password"));
         }
     }
-//    Method to edit user details.
 
-    /**
-     * Path - /user/update-user
-     * Request Params = {
-     * "userId" : 1,
-     * "firstName": "John",
-     * "lastName": "Doe",
-     * "email": "john@doe.co",
-     * "contact": "+1234567890",
-     * "height": 170,
-     * "weight": 70,
-     * "targetWeight": 80,
-     * <p>
-     * "street":"6385 South Street",
-     * "State":"NS",
-     * "city":"Halifax",
-     * "postal_code":"B3H 4j4"
-     * <p>
-     * "preferences": ["Vegetarian", "Eggs"],
-     * }
-     * <p>
-     * Response = {
-     * "success": true,
-     * "message": "User updated successfully",
-     * "data": {
-     * }
-     * }
-     */
+    //    Method to edit user details.
     @PostMapping("/register-user")
-    public ResponseEntity<Object> registerUser(@RequestBody UserDto user) throws SQLException{
+    public ResponseEntity<Object> registerUser(
+            @RequestBody UserDto user, @RequestHeader("Authorization") String token
+    ) {
         logger.info("Entered controlled method registerUser()");
         try {
             logger.info("Updating calorie count through calorieHistoryService.");
+            int userId = this.authService.extractUserIdFromToken(token);
+            user.setUserId(userId);
             userService.registerUser(user);
-            //yet to add functionality
             Map<String, Object> data = new HashMap<>();
 
             logger.info("Added user. Returning response through api");
             return ResponseEntity.ok().body(new PutResponse(true, "Successfully registered user", data));
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             logger.error("Bad api request during registerUser()");
             return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to register user"));
         }
     }
 
     @PutMapping("/update-user")
-    public JSONObject editUser(@RequestBody UserDto user) throws SQLException {
+    public ResponseEntity<Object> editUser(
+            @RequestBody UserDto user, @RequestHeader("Authorization") String token
+    ) throws SQLException {
+        logger.info("Entered controller method editUser()");
+
+        logger.info("Invoking method updatedUser() of userService");
+        int userId = this.authService.extractUserIdFromToken(token);
+        user.setUserId(userId);
         int count = userService.updateUser(user);
-        JSONObject res = new JSONObject();
+
         if (count == 0) {
-            res.put("success", false);
-            res.put("message", "User details invalid");
-            res.put("data", null);
+            logger.error("User details invalid");
+            return ResponseEntity.badRequest().body(new PutResponse(false, "User details invalid"));
         } else {
-            res.put("success", true);
-            res.put("message", "User details successfully updated");
-            res.put("data", user);
+            logger.info("User details successfully updated");
+            return ResponseEntity.ok().body(new PutResponse(true, "User details successfully updated", user));
         }
-        return res;
     }
 
-    @RequestMapping("/getuser-current")
-    public ResponseEntity<PutResponse> getUserByID(@RequestBody Map<Integer, Object> request) {
-        int userID = (int) request.get("userID");
+    @RequestMapping("/get-current-user")
+    public ResponseEntity<PutResponse> getUserByID(@RequestHeader("Authorization") String token) {
+        logger.info("Entered controller method getUserById()");
+        int userID = this.authService.extractUserIdFromToken(token);
         try {
             Map<String, Object> userdata = new HashMap<>();
-            UserDto userDto = this.userService.getUserbyID(userID);
+            UserDto userDto = this.userService.fetchUserById(userID);
             if (userDto != null) {
+                logger.info("Successfully loaded user details.");
                 userdata.put("user details", userDto);
                 return ResponseEntity.ok().body(new PutResponse(true, "Successfully loaded user details", userdata));
             } else {
-                return ResponseEntity.notFound().build();
+                logger.error("Failed to load user details");
+                return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to load user details"));
             }
-        } catch (SQLException e) {
-            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to load user details"));
-
+        } catch (UserNotFoundException e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().body(new PutResponse(false, e.getMessage()));
         }
     }
 
-    @RequestMapping("/getuser-premiummember")
-    public ResponseEntity<PutResponse> getUserBymembership(@RequestBody Map<Integer, Object> request){
-        int userID = (int) request.get("userID");
+    @RequestMapping("/get-premium-membership")
+    public ResponseEntity<PutResponse> getUserByMembership(@RequestHeader("Authorization") String token) {
+        logger.info("Entered controller method getUserByMembership()");
+        int userID = this.authService.extractUserIdFromToken(token);
         try {
             Map<String, Object> userdata = new HashMap<>();
             PremiumUserDto premiumuserDto = this.userService.getUserBymembership(userID);
             if (premiumuserDto != null) {
+                logger.info("Successfully loaded premium user details");
                 userdata.put("Premium user details", premiumuserDto);
-                return ResponseEntity.ok().body(new PutResponse(true, "Successfully loaded premium user details", userdata));
+                return ResponseEntity.ok()
+                                     .body(new PutResponse(true, "Successfully loaded premium user details", userdata));
             } else {
-                return ResponseEntity.notFound().build();
+                logger.error("Failed to load user details");
+                return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to load user details"));
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to load user details"));
-
         }
     }
 

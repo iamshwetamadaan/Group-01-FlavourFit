@@ -1,6 +1,8 @@
 package com.flavourfit.User;
 
 import com.flavourfit.Exceptions.UserNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +11,8 @@ import java.util.List;
 
 @Service
 public class UserService implements IUserService {
+    private static Logger logger = LoggerFactory.getLogger(UserService.class);
+
     private final IUserDao userDao;
 
     @Autowired
@@ -17,66 +21,73 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public String fetchAllUsers() throws SQLException {
-        List<UserDto> users = this.userDao.getAllUsers();
-        StringBuilder usersStr = new StringBuilder();
-        for (UserDto user : users) {
-            usersStr.append(user.toString());
-            usersStr.append("\n");
-        }
-        return usersStr.toString();
-    }
-
-    @Override
     public int updateUser(UserDto user) throws SQLException {
+        logger.info("Started updateUser() method");
+        if (user == null) {
+            logger.error("Invalid user parameter");
+            throw new RuntimeException("Invalid user");
+        }
         return this.userDao.updateUser(user);
     }
 
     @Override
     public UserDto fetchUserById(int id) throws UserNotFoundException {
+        logger.info("Started fetchUserById() method");
+
         try {
             UserDto user = this.userDao.getUserById(id);
+            logger.info("Exiting fetchUserById() method");
             return user;
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new UserNotFoundException(e);
         }
     }
 
     public boolean resetPassword(int userID, String newPassword) throws SQLException {
+        logger.info("Started resetPassword() method");
         if (newPassword == null || newPassword.isEmpty()) {
+            logger.warn("Invalid password parameter");
             throw new RuntimeException("Invalid Password");
         }
+
         return this.userDao.resetUserPassword(userID, newPassword);
     }
 
     public void registerUser(UserDto user) throws SQLException {
+        logger.info("Started registerUser() method");
+
         if (user.getEmail() != null && user.getPassword() != null) {
             if (userDao.getUserById(user.getUserId()) == null) {
+                logger.info("Calling method addUser() of UserDao");
                 this.userDao.addUser(user);
             } else {
+                logger.error("User already exists");
                 throw new RuntimeException("User already exists");
             }
         } else {
+            logger.error("Invalid details");
             throw new RuntimeException("Invalid details");
         }
     }
 
     @Override
-    public UserDto getUserbyID(int user) throws SQLException {
-        return this.userDao.getUserById(user);
-    }
-
-    @Override
     public PremiumUserDto getUserBymembership(int user) throws SQLException {
+        logger.info("Started getUserByMembership() method");
         return this.userDao.getUserBymembership(user);
     }
 
     @Override
     public UserDto fetchUserByEmail(String email) throws UserNotFoundException {
+        logger.info("Started fetchUserByEmail() method");
+
         try {
+            logger.info("Calling getUserByEmail() method of userDao");
+
             UserDto user = this.userDao.getUserByEmail(email);
             return user;
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new UserNotFoundException(e);
         }
     }
