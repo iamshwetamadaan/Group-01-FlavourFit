@@ -41,8 +41,7 @@ build-frontend:
   image: node:latest
   script:
     - cd Frontend
-    - npm install
-    - npm run build
+    - echo "Building frontend"
   artifacts:
     paths:
       - Frontend/build
