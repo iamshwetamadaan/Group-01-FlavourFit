@@ -5,6 +5,8 @@ import com.flavourfit.DatabaseManager.IDatabaseManager;
 import com.flavourfit.Helpers.DateHelpers;
 import com.flavourfit.ResponsesDTO.PutResponse;
 import com.flavourfit.Trackers.Calories.*;
+import com.flavourfit.Trackers.Water.IWaterHistoryService;
+import com.flavourfit.Trackers.Water.WaterHistoryDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +23,22 @@ public class TrackersController {
     private static Logger logger = LoggerFactory.getLogger(TrackersController.class);
 
     private ICalorieHistoryService calorieHistoryService;
+    private IWaterHistoryService waterHistoryService;
 
     @Autowired
-    public TrackersController(ICalorieHistoryService calorieHistoryService) {
+    public TrackersController(ICalorieHistoryService calorieHistoryService, IWaterHistoryService waterHistoryService) {
         this.calorieHistoryService = calorieHistoryService;
+        this.waterHistoryService = waterHistoryService;
+    }
+
+    @Autowired
+    public void setCalorieHistoryService(ICalorieHistoryService calorieHistoryService) {
+        this.calorieHistoryService = calorieHistoryService;
+    }
+
+    @Autowired
+    public void setWaterHistoryService(IWaterHistoryService waterHistoryService) {
+        this.waterHistoryService = waterHistoryService;
     }
 
 
@@ -46,6 +60,27 @@ public class TrackersController {
         } catch (SQLException e) {
             logger.error("Bad api request during recordCalorieCount()");
             return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to record calorieCount"));
+        }
+    }
+
+    @PutMapping("/record-waterIntake")
+    public ResponseEntity<Object> recordWaterIntake(@RequestBody Map<String, Object> request) {
+        logger.info("Entered controller method recordWaterIntake()");
+        double waterIntake = (Double) request.get("waterIntake");
+        try {
+            logger.info("Updating water intake through waterHistoryService.");
+            this.waterHistoryService.recordWaterIntake(waterIntake, 1);
+            Map<String, Object> data = new HashMap<>();
+
+            logger.info("Fetching the total water intake for current date.");
+            WaterHistoryDto todaysWaterIntake = this.waterHistoryService.fetchWaterIntakeByUserIdDate(DateHelpers.getCurrentDateString(), 1);
+            data.put("todaysWaterIntake", todaysWaterIntake.getWaterIntake());
+
+            logger.info("Updated record count. Returning response through api");
+            return ResponseEntity.ok().body(new PutResponse(true, "Successfully recorded Water intake", data));
+        } catch (SQLException e) {
+            logger.error("Bad api request during recordWaterIntake()");
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to record Water intake"));
         }
     }
 }

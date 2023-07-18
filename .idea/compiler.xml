@@ -10,7 +10,7 @@
         <module name="Group01Project" />
         <module name="FlavourFitBackend" />
         <module name="FlavourFit" />
-        <module name="group01_new" />
+        <module name="group01" />
       </profile>
     </annotationProcessing>
   </component>
@@ -20,7 +20,7 @@
       <module name="FlavourFitBackend" options="-parameters" />
       <module name="Group01Project" options="-parameters" />
       <module name="Project" options="-parameters" />
-      <module name="group01_new" options="-parameters" />
+      <module name="group01" options="-parameters" />
     </option>
   </component>
 </project>
