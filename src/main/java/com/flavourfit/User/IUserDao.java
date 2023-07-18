@@ -10,5 +10,10 @@ public interface IUserDao {
 
     public void addUser(UserDto user) throws SQLException;
 
+    public boolean resetUserPassword(int userID, String newPassword) throws SQLException;
+    
+    public PremiumUserDto getUserBymembership(int userId) throws SQLException;
+
     public int updateUser(UserDto user) throws SQLException;
+
 }

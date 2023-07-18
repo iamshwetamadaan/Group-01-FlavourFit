@@ -26,6 +26,12 @@ public class UserService implements IUserService {
         return usersStr.toString();
     }
 
+    public boolean resetPassword(int userID,String newPassword) throws SQLException {
+        if (newPassword == null || newPassword.isEmpty()) {
+            throw new RuntimeException("Invalid Password");
+        }
+        return this.userDao.resetUserPassword(userID, newPassword);
+    }
     public int updateUser(UserDto user) throws SQLException{
         return this.userDao.updateUser(user);
     }
@@ -41,4 +47,15 @@ public class UserService implements IUserService {
             throw new RuntimeException("Invalid details");
         }
     }
+
+    @Override
+    public UserDto getUserbyID(int user) throws SQLException{
+        return this.userDao.getUserById(user);
+    }
+
+    @Override
+    public PremiumUserDto getUserBymembership(int user) throws SQLException{
+        return this.userDao.getUserBymembership(user);
+    }
+
 }
