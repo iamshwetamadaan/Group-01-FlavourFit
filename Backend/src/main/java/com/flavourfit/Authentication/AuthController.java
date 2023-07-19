@@ -10,10 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin
@@ -50,13 +46,11 @@ public class AuthController {
 
     @PostMapping("/register-user")
     public ResponseEntity<Object> registerUser(
-            @RequestBody UserDto user, @RequestHeader("Authorization") String token
+            @RequestBody UserDto user
     ) {
         logger.info("Entered controlled method registerUser()");
         try {
             logger.info("Updating calorie count through calorieHistoryService.");
-            int userId = this.authService.extractUserIdFromToken(token);
-            user.setUserId(userId);
             AuthResponse response = authService.registerUser(user);
 
             logger.info("Added user. Returning response through api");

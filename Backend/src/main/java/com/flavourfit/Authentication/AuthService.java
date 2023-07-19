@@ -107,7 +107,7 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public int extractUserIdFromToken(String token) throws UserNotFoundException {
+        public int extractUserIdFromToken(String token) throws UserNotFoundException {
         if (token == null || token.isEmpty()) {
             throw new RuntimeException("Invalid token");
         }
