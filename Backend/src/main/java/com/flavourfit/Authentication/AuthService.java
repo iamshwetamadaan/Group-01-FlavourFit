@@ -20,7 +20,6 @@ import java.sql.SQLException;
 @Service
 public class AuthService implements IAuthService {
     private final IUserDao userDao;
-
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
