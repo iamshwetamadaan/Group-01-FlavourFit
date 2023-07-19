@@ -14,24 +14,18 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.sql.SQLException;;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/recipes")
 public class RecipeController {
     private static Logger logger = LoggerFactory.getLogger(RecipeController.class);
     private IRecipeService recipeService;
-    private IAuthService authService;
-    private IUserService userService;
 
     @Autowired
-    public RecipeController(IRecipeService recipeService, IAuthService authService) {
+    public RecipeController(IRecipeService recipeService) {
         this.recipeService = recipeService;
-        this.authService = authService;
     }
 
     @GetMapping("/types")
