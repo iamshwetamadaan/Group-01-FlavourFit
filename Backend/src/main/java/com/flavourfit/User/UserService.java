@@ -1,5 +1,6 @@
 package com.flavourfit.User;
 
+import com.flavourfit.Exceptions.PaymentException;
 import com.flavourfit.Exceptions.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,5 +74,37 @@ public class UserService implements IUserService {
             logger.error(e.getMessage());
             throw new UserNotFoundException(e);
         }
+    }
+
+    public boolean paymentForPremium(int userID, String cardNumber, String mmyy, String cvv) throws PaymentException,
+                                                                                                    SQLException {
+        logger.info("Started paymentForPremiumCheck() method");
+        if (cardNumber.length() != 16) {
+            logger.warn("Invalid card number length");
+            throw new PaymentException("Invalid Payment: Card Number entered is not valid");
+        }
+        if (cvv.length() != 3) {
+            logger.warn("Invalid cvv length");
+            throw new PaymentException("Invalid Payment: CVV entered is not valid");
+        }
+
+        if (mmyy.length() != 4) {
+            logger.warn("Invalid MM/YY length");
+            throw new PaymentException("Invalid Payment: MM/YY entered is not valid");
+        } else {
+            int midIndex = mmyy.length() / 2;
+
+            String mm = mmyy.substring(0, midIndex);
+            String yy = mmyy.substring(midIndex);
+
+            int month = Integer.parseInt(mm);
+            int year = Integer.parseInt(yy);
+
+            if (!(month >= 12 && month < 00) || !(year >= 30 && month < 10)) {
+                logger.warn("Invalid MM/YY ranges");
+                throw new PaymentException("Invalid Payment: MM/YY entered is not in valid ranges");
+            }
+        }
+        return this.userDao.userUpgradedToPremium(userID);
     }
 }

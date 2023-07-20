@@ -111,4 +111,27 @@ public class UserController {
         }
     }
 
+    @PostMapping("/user-premium-payment")
+    public ResponseEntity<PutResponse> getUserPaymentForPremium(@RequestHeader("Authorization") String token, @RequestBody Map<String, Object> request) {
+        logger.info("Entered controller method getUserPaymentForPremium()");
+        int userID = this.authService.extractUserIdFromToken(token);
+        try {
+            String cardNumber = (String) request.get("cardNumber");
+            String mmyy = (String) request.get("mmyy");
+            String cvv = (String) request.get("cvv");
+
+            if (request != null) {
+                logger.info("Successfully loaded premium user payment details");
+                this.userService.paymentForPremium(userID, cardNumber, mmyy, cvv);
+                return ResponseEntity.ok()
+                                     .body(new PutResponse(true, "Successfully completed user premium membership payment"));
+            } else {
+                logger.error("Payment for user not required");
+                return ResponseEntity.badRequest().body(new PutResponse(false, "Failed payment for user since payment for user not required "));
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed payment for user"));
+        }
+    }
 }

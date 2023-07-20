@@ -1,6 +1,7 @@
 package com.flavourfit.User;
 
 import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.Exceptions.PaymentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -228,6 +229,46 @@ public class UserDaoImpl implements IUserDao {
         }
 
         return passwordReset;
+    }
+
+    @Override
+    public boolean userUpgradedToPremium(int userId) throws SQLException {
+        boolean userPremium = false;
+
+        logger.info("Started userUpgradedToPremium() method");
+
+        if (userId == 0) {
+            logger.error("User object not valid!!");
+            throw new SQLException("User object not valid!!");
+        }
+
+        if (database != null) {
+            Connection connection = this.database.getConnection();
+
+            if (connection == null) {
+                logger.error("SQL connection not found!");
+                throw new SQLException("SQL connection not found!");
+            }
+
+            logger.info("Creating a prepared statement to update record.");
+            String query = "UPDATE Registered_Customer SET Type = ? where Customer_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            logger.info("Replacing values in prepared statement with actual values to be inserted");
+            preparedStatement.setString(1, "premium");
+            preparedStatement.setInt(2, userId);
+            logger.info("Execute the update of record to the table");
+            preparedStatement.executeUpdate();
+
+            ResultSet keys = preparedStatement.getGeneratedKeys();
+            long updateUserIdType;
+            while (keys.next()) {
+                updateUserIdType = keys.getLong(1);
+                logger.info("Updated Customer Type with userId: {}, to the Registered_Customer table!", updateUserIdType);
+            }
+            userPremium = true;
+        }
+
+        return userPremium;
     }
 
     private void replaceStatementPlaceholders(UserDto user, PreparedStatement preparedStatement, int count) throws
