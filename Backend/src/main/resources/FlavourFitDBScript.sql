@@ -237,3 +237,7 @@ CREATE TABLE `Fitness_Tips` (
   `tip_of_the_day` TEXT NULL,
   PRIMARY KEY (`Tip_id`)
 );
+
+-- Add editable field to recipes
+ALTER TABLE `Recipes`
+    ADD COLUMN `editable` TINYINT NULL DEFAULT 0 AFTER `Types`;
