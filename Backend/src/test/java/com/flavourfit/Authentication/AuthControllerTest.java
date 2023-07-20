@@ -2,54 +2,84 @@ package com.flavourfit.Authentication;
 
 import com.flavourfit.Exceptions.UserNotFoundException;
 import com.flavourfit.ResponsesDTO.AuthResponse;
+import com.flavourfit.ResponsesDTO.PutResponse;
 import com.flavourfit.User.UserDto;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 public class AuthControllerTest {
 
-    @Mock
     private IAuthService authService;
-
-    @InjectMocks
     private AuthController authController;
 
-    public AuthControllerTest() {
-        MockitoAnnotations.openMocks(this);
+    UserDto user;
+
+    @BeforeEach
+    void setUp() {
+        authService = Mockito.mock(IAuthService.class);
+        authController = new AuthController(authService);
+
+        user = new UserDto();
+        user.setEmail("test@email.com");
+        user.setPassword("testpassword");
     }
 
     @Test
-    public void authenticateUserTest() throws UserNotFoundException {
-        // Happy case
-        UserDto user = new UserDto();
-        user.setEmail("username");
-        user.setPassword("password");
-        AuthResponse authResponse = new AuthResponse();
-        authResponse.setToken("token");
+    void authenticateUserTest() {
+        AuthResponse response = new AuthResponse();
+        response.setEmail(user.getEmail());
+        response.setSuccess(true);
+        response.setToken("testToken");
 
-        when(authService.authenticateUser(user)).thenReturn(authResponse);
+        when(authService.authenticateUser(any(UserDto.class))).thenReturn(response);
 
-        ResponseEntity responseEntity = authController.authenticateUser(user);
+        ResponseEntity result = authController.authenticateUser(user);
+        assertEquals(200, result.getStatusCodeValue());
+        assertEquals(response, result.getBody());
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(authResponse, responseEntity.getBody());
+        when(authService.authenticateUser(any(UserDto.class))).thenThrow(new UserNotFoundException("User not found"));
 
-        // Exception case
-        when(authService.authenticateUser(user)).thenThrow(new UserNotFoundException("User not found"));
+        result = authController.authenticateUser(user);
+        assertEquals(400, result.getStatusCodeValue());
+        assertEquals("Invalid credentials", result.getBody());
 
-        responseEntity = authController.authenticateUser(user);
+        when(authService.authenticateUser(any(UserDto.class))).thenThrow(new RuntimeException("Some error"));
 
-        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals("Invalid credentials", responseEntity.getBody());
+        result = authController.authenticateUser(user);
+        assertEquals(400, result.getStatusCodeValue());
+        assertEquals("Invalid credentials", result.getBody());
     }
 
+    @Test
+    void registerUserTest() {
+        user.setUserId(1);
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setEmail(user.getEmail());
+        authResponse.setSuccess(true);
+        authResponse.setToken("testToken");
+
+        when(authService.registerUser(any(UserDto.class))).thenReturn(authResponse);
+
+        ResponseEntity<Object> result = authController.registerUser(user);
+        assertEquals(200, result.getStatusCodeValue());
+        assertEquals(authResponse, result.getBody());
+
+        reset(authService);
+
+        when(authService.registerUser(any(UserDto.class))).thenThrow(new RuntimeException("Registration error"));
+
+        result = authController.registerUser(user);
+        assertEquals(400, result.getStatusCodeValue());
+        assertTrue(result.getBody() instanceof PutResponse);
+        PutResponse putResponse = (PutResponse) result.getBody();
+        assertFalse(putResponse.isSuccess());
+        assertEquals("Failed to register user", putResponse.getMessage());
+    }
 }

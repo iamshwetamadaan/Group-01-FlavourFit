@@ -20,7 +20,6 @@ import java.sql.SQLException;
 @Service
 public class AuthService implements IAuthService {
     private final IUserDao userDao;
-
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -108,7 +107,7 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public int extractUserIdFromToken(String token) throws UserNotFoundException {
+        public int extractUserIdFromToken(String token) throws UserNotFoundException {
         if (token == null || token.isEmpty()) {
             throw new RuntimeException("Invalid token");
         }

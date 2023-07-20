@@ -158,6 +158,7 @@ public class UserDaoImpl implements IUserDao {
         long insertedUserId;
         while (keys.next()) {
             insertedUserId = keys.getLong(1);
+            user.setUserId((int) insertedUserId);
             logger.info("Added User with userId: {}, to the Users table!", insertedUserId);
         }
     }
