@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class CalorieHistoryDaoImpl implements ICalorieHistoryDao {
@@ -38,12 +40,13 @@ public class CalorieHistoryDaoImpl implements ICalorieHistoryDao {
             logger.error("CalorieHistoryDto object not valid!!");
             throw new SQLException("CalorieHistoryDto object not valid!!");
         } else {
-            if (calorieHistoryDto.getCalorieCount() == 0.00d) {
+            if (calorieHistoryDto.getCalorieCount() == 0.0d) {
                 logger.warn("Calorie count may be invalid!!");
             }
 
             if (calorieHistoryDto.getUpdateDate().isEmpty()) {
                 logger.warn("Calorie update date missing!!");
+                throw new SQLException("Date not valid!!");
             }
         }
 
@@ -73,12 +76,23 @@ public class CalorieHistoryDaoImpl implements ICalorieHistoryDao {
 
     }
 
+    /**
+     * Method to update given calorie hitory
+     *
+     * @param calorieHistoryDto -- CalorieHistoryDto to be updated in database
+     * @throws SQLException
+     */
     public void updateCalorieHistory(CalorieHistoryDto calorieHistoryDto) throws SQLException {
         logger.info("Started getCalorieByUserIdDate() method");
 
         if (calorieHistoryDto == null) {
             logger.error("Invalid data while updating calorie history!!");
             throw new SQLException("Invalid data while updating calorie history!!");
+        }
+
+        if (calorieHistoryDto.getUpdateDate() == null || calorieHistoryDto.getUpdateDate().isEmpty()) {
+            logger.error("Invalid update date while updating calorie history!!");
+            throw new SQLException("Invalid update date while updating calorie history!!");
         }
 
         this.testConnection();
@@ -95,6 +109,14 @@ public class CalorieHistoryDaoImpl implements ICalorieHistoryDao {
 
     }
 
+    /**
+     * Method to get calories for user by date
+     *
+     * @param date   -- Date at which calorie count to be found
+     * @param userId -- ID of the user
+     * @return -- calorie data
+     * @throws SQLException
+     */
     @Override
     public CalorieHistoryDto getCalorieByUserIdDate(String date, int userId) throws SQLException {
         logger.info("Started getCalorieByUserIdDate() method");
@@ -123,6 +145,56 @@ public class CalorieHistoryDaoImpl implements ICalorieHistoryDao {
         return calorieHistoryDto;
     }
 
+    /**
+     * Method to get the calorieHistory for a period
+     *
+     * @param startDate -- Starting date of the period
+     * @param endDate   -- Ending date of the period
+     * @param userId    -- ID of the user
+     * @return -- List of calorie history objects found
+     * @throws SQLException
+     */
+    @Override
+    public List<CalorieHistoryDto> getCalorieHistoryByPeriod(String startDate, String endDate, int userId) throws
+                                                                                                          SQLException {
+        logger.info("Started getCalorieByUserIdDate() method");
+
+        if (startDate == null || startDate.isEmpty()) {
+            logger.error("Invalid start date.");
+            throw new SQLException("Invalid start date.");
+        }
+
+        if (endDate == null || endDate.isEmpty()) {
+            logger.error("Invalid start date.");
+            throw new SQLException("Invalid end date.");
+        }
+
+        this.testConnection();
+
+        CalorieHistoryDto calorieHistoryDto = null;
+        String query = "SELECT * FROM Calorie_History WHERE User_id=? AND Update_Date Between ? AND ? ORDER BY Calorie_history_id DESC";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        logger.info("Replacing values in prepared statement with actual values for date and user id.");
+        preparedStatement.setInt(1, userId);
+        preparedStatement.setString(2, startDate);
+        preparedStatement.setString(3, endDate);
+
+        logger.info("Execute the query to get calorie count for date.");
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        List<CalorieHistoryDto> calorieHistoryList = this.extractResultList(resultSet);
+
+        return calorieHistoryList;
+    }
+
+    /**
+     * Method to extract 1 calorieHistory from result set
+     *
+     * @param resultSet -- Result set to be iterated
+     * @return -- calorieHistory object found from result
+     * @throws SQLException
+     */
     private CalorieHistoryDto extractResult(ResultSet resultSet) throws SQLException {
         if (resultSet == null) {
             throw new SQLException("Invalid result set!");
@@ -140,6 +212,36 @@ public class CalorieHistoryDaoImpl implements ICalorieHistoryDao {
         return calorieHistoryDto;
     }
 
+    /**
+     * Method to extract list of calorieHistory from result set
+     *
+     * @param resultSet -- Result set to be iterated
+     * @return -- List of calorieHistory objects found from result
+     * @throws SQLException
+     */
+    private List<CalorieHistoryDto> extractResultList(ResultSet resultSet) throws SQLException {
+        if (resultSet == null) {
+            throw new SQLException("Invalid result set!");
+        }
+        List<CalorieHistoryDto> calorieHistoryList = new ArrayList<>();
+        while (resultSet.next()) {
+            int id = resultSet.getInt("Calorie_history_id");
+            double calories = resultSet.getDouble("Calorie_Count");
+            String date = resultSet.getString("Update_Date");
+            int userId = resultSet.getInt("User_id");
+
+            CalorieHistoryDto calorieHistoryDto = new CalorieHistoryDto(id, calories, date, userId);
+            calorieHistoryList.add(calorieHistoryDto);
+        }
+
+        return calorieHistoryList;
+    }
+
+    /**
+     * Method to check the database connection
+     *
+     * @throws SQLException
+     */
     private void testConnection() throws SQLException {
         if (database == null && connection == null) {
             logger.error("SQL connection not found!");
