@@ -42,4 +42,22 @@ public class RecipeController {
             throw new RuntimeException(e);
         }
     }
+
+//    @GetMapping("/saved-types")
+//
+//    public ResponseEntity<PutResponse> fetchAllRecipeTypes(){
+//        logger.info("Started fetchAllRecipeTypes() method");
+//        try {
+//            List<String> recipeDtoList = recipeService.fetchAllRecipeTypes();
+//            logger.info("Successfully collected  recipe types.");
+//            return ResponseEntity.ok().body(new PutResponse(true, "Successfully retrieved recipe types", recipeDtoList));
+//        } catch (UserNotFoundException e) {
+//            logger.error(e.getMessage());
+//            return ResponseEntity.badRequest().body(new PutResponse(false, e.getMessage()));
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
+
 }
