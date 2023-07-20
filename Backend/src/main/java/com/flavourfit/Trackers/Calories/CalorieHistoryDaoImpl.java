@@ -40,12 +40,13 @@ public class CalorieHistoryDaoImpl implements ICalorieHistoryDao {
             logger.error("CalorieHistoryDto object not valid!!");
             throw new SQLException("CalorieHistoryDto object not valid!!");
         } else {
-            if (calorieHistoryDto.getCalorieCount() == 0.00d) {
+            if (calorieHistoryDto.getCalorieCount() == 0.0d) {
                 logger.warn("Calorie count may be invalid!!");
             }
 
             if (calorieHistoryDto.getUpdateDate().isEmpty()) {
                 logger.warn("Calorie update date missing!!");
+                throw new SQLException("Date not valid!!");
             }
         }
 
@@ -87,6 +88,11 @@ public class CalorieHistoryDaoImpl implements ICalorieHistoryDao {
         if (calorieHistoryDto == null) {
             logger.error("Invalid data while updating calorie history!!");
             throw new SQLException("Invalid data while updating calorie history!!");
+        }
+
+        if (calorieHistoryDto.getUpdateDate() == null || calorieHistoryDto.getUpdateDate().isEmpty()) {
+            logger.error("Invalid update date while updating calorie history!!");
+            throw new SQLException("Invalid update date while updating calorie history!!");
         }
 
         this.testConnection();
