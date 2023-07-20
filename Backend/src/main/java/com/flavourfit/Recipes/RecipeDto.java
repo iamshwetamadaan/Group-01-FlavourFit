@@ -3,7 +3,7 @@ package com.flavourfit.Recipes;
 public class RecipeDto {
     private int recipeId;
     private String recipeName;
-    private long recipeDescription;
+    private String recipeDescription;
     private String types;
 
     private boolean editable;
@@ -24,11 +24,11 @@ public class RecipeDto {
         this.recipeName = recipeName;
     }
 
-    public long getRecipeDescription() {
+    public String getRecipeDescription() {
         return recipeDescription;
     }
 
-    public void setRecipeDescription(long recipeDescription) {
+    public void setRecipeDescription(String recipeDescription) {
         this.recipeDescription = recipeDescription;
     }
 
