@@ -6,6 +6,8 @@ public class RecipeDto {
     private long recipeDescription;
     private String types;
 
+    private boolean editable;
+
     public int getRecipeId() {
         return recipeId;
     }
@@ -36,6 +38,14 @@ public class RecipeDto {
 
     public void setTypes(String types) {
         this.types = types;
+    }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
     }
 
     @Override
