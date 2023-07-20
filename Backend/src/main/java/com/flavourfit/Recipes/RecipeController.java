@@ -9,10 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;;
 import java.util.List;
@@ -23,13 +20,16 @@ public class RecipeController {
     private static Logger logger = LoggerFactory.getLogger(RecipeController.class);
     private IRecipeService recipeService;
 
+    private IAuthService authService;
+
     @Autowired
-    public RecipeController(IRecipeService recipeService) {
+    public RecipeController(IRecipeService recipeService, IAuthService authService) {
         this.recipeService = recipeService;
+        this.authService = authService;
     }
 
     @GetMapping("/types")
-    public ResponseEntity<PutResponse> fetchAllRecipeTypes(){
+    public ResponseEntity<PutResponse> fetchAllRecipeTypes() {
         logger.info("Started fetchAllRecipeTypes() method");
         try {
             List<String> recipeDtoList = recipeService.fetchAllRecipeTypes();
@@ -42,6 +42,7 @@ public class RecipeController {
             throw new RuntimeException(e);
         }
     }
+
 
 //    @GetMapping("/saved-types")
 //
@@ -59,5 +60,25 @@ public class RecipeController {
 //        }
 //    }
 
+
+=======
+    @PostMapping("/add")
+    public ResponseEntity<PutResponse> recordRecipe(
+            @RequestBody CompleteRecipeDto recipe, @RequestHeader("Authorization") String token
+    ) {
+        logger.info("Started recordRecipe() method");
+
+        try {
+            int userId = authService.extractUserIdFromToken(token);
+            CompleteRecipeDto addedRecipe = this.recipeService.recordRecipe(recipe, userId);
+
+            logger.info("Added recipe for userId:{}", userId);
+            return ResponseEntity.ok().body(new PutResponse(true, "Successfully added recipe", addedRecipe));
+        } catch (RuntimeException e) {
+            logger.error("Failed to add recipe");
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to add recipe:" + e.getMessage()));
+        }
+
+    }
 
 }

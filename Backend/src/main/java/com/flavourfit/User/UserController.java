@@ -11,8 +11,6 @@ import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.json.simple.JSONObject;
-
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
