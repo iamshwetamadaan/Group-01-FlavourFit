@@ -110,12 +110,11 @@ public class TrackersController {
 
     @GetMapping("/calorie-history")
     public ResponseEntity<GetResponse> fetchCalorieHistory(
-            @RequestBody Map<String, Object> request,
+            @RequestParam("startDate") String startDate,
+            @RequestParam("endDate") String endDate,
             @RequestHeader("Authorization") String token
     ) {
         logger.info("Entered controller method recordWaterIntake()");
-        String startDate = (String) request.get("startDate");
-        String endDate = (String) request.get("endDate");
         int userId = authService.extractUserIdFromToken(token);
 
         try {
