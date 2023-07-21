@@ -35,6 +35,12 @@ public class RecipeServiceImpl implements IRecipeService {
     }
 
     @Override
+    public ArrayList<Object> getRecipesByUser(int count, int userId) throws SQLException {
+        logger.info("Started method getRecipesByUser()");
+        return recipeDao.getRecipesByUser(userId,count);
+    }
+
+    @Override
     public CompleteRecipeDto recordRecipe(CompleteRecipeDto completeRecipe, int userId) throws RecipeExceptions {
         if (Helpers.isRecipeValid(completeRecipe)) {
             try {

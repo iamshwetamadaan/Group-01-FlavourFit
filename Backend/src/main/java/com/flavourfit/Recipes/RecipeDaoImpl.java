@@ -1,6 +1,8 @@
 package com.flavourfit.Recipes;
 
 import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.ResponsesDTO.SavedRecipesResponse;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -71,6 +74,36 @@ public class RecipeDaoImpl implements IRecipeDao {
         }
 
         return recipeDto;
+    }
+
+    @Override
+    public ArrayList<Object> getRecipesByUser(int id, int count) throws SQLException {
+        logger.info("Started getRecipesByUser() method");
+        ArrayList<Object> recipes = new ArrayList<Object>();
+
+        if(count==0)
+            throw new SQLException("Count cannot be 0");
+
+        this.testConnection();
+
+        logger.info("Creating a statement to get the records the record");
+        Statement statement = connection.createStatement();
+        logger.info("Running query to fetch recipes for given user");
+        ResultSet resultset = statement.executeQuery("SELECT Recipes.recipe_id, Recipes.recipe_name, Recipes.recipe_description,Recipes.types \n" +
+                "FROM Recipes\n" +
+                "INNER JOIN Saved_Recipes ON Recipes.recipe_id=Saved_Recipes.recipe_id\n" +
+                "where Saved_Recipes.user_id="+id);
+        while (resultset.next()) {
+            SavedRecipesResponse recipe = new SavedRecipesResponse();
+
+            recipe.setRecipeName(resultset.getString("recipe_name"));
+            recipe.setRecipeId(resultset.getInt("recipe_id"));
+            recipe.setDescription(resultset.getString("recipe_description"));
+            recipe.setTypes(resultset.getString("types"));
+            recipes.add(recipe);
+        }
+        logger.info("Received data from db and added types to recipeTypes list.");
+        return recipes;
     }
 
     private void testConnection() throws SQLException {
