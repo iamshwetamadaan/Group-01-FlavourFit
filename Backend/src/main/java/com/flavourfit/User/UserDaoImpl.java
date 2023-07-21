@@ -233,7 +233,7 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public boolean userUpgradedToPremium(int userId) throws SQLException {
+    public boolean userUpgradedToPremium(int userId, Date startDate, Date endDate) throws SQLException {
         boolean userPremium = false;
 
         logger.info("Started userUpgradedToPremium() method");
@@ -252,11 +252,13 @@ public class UserDaoImpl implements IUserDao {
             }
 
             logger.info("Creating a prepared statement to update record.");
-            String query = "UPDATE Registered_Customer SET Type = ? where Customer_id = ?";
+            String query = "INSERT INTO Premium_Memberships (start_date, expiry_date, is_active, User_id) VALUES (?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            logger.info("Replacing values in prepared statement with actual values to be inserted");
-            preparedStatement.setString(1, "premium");
-            preparedStatement.setInt(2, userId);
+            logger.info("Entering values in prepared statement with actual values to be inserted");
+            preparedStatement.setDate(0, startDate);
+            preparedStatement.setDate(1, endDate);
+            preparedStatement.setInt(2, 1);
+            preparedStatement.setInt(3, userId);
             logger.info("Execute the update of record to the table");
             preparedStatement.executeUpdate();
 
@@ -264,7 +266,7 @@ public class UserDaoImpl implements IUserDao {
             long updateUserIdType;
             while (keys.next()) {
                 updateUserIdType = keys.getLong(1);
-                logger.info("Updated Customer Type with userId: {}, to the Registered_Customer table!", updateUserIdType);
+                logger.info("Entered Customer Membership for userId: {}, to the Registered_Customer table!", updateUserIdType);
             }
             userPremium = true;
         }

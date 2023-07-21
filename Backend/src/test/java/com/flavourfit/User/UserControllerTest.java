@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,10 +47,13 @@ public class UserControllerTest {
         Map<String, Object> requestValid = new HashMap<>();
         requestValid.put("userID", "32");
         requestValid.put("cardNumber", "9876543210123456");
-        requestValid.put("mmyy","0223");
+        requestValid.put("expiryMonth","02");
+        requestValid.put("expiryYear","23");
         requestValid.put("cvv", "667");
+        requestValid.put("startDate", "");
+        requestValid.put("endDate","");
 
-        ResponseEntity responseEntity1 = userController.getUserPaymentForPremium((String) requestValid.get("userID"),requestValid);
+        ResponseEntity responseEntity1 = userController.getUserPaymentForPremium((String) requestValid.get("userID"), requestValid);
 
         assertEquals(HttpStatus.OK, responseEntity1.getStatusCode());
         assertEquals((String) requestValid.get("userID"), responseEntity1.getBody());
@@ -58,10 +62,13 @@ public class UserControllerTest {
         Map<String, Object> requestInvalid = new HashMap<>();
         requestInvalid.put("userID", "32");
         requestInvalid.put("cardNumber", "9873210123456");
-        requestInvalid.put("mmyy","1523");
+        requestInvalid.put("expiryMonth","15");
+        requestInvalid.put("expiryYear","23");
         requestInvalid.put("cvv", "667");
+        requestInvalid.put("startDate", "");
+        requestInvalid.put("endDate","");
 
-        ResponseEntity responseEntity2 = userController.getUserPaymentForPremium((String) requestInvalid.get("userID"),requestInvalid);
+        ResponseEntity responseEntity2 = userController.getUserPaymentForPremium((String) requestInvalid.get("userID"), requestInvalid);
 
         assertEquals(HttpStatus.OK, responseEntity2.getStatusCode());
         assertEquals((String) requestInvalid.get("userID"), responseEntity2.getBody());

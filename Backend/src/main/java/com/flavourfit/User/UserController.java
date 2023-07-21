@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.json.simple.JSONObject;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -111,18 +112,27 @@ public class UserController {
         }
     }
 
-    @PostMapping("/user-premium-payment")
+    @PostMapping("/make-payment")
     public ResponseEntity<PutResponse> getUserPaymentForPremium(@RequestHeader("Authorization") String token, @RequestBody Map<String, Object> request) {
         logger.info("Entered controller method getUserPaymentForPremium()");
         int userID = this.authService.extractUserIdFromToken(token);
         try {
             String cardNumber = (String) request.get("cardNumber");
-            String mmyy = (String) request.get("mmyy");
+            String mm = (String) request.get("expiryMonth");
+            String yy = (String) request.get("expiryYear");
             String cvv = (String) request.get("cvv");
+            Date startDate = (Date) request.get("startDate");
+            Date endDate = (Date) request.get("endDate");
+
+            Map<String, String> cardDetails = new HashMap<>();
+            cardDetails.put("cardNumber", cardNumber);
+            cardDetails.put("mm", mm);
+            cardDetails.put("yy", yy);
+            cardDetails.put("cvv", cvv);
 
             if (request != null) {
                 logger.info("Successfully loaded premium user payment details");
-                this.userService.paymentForPremium(userID, cardNumber, mmyy, cvv);
+                this.userService.paymentForPremium(userID, startDate, endDate, cardDetails);
                 return ResponseEntity.ok()
                                      .body(new PutResponse(true, "Successfully completed user premium membership payment"));
             } else {
