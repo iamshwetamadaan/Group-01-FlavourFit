@@ -57,7 +57,7 @@ public class UserService implements IUserService {
             logger.warn("Invalid password parameter");
             throw new RuntimeException("Invalid Password");
         }
-
+        newPassword = passwordEncoder.encode(newPassword);
         return this.userDao.resetUserPassword(userID, newPassword);
     }
 
