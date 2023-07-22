@@ -48,14 +48,14 @@ public class RecipeController {
 
     @GetMapping("/saved-recipes")
     public ResponseEntity<GetResponse> getRecipesByUser(
-            @RequestParam("count") int count
+            @RequestParam("count") int count, @RequestHeader("Authorization") String token
     ) {
         ArrayList<Object> recipes = new ArrayList<Object>();
         logger.info("Started getRecipeByUser() method");
 
         try {
-//            int userId = authService.extractUserIdFromToken(token);
-            int userId = 7;
+            int userId = authService.extractUserIdFromToken(token);
+//            int userId = 7;
             recipes = this.recipeService.getRecipesByUser(count,userId);
 //            CompleteRecipeDto addedRecipe = this.recipeService.recordRecipe(recipe, userId);
 
@@ -73,32 +73,32 @@ public class RecipeController {
 
     }
 
-    @PostMapping("/list")
-    public ResponseEntity<GetResponse> getFilteredRecipesByUser(
-            @RequestBody HashMap<String , Object> requestBody
-            ) {
-        ArrayList<Object> recipes = new ArrayList<Object>();
-        logger.info("Started getFilteredRecipeByUser() method");
-
-        try {
-//            int userId = authService.extractUserIdFromToken(token);
-            int userId = 7;
-//            recipes = this.recipeService.getRecipesByUser(count,userId);
-
-            logger.info("Added recipe for userId:{}", userId);
-            return ResponseEntity.ok().body(new GetResponse(true,
-                    "Successfully ", recipes));
-        }
+//    @PostMapping("/list")
+//    public ResponseEntity<GetResponse> getFilteredRecipesByUser(
+//            @RequestBody HashMap<String , Object> requestBody
+//            ) {
+//        ArrayList<Object> recipes = new ArrayList<Object>();
+//        logger.info("Started getFilteredRecipeByUser() method");
+//
+//        try {
+////            int userId = authService.extractUserIdFromToken(token);
+//            int userId = 7;
+//            recipes = this.recipeService.getFilteredRecipesByUser(userId, requestBody);
+//
+//            logger.info("Got the filtered recipe", userId);
+//            return ResponseEntity.ok().body(new GetResponse(true,
+//                    "Successfully ", recipes));
+//        }
 //        catch (SQLException e){
-//            logger.error("Unable to get the recipes");
+//            logger.error("Unable to get the filtered recipes");
 //            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to get the recipes" + e.getMessage()));
 //        }
 //        catch (RuntimeException e) {
-//            logger.error("Failed to add recipe");
+//            logger.error("Failed to get the filtered recipe");
 //            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to get recipes" + e.getMessage()));
 //        }
-
-    }
+//
+//    }
 
     @PostMapping("/add")
     public ResponseEntity<PutResponse> recordRecipe(

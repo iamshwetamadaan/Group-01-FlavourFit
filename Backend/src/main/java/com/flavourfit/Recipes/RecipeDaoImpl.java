@@ -106,6 +106,11 @@ public class RecipeDaoImpl implements IRecipeDao {
         return recipes;
     }
 
+    @Override
+    public ArrayList<Object> getFilteredRecipesByUser(int userID, HashMap<String, Object> requestbody) throws SQLException {
+        return null;
+    }
+
     private void testConnection() throws SQLException {
         if (database == null && connection == null) {
             logger.error("SQL connection not found!");
