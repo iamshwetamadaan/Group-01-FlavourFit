@@ -61,6 +61,5 @@ RecipeDaoImplTest {
 
         // Assert
         assertEquals(1, recipes.size());
-
     }
 }
