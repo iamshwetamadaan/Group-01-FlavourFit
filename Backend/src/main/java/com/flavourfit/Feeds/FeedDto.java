@@ -1,9 +1,14 @@
 package com.flavourfit.Feeds;
 
+import com.flavourfit.Feeds.Comments.CommentDto;
+
+import java.util.ArrayList;
+
 public class FeedDto {
     private int feedId;
     private String feedContent;
     private int likeCount;
+    private ArrayList<CommentDto> comments;
 
     public int getFeedId() {
         return feedId;
@@ -31,10 +36,14 @@ public class FeedDto {
 
     @Override
     public String toString() {
-        return "RecipeDto{" +
+        for (CommentDto comment: comments) {
+
+        }
+        return "FeedDto {" +
                 "feedId=" + feedId +
                 ", feedContent='" + feedContent + '\'' +
                 ", likes='" + likeCount + '\'' +
+                ", comments='" + comments.toString() +
                 '}';
     }
 }
