@@ -3,6 +3,7 @@ package com.flavourfit.Recipes;
 import com.flavourfit.Exceptions.RecipeExceptions;
 import com.flavourfit.Recipes.Ingredients.IIngredientsService;
 import com.flavourfit.Recipes.Ingredients.IngredientDto;
+import com.flavourfit.Recipes.SavedRecipes.ISavedRecipesService;
 import com.flavourfit.Resources.Helpers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,13 +21,16 @@ public class RecipeServiceImpl implements IRecipeService {
 
     private final IRecipeDao recipeDao;
     private final IIngredientsService ingredientsService;
+    private final ISavedRecipesService savedRecipesService;
 
 
     public RecipeServiceImpl(
-            IRecipeDao recipeDao, IIngredientsService ingredientsService
+            IRecipeDao recipeDao, IIngredientsService ingredientsService,
+            ISavedRecipesService savedRecipesService
     ) {
         this.recipeDao = recipeDao;
         this.ingredientsService = ingredientsService;
+        this.savedRecipesService = savedRecipesService;
     }
 
     @Override
@@ -60,7 +64,7 @@ public class RecipeServiceImpl implements IRecipeService {
                 }
                 this.ingredientsService.addIngredients(ingredients, recipeId);
 
-//                this.savedRecipesService.saveRecipe(recipeId, userId);
+                this.savedRecipesService.saveRecipe(recipeId, userId);
 
                 List<IngredientDto> addedIngredients = this.ingredientsService.fetchRecipeIngredients(recipeId);
                 CompleteRecipeDto newRecipe = new CompleteRecipeDto();
