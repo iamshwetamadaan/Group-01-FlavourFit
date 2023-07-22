@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -36,6 +37,17 @@ public class RecipeServiceImpl implements IRecipeService {
     public List<String> fetchAllRecipeTypes() throws SQLException {
         logger.info("Started method fetchAllRecipeTypes()");
         return recipeDao.getAllRecipesTypes();
+    }
+
+    @Override
+    public ArrayList<Object> getRecipesByUser(int count, int userId) throws SQLException {
+        logger.info("Started method getRecipesByUser()");
+        return recipeDao.getRecipesByUser(userId,count);
+    }
+
+    @Override
+    public ArrayList<Object> getFilteredRecipesByUser(int userId, HashMap<String, Object> requestBody) throws SQLException{
+        return null;
     }
 
     @Override

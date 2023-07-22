@@ -43,6 +43,7 @@ public class SecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFil
                 .authenticationProvider(authProvider)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .cors().configurationSource(corsConfigurationSource());
+
         return httpSecurity.build();
     }
 
