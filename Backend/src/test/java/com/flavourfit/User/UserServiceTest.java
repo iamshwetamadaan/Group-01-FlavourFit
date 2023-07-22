@@ -26,5 +26,21 @@ public class UserServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    @Test
+    public void testgetUserBymembership() throws Exception {
+        int testUserId = 1;
+        PremiumUserDto testUser = new PremiumUserDto();
+        testUser.setUserId(testUserId);
+
+        when(userDao.getUserBymembership(testUserId)).thenReturn(testUser);
+
+        PremiumUserDto user = userService.getUserBymembership(testUserId);
+        assertEquals(testUser.getUserId(), user.getUserId());
+
+        when(userDao.getUserBymembership(testUserId)).thenReturn(null);
+        user = userService.getUserBymembership(testUserId);
+        assertNull(user);
+    }
+
 }
 
