@@ -7,11 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class UserService implements IUserService {
@@ -79,33 +75,35 @@ public class UserService implements IUserService {
         }
     }
 
-    public boolean paymentForPremium(int userID, Date startDate, Date endDate, Map<String, String> cardDetails) throws PaymentException,
-                                                                                                                       SQLException {
+    public int paymentForPremium(int userID, PremiumUserPaymentDetailsDto details) throws PaymentException, SQLException {
+
+        String cardNumber = details.getCardNumber();
+        String cvv = details.getCvv();
+        String expiryMonth = details.getExpiryMonth();
+        String expiryYear = details.getExpiryYear();
+
         logger.info("Started paymentForPremiumCheck() method");
-        if (cardDetails.get("cardNumber").toString().length() != 16) {
+        if (cardNumber.length() != 16) {
             logger.warn("Invalid card number length");
             throw new PaymentException("Invalid Payment: Card Number entered is not valid");
         }
-        if (cardDetails.get("cvv").toString().length() != 3) {
+        if (cvv.length() != 3) {
             logger.warn("Invalid cvv length");
             throw new PaymentException("Invalid Payment: CVV entered is not valid");
         }
 
-        String mm = cardDetails.get("expiryMonth").toString();
-        String yy = cardDetails.get("expiryYear").toString();
-
-        if (mm.length() != 2 && yy.length() != 2 ) {
+        if (expiryMonth.length() != 2 && expiryYear.length() != 2 ) {
             logger.warn("Invalid MM/YY syntax");
             throw new PaymentException("Invalid Payment: MM/YY syntax entered is not valid");
         } else {
-            int month = Integer.parseInt(mm);
-            int year = Integer.parseInt(yy);
+            int month = Integer.parseInt(expiryMonth);
+            int year = Integer.parseInt(expiryYear);
 
             if (!(month >= 12 && month < 00) || !(year >= 30 && month < 10)) {
                 logger.warn("Invalid MM/YY ranges");
                 throw new PaymentException("Invalid Payment: MM/YY entered is not in valid ranges");
             }
         }
-        return this.userDao.userUpgradedToPremium(userID, startDate, endDate);
+        return this.userDao.userToPremiumPayment(userID, details);
     }
 }

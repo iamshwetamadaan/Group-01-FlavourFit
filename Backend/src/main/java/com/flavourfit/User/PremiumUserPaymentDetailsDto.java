@@ -2,13 +2,23 @@ package com.flavourfit.User;
 
 import java.sql.Date;
 
-public class PremiumUserCardDetailsDto {
+public class PremiumUserPaymentDetailsDto {
     private String cardNumber;
     private String expiryMonth;
     private String expiryYear;
     private String cvv;
     private Date startDate;
     private Date endDate;
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    private double amount;
 
     public String getCardNumber() {
         return cardNumber;

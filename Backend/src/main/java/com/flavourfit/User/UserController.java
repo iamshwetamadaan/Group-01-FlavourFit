@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import java.sql.Date;
+
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -110,6 +110,8 @@ public class UserController {
         }
     }
 
+/**
+ * //old code
     @PostMapping("/make-payment")
     public ResponseEntity<PutResponse> getUserPaymentForPremium(@RequestHeader("Authorization") String token, @RequestBody Map<String, Object> request) {
         logger.info("Entered controller method getUserPaymentForPremium()");
@@ -133,6 +135,32 @@ public class UserController {
                 this.userService.paymentForPremium(userID, startDate, endDate, cardDetails);
                 return ResponseEntity.ok()
                                      .body(new PutResponse(true, "Successfully completed user premium membership payment"));
+            } else {
+                logger.error("Payment for user not required");
+                return ResponseEntity.badRequest().body(new PutResponse(false, "Failed payment for user since payment for user not required "));
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed payment for user"));
+        }
+    }
+**/
+
+    @PostMapping("/make-payment")
+    public ResponseEntity<PutResponse> getUserPaymentForPremium(@RequestHeader("Authorization") String token, @RequestBody PremiumUserPaymentDetailsDto request) {
+        logger.info("Entered controller method getUserPaymentForPremium()");
+        int userID = this.authService.extractUserIdFromToken(token);
+        try {
+            if (request != null) {
+                logger.info("Successfully loaded premium user payment details");
+                int paymentID = this.userService.paymentForPremium(userID, request);
+
+                if (paymentID != 0) {
+                    return ResponseEntity.ok()
+                                         .body(new PutResponse(true, "Successfully completed user premium membership payment"));
+                } else {
+                    return ResponseEntity.badRequest().body(new PutResponse(false, "Failed payment for user"));
+                }
             } else {
                 logger.error("Payment for user not required");
                 return ResponseEntity.badRequest().body(new PutResponse(false, "Failed payment for user since payment for user not required "));

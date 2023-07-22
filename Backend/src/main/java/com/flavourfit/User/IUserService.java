@@ -20,6 +20,5 @@ public interface IUserService {
 
     public PremiumUserDto getUserBymembership(int user) throws SQLException;
 
-    public boolean paymentForPremium(int userID, Date startDate, Date endDate, Map<String, String> cardDetails) throws PaymentException,
-                                                                                                                       SQLException;
+    public int paymentForPremium(int userID, PremiumUserPaymentDetailsDto details) throws PaymentException, SQLException;
 }

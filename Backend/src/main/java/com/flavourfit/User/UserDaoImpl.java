@@ -233,8 +233,9 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public boolean userUpgradedToPremium(int userId, Date startDate, Date endDate) throws SQLException {
-        boolean userPremium = false;
+    public int userToPremiumPayment(int userId, PremiumUserPaymentDetailsDto details) throws SQLException {
+
+        int userPremiumID = 0;
 
         logger.info("Started userUpgradedToPremium() method");
 
@@ -252,26 +253,25 @@ public class UserDaoImpl implements IUserDao {
             }
 
             logger.info("Creating a prepared statement to update record.");
-            String query = "INSERT INTO Premium_Memberships (start_date, expiry_date, is_active, User_id) VALUES (?,?,?,?)";
+            String query = "INSERT INTO Payments (amount, reason, User_id, Premium_membership_id) VALUES (?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             logger.info("Entering values in prepared statement with actual values to be inserted");
-            preparedStatement.setDate(0, startDate);
-            preparedStatement.setDate(1, endDate);
-            preparedStatement.setInt(2, 1);
-            preparedStatement.setInt(3, userId);
+            preparedStatement.setDouble(0, details.getAmount());
+            preparedStatement.setString(1, "Premium Membership Payment");
+            preparedStatement.setInt(2, userId);
+            preparedStatement.setInt(3, 0);
             logger.info("Execute the update of record to the table");
             preparedStatement.executeUpdate();
 
             ResultSet keys = preparedStatement.getGeneratedKeys();
-            long updateUserIdType;
+
             while (keys.next()) {
-                updateUserIdType = keys.getLong(1);
-                logger.info("Entered Customer Membership for userId: {}, to the Registered_Customer table!", updateUserIdType);
+                userPremiumID = keys.getInt(1);
+                logger.info("Entered Customer Membership for userId: {}, to the Registered_Customer table!", userPremiumID);
             }
-            userPremium = true;
         }
 
-        return userPremium;
+        return userPremiumID;
     }
 
     private void replaceStatementPlaceholders(UserDto user, PreparedStatement preparedStatement, int count) throws
