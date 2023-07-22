@@ -106,4 +106,9 @@ public class UserService implements IUserService {
         }
         return this.userDao.userToPremiumPayment(userID, details);
     }
+
+    public boolean startExtendPremium(int userID, int paymentID) {
+
+        return false;
+    }
 }

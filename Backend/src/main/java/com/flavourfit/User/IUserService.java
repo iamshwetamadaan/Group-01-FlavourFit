@@ -21,4 +21,6 @@ public interface IUserService {
     public PremiumUserDto getUserBymembership(int user) throws SQLException;
 
     public int paymentForPremium(int userID, PremiumUserPaymentDetailsDto details) throws PaymentException, SQLException;
+
+    public boolean startExtendPremium(int userID, int paymentID);
 }
