@@ -12,6 +12,8 @@ public interface IRecipeService {
 
     public ArrayList<Object> getRecipesByUser(int count, int userId) throws SQLException;
 
+//    public ArrayList<Object> getFilteredRecipesByUser();
+
     CompleteRecipeDto recordRecipe(CompleteRecipeDto completeRecipe, int userId) throws
             RecipeExceptions;
 }

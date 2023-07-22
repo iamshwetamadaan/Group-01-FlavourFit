@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -50,7 +51,7 @@ public class RecipeController {
             @RequestParam("count") int count
     ) {
         ArrayList<Object> recipes = new ArrayList<Object>();
-        logger.info("Started recordRecipe() method");
+        logger.info("Started getRecipeByUser() method");
 
         try {
 //            int userId = authService.extractUserIdFromToken(token);
@@ -69,6 +70,33 @@ public class RecipeController {
             logger.error("Failed to add recipe");
             return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to get recipes" + e.getMessage()));
         }
+
+    }
+
+    @PostMapping("/list")
+    public ResponseEntity<GetResponse> getFilteredRecipesByUser(
+            @RequestBody HashMap<String , Object> requestBody
+            ) {
+        ArrayList<Object> recipes = new ArrayList<Object>();
+        logger.info("Started getFilteredRecipeByUser() method");
+
+        try {
+//            int userId = authService.extractUserIdFromToken(token);
+            int userId = 7;
+//            recipes = this.recipeService.getRecipesByUser(count,userId);
+
+            logger.info("Added recipe for userId:{}", userId);
+            return ResponseEntity.ok().body(new GetResponse(true,
+                    "Successfully ", recipes));
+        }
+//        catch (SQLException e){
+//            logger.error("Unable to get the recipes");
+//            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to get the recipes" + e.getMessage()));
+//        }
+//        catch (RuntimeException e) {
+//            logger.error("Failed to add recipe");
+//            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to get recipes" + e.getMessage()));
+//        }
 
     }
 
