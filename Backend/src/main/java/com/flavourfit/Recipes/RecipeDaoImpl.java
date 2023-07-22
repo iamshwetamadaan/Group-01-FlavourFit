@@ -106,6 +106,45 @@ public class RecipeDaoImpl implements IRecipeDao {
         return recipes;
     }
 
+    @Override
+    public ArrayList<Object> getFilteredRecipesByUser(int id, HashMap<String, Object> requestBody) throws SQLException {
+        logger.info("Started getFilteredRecipesByUser() method");
+        ArrayList<Object> recipes = new ArrayList<Object>();
+
+        String keyword = (String) requestBody.get("keyword");
+        int count = (int) requestBody.get("count");
+        String[] favourites = (String[]) requestBody.get("favourites");
+
+        if(count==0)
+            throw new IllegalArgumentException("Count cannot be 0");
+        if(keyword.length()==0)
+            throw new IllegalArgumentException("Keyword cannot be empty");
+
+        this.testConnection();
+
+        logger.info("Creating a prepared statement to get the records the record");
+        String query = "select Recipes.recipe_id, Recipes.recipe_name , Recipes.recipe_description, Recipes.types \n" +
+                "from Recipes join Saved_Recipes on Recipes.recipe_id = Saved_Recipes.recipe_id\n" +
+                "where Saved_Recipes.user_id=? and (Recipes.recipe_name like ? or Recipes.recipe_description like ?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1,id);
+        preparedStatement.setString(2,"%"+keyword+"%");
+        preparedStatement.setString(3,"%"+keyword+"%");
+        logger.info("Running query to fetch recipes for given user");
+        ResultSet resultset = preparedStatement.executeQuery();
+        while (resultset.next()) {
+            SavedRecipesResponse recipe = new SavedRecipesResponse();
+
+            recipe.setRecipeName(resultset.getString("recipe_name"));
+            recipe.setRecipeId(resultset.getInt("recipe_id"));
+            recipe.setDescription(resultset.getString("recipe_description"));
+            recipe.setTypes(resultset.getString("types"));
+            recipes.add(recipe);
+        }
+        logger.info("Received data from db and sending the response back to the method");
+        return recipes;
+    }
+
     private void testConnection() throws SQLException {
         if (database == null && connection == null) {
             logger.error("SQL connection not found!");

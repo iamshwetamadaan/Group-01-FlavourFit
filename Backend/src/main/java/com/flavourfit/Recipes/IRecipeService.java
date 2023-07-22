@@ -5,6 +5,7 @@ import com.flavourfit.Recipes.Ingredients.IngredientDto;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public interface IRecipeService {
@@ -12,7 +13,7 @@ public interface IRecipeService {
 
     public ArrayList<Object> getRecipesByUser(int count, int userId) throws SQLException;
 
-//    public ArrayList<Object> getFilteredRecipesByUser();
+    public ArrayList<Object> getFilteredRecipesByUser(int id , HashMap<String,Object> requestBody) throws SQLException;
 
     CompleteRecipeDto recordRecipe(CompleteRecipeDto completeRecipe, int userId) throws
             RecipeExceptions;

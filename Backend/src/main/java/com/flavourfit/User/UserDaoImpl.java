@@ -119,7 +119,8 @@ public class UserDaoImpl implements IUserDao {
         this.testConnection();
 
         logger.info("Creating a prepared statement update the record");
-        String query = "Update Users set First_name=?, Last_name=?, Phone=?, Email=?, Age=?" +
+        String query = "Update Users set" +
+                " First_name=?, Last_name=?, Phone=?, Email=?, Age=?" +
                 ",Street_address=?, City=?,State=?, Zip_code=?, Current_weight=?, Target_weight=?" +
                 "where User_id=?";
         PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);

@@ -79,24 +79,23 @@ public class RecipeController {
             ) {
         ArrayList<Object> recipes = new ArrayList<Object>();
         logger.info("Started getFilteredRecipeByUser() method");
-
         try {
 //            int userId = authService.extractUserIdFromToken(token);
             int userId = 7;
-//            recipes = this.recipeService.getRecipesByUser(count,userId);
+            recipes = this.recipeService.getFilteredRecipesByUser(userId , requestBody);
 
-            logger.info("Added recipe for userId:{}", userId);
+            logger.info("Fetched the records for the user: ", userId);
             return ResponseEntity.ok().body(new GetResponse(true,
                     "Successfully ", recipes));
         }
-//        catch (SQLException e){
-//            logger.error("Unable to get the recipes");
-//            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to get the recipes" + e.getMessage()));
-//        }
-//        catch (RuntimeException e) {
-//            logger.error("Failed to add recipe");
-//            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to get recipes" + e.getMessage()));
-//        }
+        catch (SQLException e){
+            logger.error("Unable to get filtered recipes the recipes");
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to get the recipes" + e.getMessage()));
+        }
+        catch (RuntimeException e) {
+            logger.error("Failed to get the recipe");
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to get recipes" + e.getMessage()));
+        }
 
     }
 
