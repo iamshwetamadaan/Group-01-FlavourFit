@@ -1,6 +1,7 @@
 package com.flavourfit.Trackers.Weights;
 
 import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.Trackers.Water.WaterHistoryDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
-    @Repository
+@Repository
     public class WeightHistoryDaoImpl implements IWeightHistoryDao {
 
         private static Logger logger = LoggerFactory.getLogger(com.flavourfit.Trackers.Weights.IWeightHistoryDao.class);
@@ -126,36 +129,44 @@ import java.sql.SQLException;
             return weightHistoryDto;
         }
 
-        @Override
-        public WeightHistoryDto getWeightByDates(String startdate, String enddate, int userId) throws SQLException {
-            logger.info("Started getWaterIntakeByUserIdDate() method");
 
-            if (startdate.isEmpty() || enddate.isEmpty()) {
-                logger.error("Invalid dates input while fetching water history!!");
-                throw new SQLException("Invalid date input while fetching water history!!");
-            }
+    @Override
+    public List<WeightHistoryDto> getWeightHistoryByPeriod(String startDate, String endDate, int userId) throws
+                                                                                                       SQLException {
+        logger.info("Started getWeightHistoryByPeriod() method");
 
-            this.testConnection();
-
-            WeightHistoryDto weightHistoryDto = null;
-            String query = "SELECT * FROM Weight_History WHERE  User_id=? AND Update_Date BETWEEN ? AND  ?";
-
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            logger.info("Replacing values in prepared statement with actual values for date and user id.");
-            preparedStatement.setInt(1, userId);
-            preparedStatement.setString(2, startdate);
-            preparedStatement.setString(3, enddate);
-
-            logger.info("Execute the query to get water intake for start and end dates.");
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            logger.info("Iterate result set to get total water intake.");
-            weightHistoryDto = this.extractResult(resultSet);
-
-            return weightHistoryDto;
+        if (startDate == null || startDate.isEmpty()) {
+            logger.error("Invalid start date.");
+            throw new SQLException("Invalid start date.");
         }
 
-        private WeightHistoryDto extractResult(ResultSet resultSet) throws SQLException {
+        if (endDate == null || endDate.isEmpty()) {
+            logger.error("Invalid start date.");
+            throw new SQLException("Invalid end date.");
+        }
+
+        this.testConnection();
+
+        WeightHistoryDto weightHistoryDto = null;
+        String query = "SELECT * FROM Weight_History WHERE User_id=? AND Update_Date Between ? AND ? ORDER BY weight_history_id DESC";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        logger.info("Replacing values in prepared statement with actual values for date and user id.");
+        preparedStatement.setInt(1, userId);
+        preparedStatement.setString(2, startDate);
+        preparedStatement.setString(3, endDate);
+
+        logger.info("Execute the query to get calorie count for date.");
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        List<WeightHistoryDto> weightHistoryList = this.extractResultList(resultSet);
+
+        return weightHistoryList;
+    }
+
+
+
+    private WeightHistoryDto extractResult(ResultSet resultSet) throws SQLException {
             if (resultSet == null) {
                 throw new SQLException("Invalid result set!");
             }
@@ -186,6 +197,32 @@ import java.sql.SQLException;
                 this.connection = this.database.getConnection();
             }
         }
+
+    /**
+     * Method to extract list of weightHistory from result set
+     *
+     * @param resultSet -- Result set to be iterated
+     * @return -- List of calorieHistory objects found from result
+     * @throws SQLException
+     */
+    private List<WeightHistoryDto> extractResultList(ResultSet resultSet) throws SQLException {
+        if (resultSet == null) {
+            throw new SQLException("Invalid result set!");
+        }
+        List<WeightHistoryDto> weightHistoryList = new ArrayList<>();
+        while (resultSet.next()) {
+            int id = resultSet.getInt("weight_history_id");
+            double waterintake = resultSet.getDouble("weight");
+            String date = resultSet.getString("Update_Date");
+            int userId = resultSet.getInt("User_id");
+
+            WeightHistoryDto weightHistoryDto = new WeightHistoryDto(id, waterintake, date, userId);
+            weightHistoryList.add(weightHistoryDto);
+        }
+
+        return weightHistoryList;
     }
+
+}
 
 

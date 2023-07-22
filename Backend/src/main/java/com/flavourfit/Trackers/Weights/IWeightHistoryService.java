@@ -1,23 +1,20 @@
 package com.flavourfit.Trackers.Weights;
 
+import com.flavourfit.Trackers.Water.WaterGraphDto;
+
 import java.sql.SQLException;
+import java.util.List;
 
 public interface IWeightHistoryService {
 
     void recordWeight(double weight, int userId) throws SQLException;
 
 
-
-   // WeightHistoryDto getWeight(String startdate, String enddate, int userId) throws SQLException;
-
+    public WeightHistoryDto fetchWeightByUserIdDate(String date, int userId) throws SQLException;
 
 
-        public WeightHistoryDto fetchWeightByUserIdDate(String date, int userId) throws SQLException;
-
-
-
-        public WeightHistoryDto getWeightByDates(String startdate, String enddate, int userId) throws SQLException;
-    }
+    List<WeightGraphDto> fetchWeightHistoryByPeriod(String startDate, String endDate, int userId);
+}
 
 
 

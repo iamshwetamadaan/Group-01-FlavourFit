@@ -1,14 +1,22 @@
 package com.flavourfit.Trackers.Weights;
 
+import com.flavourfit.Exceptions.WaterHistoryException;
 import com.flavourfit.Helpers.DateHelpers;
+import com.flavourfit.Trackers.Water.WaterGraphDto;
+import com.flavourfit.Trackers.Water.WaterHistoryDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
-    @Service
+@Service
     public class WeightHistoryServiceImpl implements IWeightHistoryService {
         private static Logger logger = LoggerFactory.getLogger(com.flavourfit.Trackers.Water.WaterHistoryServiceImpl.class);
         private final IWeightHistoryDao weightHistoryDao;
@@ -51,17 +59,69 @@ import java.sql.SQLException;
             return waterHistoryDto;
         }
 
-        @Override
-        public WeightHistoryDto getWeightByDates(String startdate, String enddate, int userId) throws SQLException {
-            logger.info("Started getWaterIntakeByDates() method!");
-
-            WeightHistoryDto weightHistoryDto = null;
-            logger.info("Using waterHistoryDao to get water intake for given dates!!");
-            weightHistoryDto = this.weightHistoryDao.getWeightByDates(startdate, enddate, userId);
-
-            logger.info("Exiting getWaterIntakeByDates() method!");
-            return weightHistoryDto;
+    /**
+     * Method to fetch the calories between given dates
+     *
+     * @param startDate -- Start date of the period
+     * @param endDate   -- End date of the period
+     * @param userId    -- ID of the user
+     * @return -- GetResponse object with list of calories
+     */
+    @Override
+    public List<WeightGraphDto> fetchWeightHistoryByPeriod(String startDate, String endDate, int userId)  {
+        if (startDate == null || startDate.isEmpty()) {
+            logger.error("Invalid start date.");
+            //   throw new CalorieHistoryException("Invalid start date.");
         }
+
+        if (endDate == null || endDate.isEmpty()) {
+            logger.error("Invalid start date.");
+            //  throw new CalorieHistoryException("Invalid end date.");
+        }
+
+        List<WeightGraphDto> weights = new ArrayList<>();
+
+        try {
+            List<WeightHistoryDto> weightHistoryList = this.weightHistoryDao.getWeightHistoryByPeriod(
+                    startDate, endDate, userId);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date startDateObj = formatter.parse(startDate);
+            Date endDateObj = formatter.parse(endDate);
+
+            Date date = endDateObj;
+
+
+            while (!date.before(startDateObj)) {
+                String dateStr = formatter.format(date);
+
+                WeightHistoryDto weight = this.getWeightFromList(dateStr, weightHistoryList);
+                if (weight == null) {
+                    weights.add(new WeightGraphDto(dateStr, 0d));
+                } else {
+                    weights.add(new WeightGraphDto(dateStr, weight.getWeight()));
+                }
+
+                Calendar dateCal = Calendar.getInstance();
+                dateCal.setTime(date);
+                dateCal.add(Calendar.DATE, -1);
+
+                date = dateCal.getTime();
+            }
+
+            return weights;
+        } catch (Exception e) {
+            throw new WaterHistoryException(e);
+        }
+
     }
+    private WeightHistoryDto getWeightFromList (String date, List < WeightHistoryDto > weights){
+        for (WeightHistoryDto weight : weights) {
+            if (weight.getUpdateDate().equalsIgnoreCase(date)) {
+                return weight;
+            }
+        }
+        return null;
+    }
+}
 
 
