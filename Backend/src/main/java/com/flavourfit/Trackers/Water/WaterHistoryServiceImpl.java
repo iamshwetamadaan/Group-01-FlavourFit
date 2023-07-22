@@ -49,4 +49,16 @@ public class WaterHistoryServiceImpl implements IWaterHistoryService{
         logger.info("Exiting fetchWaterIntakeByUserIdDate() method!");
         return waterHistoryDto;
     }
+
+    @Override
+    public WaterHistoryDto getWaterIntakeByDates(String startdate, String enddate, int userId) throws SQLException {
+        logger.info("Started getWaterIntakeByDates() method!");
+
+        WaterHistoryDto waterHistoryDto = null;
+        logger.info("Using waterHistoryDao to get water intake for given dates!!");
+        waterHistoryDto = this.waterHistoryDao.getWaterIntakeByDates(startdate, enddate, userId);
+
+        logger.info("Exiting getWaterIntakeByDates() method!");
+        return waterHistoryDto;
+    }
 }

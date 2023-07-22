@@ -8,4 +8,5 @@ public interface IWaterHistoryDao {
 
     WaterHistoryDto getWaterIntakeByUserIdDate(String date, int userId) throws SQLException;
 
+    WaterHistoryDto getWaterIntakeByDates(String startdate, String enddate, int userId) throws SQLException;
 }

@@ -7,6 +7,8 @@ import com.flavourfit.Security.JwtService;
 import com.flavourfit.Trackers.Calories.*;
 import com.flavourfit.Trackers.Water.IWaterHistoryService;
 import com.flavourfit.Trackers.Water.WaterHistoryDto;
+import com.flavourfit.Trackers.Weights.IWeightHistoryService;
+import com.flavourfit.Trackers.Weights.WeightHistoryDto;
 import com.flavourfit.User.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,16 +28,20 @@ public class TrackersController {
 
     private ICalorieHistoryService calorieHistoryService;
     private IWaterHistoryService waterHistoryService;
+
+    private IWeightHistoryService weightHistoryService;
     private IAuthService authService;
 
 
     @Autowired
     public TrackersController(
             ICalorieHistoryService calorieHistoryService, IWaterHistoryService waterHistoryService,
+            IWeightHistoryService weightHistoryService,
             IAuthService authService
     ) {
         this.calorieHistoryService = calorieHistoryService;
         this.waterHistoryService = waterHistoryService;
+        this.weightHistoryService = weightHistoryService;
         this.authService = authService;
     }
 
@@ -47,6 +53,11 @@ public class TrackersController {
     @Autowired
     public void setWaterHistoryService(IWaterHistoryService waterHistoryService) {
         this.waterHistoryService = waterHistoryService;
+    }
+
+    @Autowired
+    public void setWeightHistoryService(IWeightHistoryService weightHistoryService) {
+        this.weightHistoryService = weightHistoryService;
     }
 
 
@@ -104,4 +115,93 @@ public class TrackersController {
             return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to record Water intake"));
         }
     }
+
+    @PutMapping("/record-weight")
+    public ResponseEntity<Object> recordWeight(
+            @RequestBody Map<String, Object> request,
+            @RequestHeader("Authorization") String token
+    ) {
+        logger.info("Entered controller method recordWeight()");
+        double weight = (Double) request.get("weight");
+        int userId = authService.extractUserIdFromToken(token);
+
+        try {
+            logger.info("Updating water intake through weightHistoryService.");
+            this.weightHistoryService.recordWeight(weight, userId);
+            Map<String, Object> data = new HashMap<>();
+
+            logger.info("Fetching the total weight for current date.");
+            WeightHistoryDto todaysWeight = this.weightHistoryService.fetchWeightByUserIdDate(
+                    DateHelpers.getCurrentDateString(), userId);
+            data.put("todaysWeight", todaysWeight.getWeight());
+
+            logger.info("Updated record count. Returning response through api");
+            return ResponseEntity.ok().body(new PutResponse(true, "Successfully recorded Weight", data));
+        } catch (SQLException e) {
+            logger.error("Bad api request during recordWaterIntake()");
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to record Weight"));
+        }
+    }
+
+
+/*
+    @GetMapping("/get-WaterIntakeByDates")
+    public ResponseEntity<Object> getWaterIntakeByDates(
+            @RequestBody Map<String, Object> request,
+            @RequestHeader("Authorization") String token
+    ) {
+        logger.info("Entered controller method getWaterIntakeByDates()");
+        String startdate = (String) request.get("startDate");
+        String enddate = (String) request.get("endDate");
+        int userId = authService.extractUserIdFromToken(token);
+
+        try {
+            logger.info("Fetching water intake through waterHistoryService.");
+            this.waterHistoryService.getWaterIntakeByDates(startdate,enddate, userId);
+            Map<String, Object> data = new HashMap<>();
+            Map<String, Object> dataintake = new HashMap<>();
+
+            logger.info("Fetching the total water intake for given dates.");
+            WaterHistoryDto waterhistory = this.waterHistoryService.getWaterIntakeByDates(startdate,enddate, userId);
+            data.put( "data",waterhistory.getUpdateDate());//,waterhistory.getWaterIntake());
+            dataintake.put("data",waterhistory.getWaterIntake());
+
+            logger.info("Updated record count. Returning response through api");
+            return ResponseEntity.ok().body(new PutResponse(true, "Successfully fetched Water intake", data));
+        } catch (SQLException e) {
+            logger.error("Bad api request during recordWaterIntake()");
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to fetch Water intake"));
+        }
+    }*/
+    /*
+ */
+/*
+    @GetMapping("/get-WeightByDates")
+    public ResponseEntity<Object> getWeightIntakeByDates(
+            @RequestBody Map<String, Object> request,
+            @RequestHeader("Authorization") String token
+    ) {
+        logger.info("Entered controller method getWeightIntakeByDates()");
+        String startdate = (String) request.get("startDate");
+        String enddate = (String) request.get("endDate");
+        int userId = authService.extractUserIdFromToken(token);
+
+        try {
+            logger.info("Fetching water intake through weightHistoryService.");
+            this.weightHistoryService.getWeightByDates(startdate,enddate, userId);
+            Map<String, Object> data = new HashMap<>();
+            Map<String, Object> dataintake = new HashMap<>();
+
+            logger.info("Fetching the total water intake for given dates.");
+            WeightHistoryDto weighthistory = this.weightHistoryService.getWeightByDates(startdate,enddate, userId);
+            data.put( "data",weighthistory.getUpdateDate());//,waterhistory.getWaterIntake());
+            dataintake.put("data",weighthistory.getWeight());
+
+            logger.info("Updated record count. Returning response through api");
+            return ResponseEntity.ok().body(new PutResponse(true, "Successfully fetched Water intake", data));
+        } catch (SQLException e) {
+            logger.error("Bad api request during recordWaterIntake()");
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to fetch Water intake"));
+        }
+    }*/
 }

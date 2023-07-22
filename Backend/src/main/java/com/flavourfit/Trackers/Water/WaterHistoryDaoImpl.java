@@ -125,6 +125,35 @@ public class WaterHistoryDaoImpl implements IWaterHistoryDao {
         return waterHistoryDto;
     }
 
+    @Override
+    public WaterHistoryDto getWaterIntakeByDates(String startdate, String enddate, int userId) throws SQLException {
+        logger.info("Started getWaterIntakeByUserIdDate() method");
+
+        if (startdate.isEmpty() || enddate.isEmpty()) {
+            logger.error("Invalid dates input while fetching water history!!");
+            throw new SQLException("Invalid date input while fetching water history!!");
+        }
+
+        this.testConnection();
+
+        WaterHistoryDto waterHistoryDto = null;
+        String query = "SELECT * FROM Water_History WHERE  User_id=? AND Update_Date BETWEEN ? AND  ?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        logger.info("Replacing values in prepared statement with actual values for date and user id.");
+        preparedStatement.setInt(1, userId);
+        preparedStatement.setString(2, startdate);
+        preparedStatement.setString(3, enddate);
+
+        logger.info("Execute the query to get water intake for start and end dates.");
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        logger.info("Iterate result set to get total water intake.");
+        waterHistoryDto = this.extractResult(resultSet);
+
+        return waterHistoryDto;
+    }
+
     private WaterHistoryDto extractResult(ResultSet resultSet) throws SQLException {
         if (resultSet == null) {
             throw new SQLException("Invalid result set!");
