@@ -274,9 +274,9 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public boolean startExtendPremiumMembership(int userId, Date startDate, Date endDate, int paymentID) throws SQLException {
+    public int startExtendPremiumMembership(int userId, Date startDate, Date expiryDate, int paymentID) throws SQLException {
 
-        boolean membershipStartExtend = false;
+        int premiumMembershipID = 0;
 
         logger.info("Started startExtendPremiumMembership() method");
 
@@ -298,7 +298,7 @@ public class UserDaoImpl implements IUserDao {
             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             logger.info("Entering values in prepared statement with actual values to be inserted");
             preparedStatement.setDate(0, startDate);
-            preparedStatement.setDate(1, endDate);
+            preparedStatement.setDate(1, expiryDate);
 
             preparedStatement.setInt(2, 1);
 
@@ -307,14 +307,14 @@ public class UserDaoImpl implements IUserDao {
             preparedStatement.executeUpdate();
 
             ResultSet keys = preparedStatement.getGeneratedKeys();
-            long premiumMembershipID;
+
             while (keys.next()) {
                 premiumMembershipID = keys.getInt(1);
                 logger.info("Entered the Initialization/Extension of membership for userId: {}, to the Premium_Memberships table!", premiumMembershipID);
             }
         }
 
-        return membershipStartExtend;
+        return premiumMembershipID;
     }
     @Override
     public boolean updateUserPayment(int userId, int paymentID, int premiumMembershipID) throws SQLException {

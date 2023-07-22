@@ -7,7 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
+
 
 @Service
 public class UserService implements IUserService {
@@ -107,8 +112,40 @@ public class UserService implements IUserService {
         return this.userDao.userToPremiumPayment(userID, details);
     }
 
-    public boolean startExtendPremium(int userID, int paymentID) {
+    public boolean startExtendPremium(int userID, int paymentID) throws SQLException {
+        boolean hasStartExtend = false;
 
-        return false;
+        logger.info("Started startExtendPremium() method");
+
+        if (userID != 0 && paymentID != 0) {
+
+            //default time zone
+            ZoneId defaultZoneId = ZoneId.systemDefault();
+
+            LocalDate currentDate = LocalDate.now();
+
+            Date startDate = (Date) Date.from(currentDate.atStartOfDay(defaultZoneId).toInstant());
+
+            LocalDate nextYearDate = currentDate.plusYears(1);
+
+            Date expiryDate = (Date) Date.from(nextYearDate.atStartOfDay(defaultZoneId).toInstant());
+
+            int premiumMembershipID = this.userDao.startExtendPremiumMembership(userID, startDate, expiryDate, paymentID);
+
+            if (premiumMembershipID != 0) {
+                logger.info("Successful PremiumMemberShip Table Insert");
+                boolean paymentTableUpdated = this.userDao.updateUserPayment(userID, paymentID, premiumMembershipID);
+
+                if (paymentTableUpdated) {
+                    hasStartExtend = true;
+                    logger.info("Successful Payment Table Update");
+                } else {
+                    logger.warn("Invalid Updating Payment Table");
+                }
+            } else {
+                logger.warn("Invalid adding to PremiumMemberShip Table");
+            }
+        }
+        return hasStartExtend;
     }
 }

@@ -22,5 +22,5 @@ public interface IUserService {
 
     public int paymentForPremium(int userID, PremiumUserPaymentDetailsDto details) throws PaymentException, SQLException;
 
-    public boolean startExtendPremium(int userID, int paymentID);
+    public boolean startExtendPremium(int userID, int paymentID) throws SQLException;
 }
