@@ -1,5 +1,6 @@
 package com.flavourfit.Feeds;
 
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import com.flavourfit.Feeds.Comments.CommentDto;
 import com.flavourfit.Feeds.Comments.ICommentsDao;
@@ -18,9 +19,11 @@ public class FeedDaoImpl implements IFeedDao {
     private Connection connection;
 
     @Autowired
-    public FeedDaoImpl(IDatabaseManager database) {
-        this.database = database;
-        this.connection = database.getConnection();
+    public FeedDaoImpl() {
+        this.database = DatabaseManagerImpl.getInstance();
+        if (this.database != null && this.database.getConnection() != null) {
+            this.connection = this.database.getConnection();
+        }
     }
 
     @Override

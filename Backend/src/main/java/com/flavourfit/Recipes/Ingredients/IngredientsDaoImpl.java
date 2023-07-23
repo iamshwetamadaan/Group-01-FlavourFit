@@ -1,5 +1,6 @@
 package com.flavourfit.Recipes.Ingredients;
 
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +21,11 @@ public class IngredientsDaoImpl implements IIngredientsDao {
     private Connection connection;
 
     @Autowired
-    public IngredientsDaoImpl(IDatabaseManager database) {
-        this.database = database;
-        this.connection = database.getConnection();
+    public IngredientsDaoImpl() {
+        this.database = DatabaseManagerImpl.getInstance();
+        if (this.database != null && this.database.getConnection() != null) {
+            this.connection = this.database.getConnection();
+        }
     }
 
     @Override
