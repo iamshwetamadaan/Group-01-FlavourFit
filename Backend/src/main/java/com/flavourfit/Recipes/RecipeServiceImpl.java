@@ -84,9 +84,16 @@ public class RecipeServiceImpl implements IRecipeService {
 
     @Override
     public CompleteRecipeDto convertRecipe(int recipeId, int scale, String system) throws RecipeExceptions {
+        logger.info("Started method convertRecipe()");
         try {
-            CompleteRecipeDto recipe = this.recipeDao.getRecipeById(recipeId);
-            return recipe;
+            RecipeDto recipe = this.recipeDao.getRecipeById(recipeId);
+            List<IngredientDto> ingredientList = this.recipeDao.getRecipeIngredients(recipeId);
+
+            CompleteRecipeDto completeRecipe = new CompleteRecipeDto();
+            completeRecipe.setRecipe(recipe);
+            completeRecipe.setIngredients(ingredientList);
+
+            return completeRecipe;
         } catch (SQLException e) {
             throw new RecipeExceptions(e);
         }

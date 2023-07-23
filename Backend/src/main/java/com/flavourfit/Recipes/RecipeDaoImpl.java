@@ -152,6 +152,7 @@ public class RecipeDaoImpl implements IRecipeDao {
     public RecipeDto getRecipeById(int recipeId) throws SQLException {
         logger.info("Started getRecipeById() method");
         RecipeDto recipe = new RecipeDto();
+        this.testConnection();
         return recipe;
     }
 
