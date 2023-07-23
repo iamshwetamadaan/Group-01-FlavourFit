@@ -2,6 +2,7 @@ package com.flavourfit.Feeds;
 
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import com.flavourfit.Feeds.Comments.CommentDto;
+import com.flavourfit.Feeds.Comments.ICommentsDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ public class FeedDaoImpl implements IFeedDao {
     private static Logger logger = LoggerFactory.getLogger(FeedDaoImpl.class);
     private final IDatabaseManager database;
     private Connection connection;
+
+    private ICommentsDao commentsDao;
 
     @Autowired
     public FeedDaoImpl(IDatabaseManager database) {
