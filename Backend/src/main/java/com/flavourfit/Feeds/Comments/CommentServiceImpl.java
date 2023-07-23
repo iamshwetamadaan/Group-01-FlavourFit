@@ -20,4 +20,9 @@ public class CommentServiceImpl implements ICommentsService{
         logger.info("Started method getCommentsByFeeds()");
         return commentsDao.getCommentsByFeedId(feedId);
     }
+    @Override
+    public boolean removeCommentFromFeed(int feedID, int commentID) throws SQLException {
+        logger.info("Started method deleteCommentFromFeed()");
+        return this.commentsDao.removeCommentInFeed(feedID, commentID);
+    }
 }

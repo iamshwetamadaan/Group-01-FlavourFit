@@ -45,10 +45,10 @@ public class FeedController {
         logger.info("Entered controller method updateLikesByFeedID()");
         try {
             int updatedFeedLikes = this.feedService.increaseFeedLikes(feedID);
-            return ResponseEntity.ok().body(new GetResponse(true, "Successfully retrieved feed", updatedFeedLikes));
+            return ResponseEntity.ok().body(new GetResponse(true, "Successfully updated feed likes", updatedFeedLikes));
         } catch (Exception e) {
-            logger.error("Failed to retrieve feed");
-            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to retrieve feed:" + e.getMessage()));
+            logger.error("Failed to increase likes for feed");
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to update feed likes:" + e.getMessage()));
         }
     }
 
@@ -56,11 +56,11 @@ public class FeedController {
     public ResponseEntity<GetResponse> removeCommentsByFeedID(@RequestParam("feedID") int feedID, @RequestParam("commentID") int commentID) {
         logger.info("Entered controller method removeCommentsByFeedID()");
         try {
-            int updatedFeedLikes = this.feedService.increaseFeedLikes(feedID);
-            return ResponseEntity.ok().body(new GetResponse(true, "Successfully retrieved feed", updatedFeedLikes));
+            FeedDto feed = this.feedService.removeCommentFromFeed(commentID);
+            return ResponseEntity.ok().body(new GetResponse(true, "Successfully removed comment"));
         } catch (Exception e) {
-            logger.error("Failed to retrieve feed");
-            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to retrieve feed:" + e.getMessage()));
+            logger.error("Failed to remove the comment from feed");
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to remove comment:" + e.getMessage()));
         }
     }
 

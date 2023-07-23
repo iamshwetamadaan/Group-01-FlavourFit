@@ -40,4 +40,23 @@ public class FeedServiceImpl implements IFeedService {
         int updatedFeedLikes = feedDao.updateFeedLikes(feedId);
         return updatedFeedLikes;
     }
+
+    @Override
+    public FeedDto removeCommentFromFeed(int commentId) throws SQLException {
+        logger.info("Started method removeCommentFromFeed()");
+
+        FeedDto feed = feedDao.getFeedsById(commentId);
+        int feedId = feed.getFeedId();
+        boolean commentRemove = commentsService.removeCommentFromFeed(feedId, commentId);
+
+        if (commentRemove) {
+            List<CommentDto> updatedCommentsForFeed = commentsService.getCommentsByFeeds(feedId);
+            feed.setComments(updatedCommentsForFeed);
+        } else {
+            logger.warn("Invalid commentId parameter");
+            throw new RuntimeException("Invalid commentId");
+        }
+
+        return feed;
+    }
 }

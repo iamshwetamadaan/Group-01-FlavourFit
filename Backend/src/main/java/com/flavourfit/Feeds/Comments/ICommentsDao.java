@@ -5,4 +5,6 @@ import java.util.ArrayList;
 
 public interface ICommentsDao {
     public ArrayList<CommentDto> getCommentsByFeedId(int feedId) throws SQLException;
+
+    public boolean removeCommentInFeed(int feedId, int commentId) throws SQLException;
 }

@@ -98,8 +98,7 @@ public class FeedDaoImpl implements IFeedDao {
         }
     }
 
-    private void replaceStatementPlaceholders(FeedDto feed, PreparedStatement preparedStatement) throws
-                                                                                                     SQLException {
+    private void replaceStatementPlaceholders(FeedDto feed, PreparedStatement preparedStatement) throws SQLException {
         if (feed == null || preparedStatement == null) {
             return;
         }
