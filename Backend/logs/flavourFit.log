@@ -39585,3 +39585,12 @@ Unconditional classes:
 22:54:25.808 [main] INFO  c.f.Recipes.RecipeServiceImpl - Started method getRecipesByUser()
 22:55:55.012 [main] INFO  c.f.Recipes.RecipeServiceImpl - Started method getFilteredRecipesByUser
 22:55:55.041 [main] INFO  c.f.Recipes.RecipeServiceImpl - Started method getFilteredRecipesByUser
+23:21:35.506 [SpringApplicationShutdownHook] DEBUG o.s.b.a.ApplicationAvailabilityBean - Application availability state ReadinessState changed from ACCEPTING_TRAFFIC to REFUSING_TRAFFIC
+23:21:36.008 [SpringApplicationShutdownHook] DEBUG o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@64a40280, started on Sat Jul 22 18:53:25 ADT 2023
+23:21:36.997 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147482623
+23:21:37.244 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Bean 'webServerGracefulShutdown' completed its stop procedure
+23:21:37.246 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147481599
+23:21:38.678 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Bean 'webServerStartStop' completed its stop procedure
+23:21:38.678 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase -2147483647
+23:21:38.682 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Bean 'springBootLoggingLifecycle' completed its stop procedure
+23:21:38.725 [SpringApplicationShutdownHook] DEBUG o.s.s.c.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
