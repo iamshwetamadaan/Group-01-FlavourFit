@@ -151,8 +151,17 @@ public class RecipeDaoImpl implements IRecipeDao {
     @Override
     public RecipeDto getRecipeById(int recipeId) throws SQLException {
         logger.info("Started getRecipeById() method");
-        RecipeDto recipe = new RecipeDto();
+
         this.testConnection();
+
+        logger.info("Running select query to get recipe by recipeId");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Recipes WHERE Recipe_id=?");
+        preparedStatement.setInt(1, recipeId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        RecipeDto recipe = extractRecipeFromResults(resultSet);
+
+        logger.info("Returning recipeDto from recipe table as response");
         return recipe;
     }
 
