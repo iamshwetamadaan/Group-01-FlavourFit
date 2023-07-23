@@ -38,9 +38,9 @@ public class FeedDaoImpl implements IFeedDao {
     }
 
     @Override
-    public FeedDto getFeedsById(int userId) throws SQLException {
+    public ArrayList<FeedDto> getFeedsById(int userId) throws SQLException {
         logger.info("Started getFeedsById() method");
-        FeedDto userFeeds = null;
+        ArrayList<FeedDto> userFeeds = null;
 
         this.testConnection();
 
@@ -50,7 +50,7 @@ public class FeedDaoImpl implements IFeedDao {
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
-            userFeeds = this.extractUserFeedsFromResult(resultSet);
+            userFeeds.add(this.extractUserFeedsFromResult(resultSet));
         }
         logger.info("Returning received user feeds as response");
         return userFeeds;
