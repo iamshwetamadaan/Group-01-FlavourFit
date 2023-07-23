@@ -2,11 +2,16 @@ package com.flavourfit.Trackers;
 
 import com.flavourfit.Authentication.IAuthService;
 import com.flavourfit.Exceptions.CalorieHistoryException;
+import com.flavourfit.Exceptions.WaterHistoryException;
 import com.flavourfit.Helpers.DateHelpers;
 import com.flavourfit.ResponsesDTO.GetResponse;
 import com.flavourfit.Trackers.Calories.CalorieGraphDto;
 import com.flavourfit.Trackers.Calories.CalorieHistoryDto;
 import com.flavourfit.Trackers.Calories.ICalorieHistoryService;
+import com.flavourfit.Trackers.Water.IWaterHistoryService;
+import com.flavourfit.Trackers.Water.WaterHistoryDto;
+import com.flavourfit.Trackers.Weights.IWeightHistoryService;
+import com.flavourfit.Trackers.Weights.WeightGraphDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -14,14 +19,13 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.SQLException;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class TrackersControllerTest {
@@ -29,6 +33,12 @@ public class TrackersControllerTest {
 
     @Mock
     private ICalorieHistoryService calorieHistoryService;
+
+    @Mock
+    private IWaterHistoryService waterHistoryService;
+
+    @Mock
+    private IWeightHistoryService weightHistoryService;
 
     @Mock
     private IAuthService authService;
@@ -62,6 +72,33 @@ public class TrackersControllerTest {
     }
 
     @Test
+    public void recordWaterIntakeTest() throws WaterHistoryException, SQLException {
+        double waterIntake = 1500;
+        int userId = 1;
+        String date = DateHelpers.getCurrentDateString();
+
+        WaterHistoryDto waterHistoryDto = new WaterHistoryDto(waterIntake, date, userId);
+
+        when(authService.extractUserIdFromToken("Bearer token")).thenReturn(userId);
+        when(waterHistoryService.fetchWaterIntakeByUserIdDate(date, userId)).thenReturn(waterHistoryDto);
+        verify(waterHistoryService).fetchWaterIntakeByUserIdDate(date, userId);
+
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("waterIntake", waterIntake);
+
+        ResponseEntity<Object> responseEntity = trackersController.recordWaterIntake(requestBody, "Bearer token");
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        // WaterHistoryException is thrown
+        when(waterHistoryService.fetchWaterIntakeByUserIdDate(date, userId)).thenThrow(
+                new WaterHistoryException("Failed to record water intake"));
+
+        ResponseEntity<Object> responseEntity2 = trackersController.recordWaterIntake(requestBody, "Bearer token");
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity2.getStatusCode());
+    }
+
+
+    @Test
     public void fetchCalorieHistoryTest() throws CalorieHistoryException {
         String startDate = "2023-07-15";
         String endDate = "2023-07-20";
@@ -89,4 +126,37 @@ public class TrackersControllerTest {
     }
 
 
+
+    @Test
+    void testFetchWeightHistory_Success() {
+        // Mocking parameters
+        String startDate = "2023-07-01";
+        String endDate = "2023-07-15";
+        String token = "yourAuthToken";
+        int userId = 1; // Example user ID
+
+        // Mocking authService
+        when(authService.extractUserIdFromToken(token)).thenReturn(userId);
+
+        // Mocking weightHistoryService
+        List<WeightGraphDto> weightGraphDtos = Arrays.asList(
+                new WeightGraphDto("2023-07-01", 65.5),
+                new WeightGraphDto("2023-07-05", 65.2),
+                new WeightGraphDto("2023-07-10", 64.8)
+        );
+        when(weightHistoryService.fetchWeightHistoryByPeriod(startDate, endDate, userId)).thenReturn(weightGraphDtos);
+
+        // Performing the request to the controller
+        ResponseEntity<GetResponse> responseEntity = trackersController.fetchWeightHistory(startDate, endDate, token);
+
+        // Assertions
+        assert responseEntity != null;
+        assert responseEntity.getStatusCode() == HttpStatus.OK;
+
+        GetResponse responseBody = responseEntity.getBody();
+        assert responseBody != null;
+        assert responseBody.isSuccess();
+        assert responseBody.getMessage().equals("Successfully retrieved weight history");
+        assert responseBody.getData().equals(weightGraphDtos);
+    }
 }

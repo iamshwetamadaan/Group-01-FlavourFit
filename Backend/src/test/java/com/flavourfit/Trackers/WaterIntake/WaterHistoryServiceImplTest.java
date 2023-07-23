@@ -1,8 +1,5 @@
 package com.flavourfit.Trackers.WaterIntake;
 
-import com.flavourfit.Exceptions.WaterHistoryException;
-import com.flavourfit.Helpers.DateHelpers;
-import com.flavourfit.ResponsesDTO.GetResponse;
 import com.flavourfit.Trackers.Water.IWaterHistoryDao;
 import com.flavourfit.Trackers.Water.WaterGraphDto;
 import com.flavourfit.Trackers.Water.WaterHistoryDto;
