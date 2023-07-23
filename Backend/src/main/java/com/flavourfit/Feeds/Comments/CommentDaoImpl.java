@@ -40,12 +40,12 @@ public class CommentDaoImpl implements ICommentsDao {
     @Override
     public ArrayList<CommentDto> getCommentsByFeedId(int feedId) throws SQLException {
         logger.info("Started getCommentsByFeedId() method");
-        ArrayList<CommentDto> userFeeds = null;
+        ArrayList<CommentDto> userFeeds = new ArrayList<CommentDto>();
 
         this.testConnection();
 
         logger.info("Running select query to get user by userId");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Feeds WHERE Feed_id=? ORDER BY Comment_id DESC");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Comments WHERE Feed_id=? ORDER BY Comment_id DESC");
         preparedStatement.setInt(1, feedId);
         ResultSet resultSet = preparedStatement.executeQuery();
 

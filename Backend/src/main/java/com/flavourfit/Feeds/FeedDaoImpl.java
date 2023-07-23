@@ -33,17 +33,42 @@ public class FeedDaoImpl implements IFeedDao {
 
         this.testConnection();
 
-        logger.info("Running select query to get user by userId");
+        logger.info("Running select query to get feeds by feedId");
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Feeds WHERE Feed_id=?");
         preparedStatement.setInt(1, feetId);
         ResultSet resultSet = preparedStatement.executeQuery();
-
-        userFeeds = this.extractUserFeedsFromResult(resultSet);
+        if(resultSet.next()){
+            userFeeds = this.extractUserFeedsFromResult(resultSet);
+        }
 
         logger.info("Returning received user feeds as response");
         return userFeeds;
     }
 
+    @Override
+    public ArrayList<FeedDto> getFeedsByUser(int userId, int offset) throws SQLException {
+        logger.info("Started getFeedsByUser() method");
+        ArrayList<FeedDto> userFeeds = new ArrayList<FeedDto>();
+
+        this.testConnection();
+
+        logger.info("Running select query to get feeds by user");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Feeds WHERE User_id=? limit 10 offset ?");
+        preparedStatement.setInt(1, userId);
+        preparedStatement.setInt(2, offset);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+
+        logger.info("Obtained the result of select query");
+        while(resultSet.next()){
+            FeedDto feed = new FeedDto();
+            feed = this.extractUserFeedsFromResult(resultSet);
+            userFeeds.add(feed);
+        }
+
+        logger.info("Returning received user feeds as response");
+        return userFeeds;
+    }
 
     private void testConnection() throws SQLException {
         if (database == null && connection == null) {
@@ -71,13 +96,11 @@ public class FeedDaoImpl implements IFeedDao {
 
     private FeedDto extractUserFeedsFromResult(ResultSet resultSet) throws SQLException {
         FeedDto userFeeds = new FeedDto();
-        if (resultSet.next()) {
             userFeeds.setFeedId(resultSet.getInt("Feed_id"));
             userFeeds.setFeedContent(resultSet.getString("Feed_content"));
             userFeeds.setLikeCount(resultSet.getInt("Like_count"));
             userFeeds.setUserId(resultSet.getInt("User_id"));
             userFeeds.setComments(new ArrayList<CommentDto>());
-        }
         return userFeeds;
     }
 
