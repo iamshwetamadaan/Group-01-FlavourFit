@@ -1,23 +1,30 @@
 package com.flavourfit.User;
 
+import com.flavourfit.Exceptions.PaymentException;
 import com.flavourfit.Exceptions.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.sql.SQLException;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
+
 
 @Service
 public class UserService implements IUserService {
     private static Logger logger = LoggerFactory.getLogger(UserService.class);
-
+    private final PasswordEncoder passwordEncoder;
     private final IUserDao userDao;
 
     @Autowired
-    public UserService(IUserDao userDao) {
+    public UserService(IUserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -50,7 +57,7 @@ public class UserService implements IUserService {
             logger.warn("Invalid password parameter");
             throw new RuntimeException("Invalid Password");
         }
-
+        newPassword = passwordEncoder.encode(newPassword);
         return this.userDao.resetUserPassword(userID, newPassword);
     }
 
@@ -73,5 +80,74 @@ public class UserService implements IUserService {
             logger.error(e.getMessage());
             throw new UserNotFoundException(e);
         }
+    }
+
+    public int paymentForPremium(int userID, PremiumUserPaymentDetailsDto details) throws PaymentException, SQLException {
+
+        String cardNumber = details.getCardNumber();
+        String cvv = details.getCvv();
+        String expiryMonth = details.getExpiryMonth();
+        String expiryYear = details.getExpiryYear();
+
+        logger.info("Started paymentForPremiumCheck() method");
+        if (cardNumber.length() != 16) {
+            logger.warn("Invalid card number length");
+            throw new PaymentException("Invalid Payment: Card Number entered is not valid");
+        }
+        if (cvv.length() != 3) {
+            logger.warn("Invalid cvv length");
+            throw new PaymentException("Invalid Payment: CVV entered is not valid");
+        }
+
+        if (expiryMonth.length() != 2 && expiryYear.length() != 2 ) {
+            logger.warn("Invalid MM/YY syntax");
+            throw new PaymentException("Invalid Payment: MM/YY syntax entered is not valid");
+        } else {
+            int month = Integer.parseInt(expiryMonth);
+            int year = Integer.parseInt(expiryYear);
+
+            if (!(month >= 12 && month < 00) || !(year >= 30 && month < 10)) {
+                logger.warn("Invalid MM/YY ranges");
+                throw new PaymentException("Invalid Payment: MM/YY entered is not in valid ranges");
+            }
+        }
+        return this.userDao.userToPremiumPayment(userID, details);
+    }
+
+    public boolean startExtendPremium(int userID, int paymentID) throws SQLException {
+        boolean hasStartExtend = false;
+
+        logger.info("Started startExtendPremium() method");
+
+        if (userID != 0 && paymentID != 0) {
+
+            //default time zone
+            ZoneId defaultZoneId = ZoneId.systemDefault();
+
+            LocalDate currentDate = LocalDate.now();
+
+            Date startDate = (Date) Date.from(currentDate.atStartOfDay(defaultZoneId).toInstant());
+
+            LocalDate nextYearDate = currentDate.plusYears(1);
+
+            Date expiryDate = (Date) Date.from(nextYearDate.atStartOfDay(defaultZoneId).toInstant());
+
+            int premiumMembershipID = this.userDao.startExtendPremiumMembership(userID, startDate, expiryDate, paymentID);
+
+            if (premiumMembershipID != 0) {
+                logger.info("Successful PremiumMemberShip Table Insert");
+                boolean paymentTableUpdated = this.userDao.updateUserPayment(userID, paymentID, premiumMembershipID);
+
+                if (paymentTableUpdated) {
+                    hasStartExtend = true;
+                    logger.info("Successful Payment Table Update");
+                } else {
+                    logger.warn("Invalid Updating Payment Table");
+                }
+            } else {
+                logger.warn("Invalid adding to PremiumMemberShip Table");
+            }
+        }
+        return hasStartExtend;
     }
 }

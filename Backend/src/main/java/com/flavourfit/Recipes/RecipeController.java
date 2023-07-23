@@ -4,6 +4,7 @@ import com.flavourfit.Authentication.IAuthService;
 import com.flavourfit.Exceptions.RecipeExceptions;
 import com.flavourfit.Exceptions.UserNotFoundException;
 import com.flavourfit.Recipes.SavedRecipes.ISavedRecipesService;
+import com.flavourfit.ResponsesDTO.GetResponse;
 import com.flavourfit.ResponsesDTO.PutResponse;
 import com.flavourfit.User.IUserService;
 import com.flavourfit.User.UserDto;
@@ -14,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -44,6 +47,58 @@ public class RecipeController {
         }
     }
 
+    @GetMapping("/saved-recipes")
+    public ResponseEntity<GetResponse> getRecipesByUser(
+            @RequestParam("count") int count, @RequestHeader("Authorization") String token
+    ) {
+        ArrayList<Object> recipes = new ArrayList<Object>();
+        logger.info("Started getRecipeByUser() method");
+
+        try {
+            int userId = authService.extractUserIdFromToken(token);
+//            int userId = 7;
+            recipes = this.recipeService.getRecipesByUser(count,userId);
+//            CompleteRecipeDto addedRecipe = this.recipeService.recordRecipe(recipe, userId);
+
+            logger.info("Added recipe for userId:{}", userId);
+            return ResponseEntity.ok().body(new GetResponse(true,
+                    "Successfully ", recipes));
+        }catch (SQLException e){
+            logger.error("Unable to get the recipes");
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to get the recipes" + e.getMessage()));
+        }
+        catch (RuntimeException e) {
+            logger.error("Failed to add recipe");
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to get recipes" + e.getMessage()));
+        }
+
+    }
+
+    @PostMapping("/list")
+    public ResponseEntity<GetResponse> getFilteredRecipesByUser(
+            @RequestBody HashMap<String , Object> requestBody
+            ) {
+        ArrayList<Object> recipes = new ArrayList<Object>();
+        logger.info("Started getFilteredRecipeByUser() method");
+        try {
+//            int userId = authService.extractUserIdFromToken(token);
+            int userId = 7;
+            recipes = this.recipeService.getFilteredRecipesByUser(userId , requestBody);
+
+            logger.info("Fetched the records for the user: ", userId);
+            return ResponseEntity.ok().body(new GetResponse(true,
+                    "Successfully ", recipes));
+        }
+        catch (SQLException e){
+            logger.error("Unable to get filtered recipes the recipes");
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to get the recipes" + e.getMessage()));
+        }
+        catch (RuntimeException e) {
+            logger.error("Failed to get the recipe");
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to get recipes" + e.getMessage()));
+        }
+
+    }
     @PostMapping("/add")
     public ResponseEntity<PutResponse> recordRecipe(
             @RequestBody CompleteRecipeDto recipe, @RequestHeader("Authorization") String token

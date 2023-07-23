@@ -1,5 +1,6 @@
 package com.flavourfit.Recipes.SavedRecipes;
 
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +19,11 @@ public class SavedRecipesDaoImpl implements ISavedRecipesDao {
     private Connection connection;
 
     @Autowired
-    public SavedRecipesDaoImpl(IDatabaseManager database) {
-        this.database = database;
-        this.connection = database.getConnection();
+    public SavedRecipesDaoImpl() {
+        this.database = DatabaseManagerImpl.getInstance();
+        if (this.database != null && this.database.getConnection() != null) {
+            this.connection = this.database.getConnection();
+        }
     }
 
     @Override
@@ -55,3 +58,4 @@ public class SavedRecipesDaoImpl implements ISavedRecipesDao {
         }
     }
 }
+

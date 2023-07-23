@@ -1,6 +1,9 @@
 package com.flavourfit.Recipes;
 
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.ResponsesDTO.SavedRecipesResponse;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -17,9 +21,11 @@ public class RecipeDaoImpl implements IRecipeDao {
     private Connection connection;
 
     @Autowired
-    public RecipeDaoImpl(IDatabaseManager database) {
-        this.database = database;
-        this.connection = database.getConnection();
+    public RecipeDaoImpl() {
+        this.database = DatabaseManagerImpl.getInstance();
+        if (this.database != null && this.database.getConnection() != null) {
+            this.connection = this.database.getConnection();
+        }
     }
 
     /**
@@ -71,6 +77,75 @@ public class RecipeDaoImpl implements IRecipeDao {
         }
 
         return recipeDto;
+    }
+
+    @Override
+    public ArrayList<Object> getRecipesByUser(int id, int count) throws SQLException {
+        logger.info("Started getRecipesByUser() method");
+        ArrayList<Object> recipes = new ArrayList<Object>();
+
+        if(count==0)
+            throw new SQLException("Count cannot be 0");
+
+        this.testConnection();
+
+        logger.info("Creating a statement to get the records the record");
+        Statement statement = connection.createStatement();
+        logger.info("Running query to fetch recipes for given user");
+        ResultSet resultset = statement.executeQuery("SELECT Recipes.recipe_id, Recipes.recipe_name, Recipes.recipe_description,Recipes.types \n" +
+                "FROM Recipes\n" +
+                "INNER JOIN Saved_Recipes ON Recipes.recipe_id=Saved_Recipes.recipe_id\n" +
+                "where Saved_Recipes.user_id="+id);
+        while (resultset.next()) {
+            SavedRecipesResponse recipe = new SavedRecipesResponse();
+
+            recipe.setRecipeName(resultset.getString("recipe_name"));
+            recipe.setRecipeId(resultset.getInt("recipe_id"));
+            recipe.setDescription(resultset.getString("recipe_description"));
+            recipe.setTypes(resultset.getString("types"));
+            recipes.add(recipe);
+        }
+        logger.info("Received data from db and added types to recipeTypes list.");
+        return recipes;
+    }
+
+    @Override
+    public ArrayList<Object> getFilteredRecipesByUser(int id, HashMap<String, Object> requestBody) throws SQLException {
+        logger.info("Started getFilteredRecipesByUser() method");
+        ArrayList<Object> recipes = new ArrayList<Object>();
+
+        String keyword = (String) requestBody.get("keyword");
+        int count = (int) requestBody.get("count");
+        String[] favourites = (String[]) requestBody.get("favourites");
+
+        if (count == 0)
+            throw new IllegalArgumentException("Count cannot be 0");
+        if (keyword.length() == 0)
+            throw new IllegalArgumentException("Keyword cannot be empty");
+
+        this.testConnection();
+
+        logger.info("Creating a prepared statement to get the records the record");
+        String query = "select Recipes.recipe_id, Recipes.recipe_name , Recipes.recipe_description, Recipes.types \n" +
+                "from Recipes join Saved_Recipes on Recipes.recipe_id = Saved_Recipes.recipe_id\n" +
+                "where Saved_Recipes.user_id=? and (Recipes.recipe_name like ? or Recipes.recipe_description like ?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1, id);
+        preparedStatement.setString(2, "%" + keyword + "%");
+        preparedStatement.setString(3, "%" + keyword + "%");
+        logger.info("Running query to fetch recipes for given user");
+        ResultSet resultset = preparedStatement.executeQuery();
+        while (resultset.next()) {
+            SavedRecipesResponse recipe = new SavedRecipesResponse();
+
+            recipe.setRecipeName(resultset.getString("recipe_name"));
+            recipe.setRecipeId(resultset.getInt("recipe_id"));
+            recipe.setDescription(resultset.getString("recipe_description"));
+            recipe.setTypes(resultset.getString("types"));
+            recipes.add(recipe);
+        }
+        logger.info("Received data from db and sending the response back to the method");
+        return recipes;
     }
 
     private void testConnection() throws SQLException {

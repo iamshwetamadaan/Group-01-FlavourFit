@@ -55,7 +55,8 @@ public class TrackersControllerTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
         // CalorieHistoryException is thrown
-        when(calorieHistoryService.fetchCalorieByUserIdDate(date, userId)).thenThrow(new CalorieHistoryException("Failed to record calorieCount"));
+        when(calorieHistoryService.fetchCalorieByUserIdDate(date, userId)).thenThrow(
+                new CalorieHistoryException("Failed to record calorieCount"));
         ResponseEntity<Object> responseEntity2 = trackersController.recordCalories(requestBody, "Bearer token");
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity2.getStatusCode());
     }
@@ -72,17 +73,18 @@ public class TrackersControllerTest {
 
         // Success case
         when(authService.extractUserIdFromToken("Bearer token")).thenReturn(userId);
-        when(calorieHistoryService.fetchCalorieHistoryByPeriod(startDate, endDate, userId)).thenReturn(calorieGraphDtoList);
+        when(calorieHistoryService.fetchCalorieHistoryByPeriod(startDate, endDate, userId)).thenReturn(
+                calorieGraphDtoList);
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("startDate", startDate);
-        requestBody.put("endDate", endDate);
-        ResponseEntity<GetResponse> responseEntity = trackersController.fetchCalorieHistory(requestBody, "Bearer token");
+        ResponseEntity<GetResponse> responseEntity = trackersController.fetchCalorieHistory(
+                startDate, endDate, "Bearer token");
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
         // CalorieHistoryException is thrown
         when(calorieHistoryService.fetchCalorieHistoryByPeriod(startDate, endDate, userId))
                 .thenThrow(new CalorieHistoryException("Failed to retrieved calorie history"));
-        ResponseEntity<GetResponse> responseEntity2 = trackersController.fetchCalorieHistory(requestBody, "Bearer token");
+        ResponseEntity<GetResponse> responseEntity2 = trackersController.fetchCalorieHistory(
+                startDate, endDate, "Bearer token");
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity2.getStatusCode());
     }
 

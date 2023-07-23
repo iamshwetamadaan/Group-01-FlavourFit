@@ -1,5 +1,6 @@
 package com.flavourfit.User;
 
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +20,11 @@ public class UserDaoImpl implements IUserDao {
     private Connection connection;
 
     @Autowired
-    public UserDaoImpl(IDatabaseManager database) {
-        this.database = database;
-        this.connection = database.getConnection();
+    public UserDaoImpl() {
+        this.database = DatabaseManagerImpl.getInstance();
+        if (this.database != null && this.database.getConnection() != null) {
+            this.connection = this.database.getConnection();
+        }
     }
 
 
@@ -119,7 +122,8 @@ public class UserDaoImpl implements IUserDao {
         this.testConnection();
 
         logger.info("Creating a prepared statement update the record");
-        String query = "Update Users set First_name=?, Last_name=?, Phone=?, Email=?, Age=?" +
+        String query = "Update Users set" +
+                " First_name=?, Last_name=?, Phone=?, Email=?, Age=?" +
                 ",Street_address=?, City=?,State=?, Zip_code=?, Current_weight=?, Target_weight=?" +
                 "where User_id=?";
         PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -231,8 +235,134 @@ public class UserDaoImpl implements IUserDao {
         return passwordReset;
     }
 
+    @Override
+    public int userToPremiumPayment(int userId, PremiumUserPaymentDetailsDto details) throws SQLException {
+
+        int userPremiumID = 0;
+
+        logger.info("Started userUpgradedToPremium() method");
+
+        if (userId == 0) {
+            logger.error("User object not valid!!");
+            throw new SQLException("User object not valid!!");
+        }
+
+        if (database != null) {
+            Connection connection = this.database.getConnection();
+
+            if (connection == null) {
+                logger.error("SQL connection not found!");
+                throw new SQLException("SQL connection not found!");
+            }
+
+            logger.info("Creating a prepared statement to insert record.");
+            String query = "INSERT INTO Payments (amount, reason, User_id, Premium_membership_id) VALUES (?,?,?,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            logger.info("Entering values in prepared statement with actual values to be inserted");
+            preparedStatement.setDouble(0, details.getAmount());
+            preparedStatement.setString(1, "Premium Membership Payment");
+            preparedStatement.setInt(2, userId);
+            preparedStatement.setInt(3, 0);
+            logger.info("Execute the update of record to the table");
+            preparedStatement.executeUpdate();
+
+            ResultSet keys = preparedStatement.getGeneratedKeys();
+
+            while (keys.next()) {
+                userPremiumID = keys.getInt(1);
+                logger.info("Entered Customer Membership for userId: {}, to the Registered_Customer table!", userPremiumID);
+            }
+        }
+
+        return userPremiumID;
+    }
+
+    @Override
+    public int startExtendPremiumMembership(int userId, Date startDate, Date expiryDate, int paymentID) throws
+            SQLException {
+
+        int premiumMembershipID = 0;
+
+        logger.info("Started startExtendPremiumMembership() method");
+
+        if (userId == 0) {
+            logger.error("User object not valid!!");
+            throw new SQLException("User object not valid!!");
+        }
+
+        if (database != null) {
+            Connection connection = this.database.getConnection();
+
+            if (connection == null) {
+                logger.error("SQL connection not found!");
+                throw new SQLException("SQL connection not found!");
+            }
+
+            logger.info("Creating a prepared statement to update record.");
+            String query = "INSERT INTO Premium_Memberships (Start_date, Expiry_date, Is_active, User_id) VALUES (?,?,?,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            logger.info("Entering values in prepared statement with actual values to be inserted");
+            preparedStatement.setDate(0, startDate);
+            preparedStatement.setDate(1, expiryDate);
+
+            preparedStatement.setInt(2, 1);
+
+            preparedStatement.setInt(3, userId);
+            logger.info("Execute the update of record to the table");
+            preparedStatement.executeUpdate();
+
+            ResultSet keys = preparedStatement.getGeneratedKeys();
+
+            while (keys.next()) {
+                premiumMembershipID = keys.getInt(1);
+                logger.info("Entered the Initialization/Extension of membership for userId: {}, to the Premium_Memberships table!", premiumMembershipID);
+            }
+        }
+
+        return premiumMembershipID;
+    }
+
+    @Override
+    public boolean updateUserPayment(int userId, int paymentID, int premiumMembershipID) throws SQLException {
+
+        boolean paymentUpdated = false;
+
+        logger.info("Started startExtendPremiumMembership() method");
+
+        if (userId == 0) {
+            logger.error("User object not valid!!");
+            throw new SQLException("User object not valid!!");
+        }
+
+        if (database != null) {
+            Connection connection = this.database.getConnection();
+
+            if (connection == null) {
+                logger.error("SQL connection not found!");
+                throw new SQLException("SQL connection not found!");
+            }
+
+            logger.info("Creating a prepared statement to update record.");
+            String query = "UPDATE Payments SET Premium_membership_id = ? where Payment_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            logger.info("Entering values in prepared statement with actual values to be inserted");
+            preparedStatement.setInt(0, premiumMembershipID);
+            preparedStatement.setInt(1, paymentID);
+            logger.info("Execute the update of record to the table");
+            preparedStatement.executeUpdate();
+
+            ResultSet keys = preparedStatement.getGeneratedKeys();
+            long recheckPaymentID;
+            while (keys.next()) {
+                recheckPaymentID = keys.getInt(1);
+                logger.info("Updated the ID for premium membership for paymentID: {}, to the Payments table!", recheckPaymentID);
+            }
+        }
+        return paymentUpdated;
+    }
+
     private void replaceStatementPlaceholders(UserDto user, PreparedStatement preparedStatement, int count) throws
-                                                                                                            SQLException {
+            SQLException {
         if (user == null || preparedStatement == null) {
             return;
         }

@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -109,4 +110,53 @@ public class UserController {
         }
     }
 
+    @PostMapping("/make-payment")
+    public ResponseEntity<PutResponse> getUserPaymentForPremium(@RequestHeader("Authorization") String token, @RequestBody PremiumUserPaymentDetailsDto request) {
+        logger.info("Entered controller method getUserPaymentForPremium()");
+        int userID = this.authService.extractUserIdFromToken(token);
+        try {
+            if (request != null) {
+                logger.info("Successfully loaded premium user payment details");
+                int paymentID = this.userService.paymentForPremium(userID, request);
+
+                if (paymentID != 0) {
+                    return ResponseEntity.ok()
+                                         .body(new PutResponse(true, "Successfully completed user premium membership payment"));
+                } else {
+                    return ResponseEntity.badRequest().body(new PutResponse(false, "Failed payment for user"));
+                }
+            } else {
+                logger.error("Payment for user not required");
+                return ResponseEntity.badRequest().body(new PutResponse(false, "Failed payment for user since payment for user not required "));
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed payment for user"));
+        }
+    }
+
+    @PostMapping("/get-premium")
+    public ResponseEntity<PutResponse> startPremiumMembership(@RequestHeader("Authorization") String token, @RequestBody int paymentID) {
+        logger.info("Entered controller method startPremiumMembership()");
+        int userID = this.authService.extractUserIdFromToken(token);
+        try {
+            if (paymentID != 0) {
+                logger.info("Successfully loaded premium user payment details");
+                boolean startExtendMembership = this.userService.startExtendPremium(userID, paymentID);
+
+                if (startExtendMembership) {
+                    return ResponseEntity.ok()
+                                         .body(new PutResponse(true, "Successfully completed user premium membership initialization/extension"));
+                } else {
+                    return ResponseEntity.badRequest().body(new PutResponse(false, "Failed membership initialization/extension for user"));
+                }
+            } else {
+                logger.error("Payment for user not required");
+                return ResponseEntity.badRequest().body(new PutResponse(false, "Failed membership initialization/extension for user "));
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed payment for user"));
+        }
+    }
 }
