@@ -51,4 +51,17 @@ public class FeedController {
             return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to retrieve feed:" + e.getMessage()));
         }
     }
+
+    @DeleteMapping("comment-feed")
+    public ResponseEntity<GetResponse> removeCommentsByFeedID(@RequestParam("feedID") int feedID, @RequestParam("commentID") int commentID) {
+        logger.info("Entered controller method removeCommentsByFeedID()");
+        try {
+            int updatedFeedLikes = this.feedService.increaseFeedLikes(feedID);
+            return ResponseEntity.ok().body(new GetResponse(true, "Successfully retrieved feed", updatedFeedLikes));
+        } catch (Exception e) {
+            logger.error("Failed to retrieve feed");
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to retrieve feed:" + e.getMessage()));
+        }
+    }
+
 }
