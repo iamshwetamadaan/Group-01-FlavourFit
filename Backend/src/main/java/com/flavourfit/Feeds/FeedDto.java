@@ -8,6 +8,7 @@ public class FeedDto {
     private int feedId;
     private String feedContent;
     private int likeCount;
+
     private ArrayList<CommentDto> comments;
 
     public int getFeedId() {
@@ -32,6 +33,14 @@ public class FeedDto {
 
     public void setLikeCount(int likeCount) {
         this.likeCount = likeCount;
+    }
+
+    public ArrayList<CommentDto> getComments() {
+        return comments;
+    }
+
+    public void setComments(ArrayList<CommentDto> comments) {
+        this.comments = comments;
     }
 
     @Override
