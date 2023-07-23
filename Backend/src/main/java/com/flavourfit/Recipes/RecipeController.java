@@ -21,7 +21,6 @@ import java.util.List;
 public class RecipeController {
     private static Logger logger = LoggerFactory.getLogger(RecipeController.class);
     private IRecipeService recipeService;
-
     private IAuthService authService;
     private final ISavedRecipesService savedRecipesService;
 
