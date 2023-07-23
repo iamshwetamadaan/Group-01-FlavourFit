@@ -36,7 +36,7 @@ public class TrackersControllerTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        trackersController = new TrackersController(calorieHistoryService, null, authService);
+    //    trackersController = new TrackersController(calorieHistoryService, null, authService);
     }
 
     @Test

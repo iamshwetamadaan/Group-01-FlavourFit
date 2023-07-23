@@ -69,6 +69,27 @@ public class UserDaoImplTest {
     }
 
     @Test
+    public void testGetUserByMembership() throws Exception {
+        int testUserId = 1;
+        PremiumUserDto testUser = new PremiumUserDto();
+        testUser.setUserId(testUserId);
+
+        when(database.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true).thenReturn(false);
+        when(resultSet.getInt("User_id")).thenReturn(testUser.getUserId());
+
+        PremiumUserDto user = userDaoImpl.getUserBymembership(testUserId);
+        assertEquals(testUser.getUserId(), user.getUserId());
+
+        when(resultSet.next()).thenReturn(false);
+        user = userDaoImpl.getUserBymembership(testUserId);
+        assertNull(user);
+    }
+
+
+    @Test
     public void getUserByIdTest() throws SQLException {
         int testUserId = 1;
         UserDto expectedUser = new UserDto();
