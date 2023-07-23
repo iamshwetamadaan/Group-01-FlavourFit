@@ -1,5 +1,6 @@
 package com.flavourfit.Trackers.Calories;
 
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +20,10 @@ public class CalorieHistoryDaoImpl implements ICalorieHistoryDao {
     private Connection connection;
 
     @Autowired
-    public CalorieHistoryDaoImpl(IDatabaseManager database) {
-        this.database = database;
-        if (database != null) {
-            this.connection = database.getConnection();
+    public CalorieHistoryDaoImpl() {
+        this.database = DatabaseManagerImpl.getInstance();
+        if (this.database != null && this.database.getConnection() != null) {
+            this.connection = this.database.getConnection();
         }
     }
 

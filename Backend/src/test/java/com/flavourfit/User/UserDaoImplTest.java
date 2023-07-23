@@ -131,10 +131,6 @@ public class UserDaoImplTest {
         reset(database, connection, preparedStatement, resultSet);
         setUp();
 
-        // Reset for the next scenario
-        reset(database, connection, preparedStatement, resultSet);
-        setUp();
-
         // No user found scenario
         when(resultSet.next()).thenReturn(false);
         user = userDaoImpl.getUserByEmail(testEmail);

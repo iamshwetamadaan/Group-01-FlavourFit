@@ -1,16 +1,12 @@
 package com.flavourfit.DatabaseManager;
 
 import com.flavourfit.Exceptions.DatabaseException;
-import com.flavourfit.Resources.Constants;
 import com.flavourfit.Resources.Helpers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -23,13 +19,24 @@ public class DatabaseManagerImpl implements IDatabaseManager {
 
     private Connection connection = null;
 
-    public DatabaseManagerImpl() {
+    //Singleton instance
+    private static DatabaseManagerImpl instance = null;
+
+    private DatabaseManagerImpl() {
         try {
             this.connect();
         } catch (DatabaseException e) {
             logger.error(e.getMessage());
             throw new RuntimeException(e);
         }
+    }
+
+    //Method to get singleton instance
+    public static synchronized DatabaseManagerImpl getInstance() {
+        if (instance == null) {
+            instance = new DatabaseManagerImpl();
+        }
+        return instance;
     }
 
     /**
@@ -90,6 +97,7 @@ public class DatabaseManagerImpl implements IDatabaseManager {
         }
         return true;
     }
+
 
     @Override
     public Connection getConnection() {
