@@ -24,10 +24,7 @@ class RecipeDaoImplTest {
 
     @Mock
     private PreparedStatement preparedStatement;
-
-    @Mock
-    private ResultSet resultSet;
-
+    @InjectMock
     private RecipeDaoImpl recipeDao;
 
     @BeforeEach
@@ -43,6 +40,7 @@ class RecipeDaoImplTest {
         // Mock the behavior of connection.prepareStatement()
         String query = "INSERT INTO Recipes (Recipe_name, Recipe_description, Types, editable) values (?, ?, ?, ?)";
         when(connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)).thenReturn(preparedStatement);
+
     }
 
     @Test
@@ -53,11 +51,11 @@ class RecipeDaoImplTest {
         when(resultSet.getString("types")).thenReturn("Breakfast", "Lunch");
         when(statement.executeQuery("SELECT DISTINCT(types) FROM Recipes;")).thenReturn(resultSet);
 
+        List<String> expected = List.of("Breakfast", "Lunch");
         // Call the method under test
         List<String> result = recipeDao.getAllRecipesTypes();
 
         // Assert the result
-        List<String> expected = List.of("Breakfast", "Lunch");
         assertEquals(expected, result);
 
         // Reset for the next scenario
