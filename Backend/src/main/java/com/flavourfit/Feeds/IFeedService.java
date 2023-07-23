@@ -11,4 +11,7 @@ public interface IFeedService {
     public int increaseFeedLikes(int feedId) throws SQLException;
 
     FeedDto removeCommentFromFeed(int commentId) throws SQLException;
+
+    public List<FeedDto> getFeedsByUser(int userID, int offset) throws SQLException;
+
 }

@@ -2,9 +2,10 @@ package com.flavourfit.Feeds.Comments;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface ICommentsDao {
-    public ArrayList<CommentDto> getCommentsByFeedId(int feedId) throws SQLException;
+    public List<CommentDto> getCommentsByFeedId(int feedId) throws SQLException;
 
     public boolean removeCommentInFeed(int feedId, int commentId) throws SQLException;
 }

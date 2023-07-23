@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -61,6 +62,34 @@ public class FeedController {
         } catch (Exception e) {
             logger.error("Failed to remove the comment from feed");
             return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to remove comment:" + e.getMessage()));
+        }
+    }
+    @GetMapping("/get-all-feeds")
+    public ResponseEntity<GetResponse> getAllFeedsByUser(
+            @RequestParam("offset") String offset
+            ,@RequestHeader("Authorization") String token)
+    {
+        logger.info("Entered controller method getAllFeedsByUser()");
+        int userId;
+
+        try{
+           userId = authService.extractUserIdFromToken(token);
+//            userId=7;
+        }
+        catch(Exception e){
+            logger.error("Failed to retrieve feed");
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Token not valid" + e.getMessage()));
+        }
+
+        try {
+            int offsetNumber = Integer.parseInt(offset);
+            ArrayList<FeedDto> feeds= this.feedService.getFeedsByUser(userId,offsetNumber);
+            logger.info("Retrieved all the feeds");
+            return ResponseEntity.ok().body(new GetResponse(true, "Successfully retrieved feed", feeds));
+        } catch (Exception e) {
+            logger.error("Failed to retrieve the feeds");
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to retrieve feed:" + e.getMessage()));
+
         }
     }
 

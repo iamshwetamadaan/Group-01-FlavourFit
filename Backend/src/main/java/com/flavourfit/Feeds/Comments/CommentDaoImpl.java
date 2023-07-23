@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class CommentDaoImpl implements ICommentsDao {
@@ -38,13 +39,15 @@ public class CommentDaoImpl implements ICommentsDao {
     }
 
     @Override
-    public ArrayList<CommentDto> getCommentsByFeedId(int feedId) throws SQLException {
+    public List<CommentDto> getCommentsByFeedId(int feedId) throws SQLException {
         logger.info("Started getCommentsByFeedId() method");
-        ArrayList<CommentDto> commentsForFeedID = null;
+
+        List<CommentDto> commentsForFeedID = new ArrayList<CommentDto>();
 
         this.testConnection();
 
-        logger.info("Running select query to get feed by feedId with some conditions");
+        logger.info("Running select query to get user by userId");
+
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Comments WHERE Feed_id=? ORDER BY Comment_id DESC");
         preparedStatement.setInt(1, feedId);
         ResultSet resultSet = preparedStatement.executeQuery();
