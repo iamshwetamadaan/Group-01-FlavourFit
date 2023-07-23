@@ -8,8 +8,15 @@ public class FeedDto {
     private int feedId;
     private String feedContent;
     private int likeCount;
-
     private ArrayList<CommentDto> comments;
+    private int userId;
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
     public int getFeedId() {
         return feedId;
