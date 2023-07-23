@@ -149,11 +149,20 @@ public class RecipeDaoImpl implements IRecipeDao {
     }
 
     @Override
-    public CompleteRecipeDto getRecipeById(int recipeId) throws SQLException {
+    public RecipeDto getRecipeById(int recipeId) throws SQLException {
         logger.info("Started getRecipeById() method");
-        CompleteRecipeDto recipe = new CompleteRecipeDto();
-        this.testConnection();
+        RecipeDto recipe = new RecipeDto();
         return recipe;
+    }
+
+    @Override
+    public List<IngredientDto> getRecipeIngredients(int recipeId) throws SQLException {
+        logger.info("Started getRecipeIngredients() method");
+        List<IngredientDto> recipeIngredients = new ArrayList<>();
+        this.testConnection();
+
+
+        return recipeIngredients;
     }
 
     private void testConnection() throws SQLException {
@@ -191,5 +200,16 @@ public class RecipeDaoImpl implements IRecipeDao {
             ingredient.setQuantityUnit(resultSet.getString("quantity_unit"));
         }
         return ingredient;
+    }
+
+    private RecipeDto extractRecipeFromResults(ResultSet resultSet) throws SQLException {
+        RecipeDto recipe = new RecipeDto();
+        if (resultSet != null) {
+            recipe.setRecipeId(resultSet.getInt("Recipe_id"));
+            recipe.setRecipeName(resultSet.getString("Recipe_name"));
+            recipe.setRecipeDescription(resultSet.getString("Recipe_description"));
+            recipe.setTypes(resultSet.getString("Types"));
+        }
+        return recipe;
     }
 }
