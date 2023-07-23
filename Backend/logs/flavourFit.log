@@ -1345,3 +1345,18 @@ Unconditional classes:
 23:49:01.813 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Running query to fetch different types from the recipes
 23:49:01.816 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Received data from db and added types to recipeTypes list.
 23:49:01.829 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Started getAllRecipesTypes() method
+01:05:49.883 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Started getAllRecipesTypes() method
+01:05:49.888 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Running query to fetch different types from the recipes
+01:05:49.891 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Received data from db and added types to recipeTypes list.
+01:05:49.902 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Started getAllRecipesTypes() method
+01:09:11.860 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Started getAllRecipesTypes() method
+01:09:11.864 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Running query to fetch different types from the recipes
+01:09:11.869 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Received data from db and added types to recipeTypes list.
+01:09:11.881 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Started getAllRecipesTypes() method
+01:10:25.206 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Started getAllRecipesTypes() method
+01:10:25.213 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Running query to fetch different types from the recipes
+01:10:25.217 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Received data from db and added types to recipeTypes list.
+01:11:20.170 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Started getAllRecipesTypes() method
+01:11:20.175 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Running query to fetch different types from the recipes
+01:11:20.178 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Received data from db and added types to recipeTypes list.
+01:11:20.191 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Started getAllRecipesTypes() method
