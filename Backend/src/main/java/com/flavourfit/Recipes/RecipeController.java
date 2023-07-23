@@ -133,4 +133,17 @@ public class RecipeController {
             return ResponseEntity.internalServerError().body(new PutResponse(true, "Failed to save recipe"));
         }
     }
+
+    @PostMapping("/convert-recipe")
+    public ResponseEntity<PutResponse> covertRecipe(@RequestParam("recipeID") int recipeId, @RequestParam("scale") int scale, @RequestParam("system") String system) {
+        logger.info("Entered controller method covertRecipe()");
+        try {
+            CompleteRecipeDto convertedRecipe = this.recipeService.convertRecipe(recipeId, scale, system);
+            logger.info("Converted recipe for recipeId:{}", recipeId);
+            return ResponseEntity.ok().body(new PutResponse(true, "Successfully converted recipe"));
+        } catch (RecipeExceptions e) {
+            logger.error("Failed to convert recipe for recipeId:{}", recipeId);
+            return ResponseEntity.internalServerError().body(new PutResponse(true, "Failed to convert recipe"));
+        }
+    }
 }

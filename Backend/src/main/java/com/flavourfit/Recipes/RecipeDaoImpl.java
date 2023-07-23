@@ -2,8 +2,8 @@ package com.flavourfit.Recipes;
 
 import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.Recipes.Ingredients.IngredientDto;
 import com.flavourfit.ResponsesDTO.SavedRecipesResponse;
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,6 +148,42 @@ public class RecipeDaoImpl implements IRecipeDao {
         return recipes;
     }
 
+    @Override
+    public RecipeDto getRecipeById(int recipeId) throws SQLException {
+        logger.info("Started getRecipeById() method");
+
+        this.testConnection();
+
+        logger.info("Running select query to get recipe by recipeId");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Recipes WHERE Recipe_id=?");
+        preparedStatement.setInt(1, recipeId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        RecipeDto recipe = extractRecipeFromResults(resultSet);
+
+        logger.info("Returning recipeDto from recipe table as response");
+        return recipe;
+    }
+
+    @Override
+    public List<IngredientDto> getRecipeIngredients(int recipeId) throws SQLException {
+        logger.info("Started getRecipeIngredients() method");
+        List<IngredientDto> recipeIngredients = new ArrayList<>();
+        this.testConnection();
+
+        logger.info("Running select query to get ingredients by recipeId");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Ingredients WHERE Recipe_id=?");
+        preparedStatement.setInt(1, recipeId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while(resultSet.next()) {
+            recipeIngredients.add(this.extractIngredientFromResults(resultSet));
+        }
+
+        logger.info("Returning ingredients from recipe table as response");
+        return recipeIngredients;
+    }
+
     private void testConnection() throws SQLException {
         if (database == null && connection == null) {
             logger.error("SQL connection not found!");
@@ -171,5 +207,28 @@ public class RecipeDaoImpl implements IRecipeDao {
         preparedStatement.setString(2, recipe.getRecipeDescription());
         preparedStatement.setString(3, recipe.getTypes());
         preparedStatement.setBoolean(4, recipe.isEditable());
+    }
+
+    private IngredientDto extractIngredientFromResults(ResultSet resultSet) throws SQLException {
+        IngredientDto ingredient = new IngredientDto();
+        if(resultSet != null) {
+            ingredient.setIngredientId(resultSet.getInt("Ingredient_id"));
+            ingredient.setIngredientName(resultSet.getString("Ingredient_name"));
+            ingredient.setRecipeId(resultSet.getInt("Recipe_id"));
+            ingredient.setQuantity(resultSet.getDouble("quantity"));
+            ingredient.setQuantityUnit(resultSet.getString("quantity_unit"));
+        }
+        return ingredient;
+    }
+
+    private RecipeDto extractRecipeFromResults(ResultSet resultSet) throws SQLException {
+        RecipeDto recipe = new RecipeDto();
+        if (resultSet != null) {
+            recipe.setRecipeId(resultSet.getInt("Recipe_id"));
+            recipe.setRecipeName(resultSet.getString("Recipe_name"));
+            recipe.setRecipeDescription(resultSet.getString("Recipe_description"));
+            recipe.setTypes(resultSet.getString("Types"));
+        }
+        return recipe;
     }
 }

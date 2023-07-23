@@ -3,7 +3,6 @@ package com.flavourfit.Feeds;
 import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import com.flavourfit.Feeds.Comments.CommentDto;
-import com.flavourfit.Feeds.Comments.ICommentsDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ public class FeedDaoImpl implements IFeedDao {
     }
 
     @Override
-    public FeedDto getFeedsById(int feetId) throws SQLException {
+    public FeedDto getFeedsById(int feedID) throws SQLException {
         logger.info("Started getFeedsById() method");
         FeedDto userFeeds = null;
 
@@ -35,7 +34,7 @@ public class FeedDaoImpl implements IFeedDao {
 
         logger.info("Running select query to get feeds by feedId");
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Feeds WHERE Feed_id=?");
-        preparedStatement.setInt(1, feetId);
+        preparedStatement.setInt(1, feedID);
         ResultSet resultSet = preparedStatement.executeQuery();
         if(resultSet.next()){
             userFeeds = this.extractUserFeedsFromResult(resultSet);
@@ -46,9 +45,51 @@ public class FeedDaoImpl implements IFeedDao {
     }
 
     @Override
-    public ArrayList<FeedDto> getFeedsByUser(int userId, int offset) throws SQLException {
+    public int updateFeedLikes(int feedId) throws SQLException {
+
+        int likesUpdated = 0;
+        logger.info("Started updateFeedLikes() method");
+
+        if (database != null) {
+            Connection connection = this.database.getConnection();
+
+            if (connection == null) {
+                logger.error("SQL connection not found!");
+                throw new SQLException("SQL connection not found!");
+            }
+
+            logger.info("Creating a prepared statement to first get the record for which like have to increase.");
+            PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT * from Feeds WHERE Feed_id=?");
+            preparedStatement1.setInt(1, feedId);
+            ResultSet resultSet = preparedStatement1.executeQuery();
+
+            likesUpdated = this.extractUserFeedsFromResult(resultSet).getLikeCount();
+            likesUpdated = +1;
+
+            logger.info("Creating a prepared statement to update record.");
+            String query = "UPDATE Feeds SET like_count = ? where Feed_id = ?";
+            PreparedStatement preparedStatement2 = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            logger.info("Replacing values in prepared statement with actual values to be inserted");
+            preparedStatement2.setInt(1, likesUpdated);
+            preparedStatement2.setInt(2, feedId);
+            logger.info("Execute the update of record to the table");
+            preparedStatement2.executeUpdate();
+
+            ResultSet keys = preparedStatement2.getGeneratedKeys();
+            long updatedLikesFeedID;
+            while (keys.next()) {
+                updatedLikesFeedID = keys.getLong(1);
+                logger.info("Updated likes with feedId: {}, to the Feeds table!", updatedLikesFeedID);
+            }
+        }
+
+        return likesUpdated;
+    }
+
+    @Override
+    public List<FeedDto> getFeedsByUser(int userId, int offset) throws SQLException {
         logger.info("Started getFeedsByUser() method");
-        ArrayList<FeedDto> userFeeds = new ArrayList<FeedDto>();
+        List<FeedDto> userFeeds = new ArrayList<FeedDto>();
 
         this.testConnection();
 
@@ -83,8 +124,7 @@ public class FeedDaoImpl implements IFeedDao {
         }
     }
 
-    private void replaceStatementPlaceholders(FeedDto feed, PreparedStatement preparedStatement) throws
-                                                                                                     SQLException {
+    private void replaceStatementPlaceholders(FeedDto feed, PreparedStatement preparedStatement) throws SQLException {
         if (feed == null || preparedStatement == null) {
             return;
         }

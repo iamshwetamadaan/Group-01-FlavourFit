@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
@@ -28,11 +29,11 @@ public class FeedServiceImplTest {
 
     @Test
     public void getFeedsByUserTest() throws SQLException {
-        ArrayList<FeedDto> mockFeeds = new ArrayList<>();
+        List<FeedDto> mockFeeds = new ArrayList<>();
 
         when(feedDao.getFeedsByUser(4, 0)).thenReturn(mockFeeds);
 
-        ArrayList<FeedDto> resultFeeds = feedService.getFeedsByUser(4, 0);
+        List<FeedDto> resultFeeds = feedService.getFeedsByUser(4, 0);
 
         // Assert
         assertTrue(resultFeeds.isEmpty());
