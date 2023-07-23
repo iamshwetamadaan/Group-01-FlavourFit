@@ -1,5 +1,6 @@
 package com.flavourfit.Recipes;
 
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import com.flavourfit.ResponsesDTO.SavedRecipesResponse;
 import org.json.simple.JSONObject;
@@ -20,9 +21,11 @@ public class RecipeDaoImpl implements IRecipeDao {
     private Connection connection;
 
     @Autowired
-    public RecipeDaoImpl(IDatabaseManager database) {
-        this.database = database;
-        this.connection = database.getConnection();
+    public RecipeDaoImpl() {
+        this.database = DatabaseManagerImpl.getInstance();
+        if (this.database != null && this.database.getConnection() != null) {
+            this.connection = this.database.getConnection();
+        }
     }
 
     /**

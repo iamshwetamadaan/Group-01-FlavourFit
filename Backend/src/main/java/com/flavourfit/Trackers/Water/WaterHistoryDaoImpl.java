@@ -1,5 +1,6 @@
 package com.flavourfit.Trackers.Water;
 
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +22,8 @@ public class WaterHistoryDaoImpl implements IWaterHistoryDao {
     private Connection connection;
 
     @Autowired
-    public WaterHistoryDaoImpl(IDatabaseManager database) {
-        this.database = database;
+    public WaterHistoryDaoImpl() {
+        this.database = DatabaseManagerImpl.getInstance();
         if (this.database != null && this.database.getConnection() != null) {
             this.connection = this.database.getConnection();
         }
