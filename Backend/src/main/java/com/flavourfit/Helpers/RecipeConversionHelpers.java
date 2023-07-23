@@ -11,7 +11,7 @@ public class RecipeConversionHelpers {
      *
      * @return -- List<IngredientDto> of scaled ingredients for a recipe
      */
-    public List<IngredientDto> scaleIngredients(double scalingFactor, List<IngredientDto> ingredientList) {
+    public static List<IngredientDto> scaleIngredients(double scalingFactor, List<IngredientDto> ingredientList) {
         List<IngredientDto> scaledIngredients = new ArrayList<>();
 
         for(IngredientDto ingredient : ingredientList) {
@@ -23,5 +23,15 @@ public class RecipeConversionHelpers {
             scaledIngredients.add(ingredient);
         }
         return scaledIngredients;
+    }
+
+    public static List<IngredientDto> metricToImperial(List<IngredientDto> ingredientList) {
+        List<IngredientDto> convertedIngredients = new ArrayList<>();
+        return convertedIngredients;
+    }
+
+    public static List<IngredientDto> imperialToMetric(List<IngredientDto> ingredientList) {
+        List<IngredientDto> convertedIngredients = new ArrayList<>();
+        return convertedIngredients;
     }
 }

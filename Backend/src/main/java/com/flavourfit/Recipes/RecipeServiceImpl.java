@@ -1,6 +1,7 @@
 package com.flavourfit.Recipes;
 
 import com.flavourfit.Exceptions.RecipeExceptions;
+import com.flavourfit.Helpers.RecipeConversionHelpers;
 import com.flavourfit.Recipes.Ingredients.IIngredientsService;
 import com.flavourfit.Recipes.Ingredients.IngredientDto;
 import com.flavourfit.Recipes.SavedRecipes.ISavedRecipesService;
@@ -19,6 +20,8 @@ public class RecipeServiceImpl implements IRecipeService {
 
     private static Logger logger = LoggerFactory.getLogger(RecipeServiceImpl.class);
 
+    private final String metricSystem = "Metrics";
+    private final String imperialSystem = "Imperial";
     private final IRecipeDao recipeDao;
     private final IIngredientsService ingredientsService;
     private final ISavedRecipesService savedRecipesService;
@@ -83,15 +86,25 @@ public class RecipeServiceImpl implements IRecipeService {
     }
 
     @Override
-    public CompleteRecipeDto convertRecipe(int recipeId, int scale, String system) throws RecipeExceptions {
+    public CompleteRecipeDto convertRecipe(int recipeId, double scale, String system) throws RecipeExceptions {
         logger.info("Started method convertRecipe()");
+        CompleteRecipeDto completeRecipe = new CompleteRecipeDto();
+        List<IngredientDto> convertedIngredientList = new ArrayList<>();
+
         try {
             RecipeDto recipe = this.recipeDao.getRecipeById(recipeId);
-            List<IngredientDto> ingredientList = this.recipeDao.getRecipeIngredients(recipeId);
 
-            CompleteRecipeDto completeRecipe = new CompleteRecipeDto();
+            List<IngredientDto> ingredientList = this.recipeDao.getRecipeIngredients(recipeId);
+            List<IngredientDto> scaledIngredientList = RecipeConversionHelpers.scaleIngredients(scale, ingredientList);
+
+            if (system.equals(metricSystem)) {
+                convertedIngredientList = RecipeConversionHelpers.metricToImperial(scaledIngredientList);
+            } else if (system.equals(imperialSystem)) {
+                convertedIngredientList = RecipeConversionHelpers.imperialToMetric(scaledIngredientList);
+            }
+
             completeRecipe.setRecipe(recipe);
-            completeRecipe.setIngredients(ingredientList);
+            completeRecipe.setIngredients(convertedIngredientList);
 
             return completeRecipe;
         } catch (SQLException e) {
