@@ -39570,3 +39570,18 @@ Unconditional classes:
 18:53:31.296 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json]
 18:53:31.298 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.flavourfit.ResponsesDTO.GetResponse@5823a5a0]
 18:53:31.316 [http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+20:01:15.717 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Started getFilteredRecipesByUser() method
+20:01:15.719 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Creating a prepared statement to get the records the record
+20:04:09.946 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Started getFilteredRecipesByUser() method
+20:06:04.798 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Started getFilteredRecipesByUser() method
+20:06:04.799 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Started getFilteredRecipesByUser() method
+20:06:04.800 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Creating a prepared statement to get the records the record
+20:19:12.861 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Started getFilteredRecipesByUser() method
+20:19:12.862 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Started getFilteredRecipesByUser() method
+20:19:12.865 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Creating a prepared statement to get the records the record
+22:53:46.467 [main] INFO  c.f.Recipes.RecipeServiceImpl - Started method getFilteredRecipesByUser
+22:53:46.498 [main] INFO  c.f.Recipes.RecipeServiceImpl - Started method getRecipesByUser()
+22:54:25.773 [main] INFO  c.f.Recipes.RecipeServiceImpl - Started method getFilteredRecipesByUser
+22:54:25.808 [main] INFO  c.f.Recipes.RecipeServiceImpl - Started method getRecipesByUser()
+22:55:55.012 [main] INFO  c.f.Recipes.RecipeServiceImpl - Started method getFilteredRecipesByUser
+22:55:55.041 [main] INFO  c.f.Recipes.RecipeServiceImpl - Started method getFilteredRecipesByUser
