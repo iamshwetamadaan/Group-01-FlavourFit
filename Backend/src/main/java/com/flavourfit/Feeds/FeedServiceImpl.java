@@ -5,11 +5,12 @@ import com.flavourfit.Feeds.Comments.ICommentsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+@Service
 public class FeedServiceImpl implements IFeedService {
     private static Logger logger = LoggerFactory.getLogger(FeedServiceImpl.class);
     private final IFeedDao feedDao;

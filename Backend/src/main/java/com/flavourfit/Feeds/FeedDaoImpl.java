@@ -6,11 +6,12 @@ import com.flavourfit.Feeds.Comments.ICommentsDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+@Repository
 public class FeedDaoImpl implements IFeedDao {
     private static Logger logger = LoggerFactory.getLogger(FeedDaoImpl.class);
     private final IDatabaseManager database;
