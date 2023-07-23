@@ -3,12 +3,13 @@ package com.flavourfit.Feeds;
 import com.flavourfit.Feeds.Comments.CommentDto;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FeedDto {
     private int feedId;
     private String feedContent;
     private int likeCount;
-    private ArrayList<CommentDto> comments;
+    private List<CommentDto> comments;
     private int userId;
     public int getUserId() {
         return userId;
@@ -42,19 +43,17 @@ public class FeedDto {
         this.likeCount = likeCount;
     }
 
-    public ArrayList<CommentDto> getComments() {
+    public List<CommentDto> getComments() {
         return comments;
     }
 
-    public void setComments(ArrayList<CommentDto> comments) {
+    public void setComments(List<CommentDto> comments) {
         this.comments = comments;
     }
 
     @Override
     public String toString() {
-        for (CommentDto comment: comments) {
 
-        }
         return "FeedDto {" +
                 "feedId=" + feedId +
                 ", feedContent='" + feedContent + '\'' +

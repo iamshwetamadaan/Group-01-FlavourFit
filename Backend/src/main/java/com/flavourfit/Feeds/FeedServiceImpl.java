@@ -1,8 +1,10 @@
 package com.flavourfit.Feeds;
 
+import com.flavourfit.Feeds.Comments.CommentDto;
 import com.flavourfit.Feeds.Comments.ICommentsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ public class FeedServiceImpl implements IFeedService {
     private final IFeedService feedsService;
     private final ICommentsService commentsService;
 
+    @Autowired
     public FeedServiceImpl(IFeedDao feedDao, IFeedService feedsService, ICommentsService commentsService) {
         this.feedDao = feedDao;
         this.feedsService = feedsService;
@@ -21,14 +24,11 @@ public class FeedServiceImpl implements IFeedService {
     }
 
     @Override
-    public List<String> fetchAllFeeds() throws SQLException {
-        logger.info("Started method fetchAllFeeds()");
-        return feedDao.getAllFeeds();
-    }
-
-    @Override
-    public ArrayList<FeedDto> getFeedsByUser(int count, int userId) throws SQLException {
+    public FeedDto getFeedsByID(int feedId) throws SQLException {
         logger.info("Started method getFeedsByUser()");
-        return feedDao.getFeedsById(userId);
+        FeedDto fdto = feedDao.getFeedsById(feedId);
+        List<CommentDto> commentsForFeed = commentsService.getCommentsByFeeds(feedId);
+        fdto.setComments(commentsForFeed);
+        return feedDao.getFeedsById(feedId);
     }
 }

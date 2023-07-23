@@ -16,8 +16,6 @@ public class FeedDaoImpl implements IFeedDao {
     private final IDatabaseManager database;
     private Connection connection;
 
-    private ICommentsDao commentsDao;
-
     @Autowired
     public FeedDaoImpl(IDatabaseManager database) {
         this.database = database;
@@ -25,36 +23,19 @@ public class FeedDaoImpl implements IFeedDao {
     }
 
     @Override
-    public List<String> getAllFeeds() throws SQLException {
-        logger.info("Started getAllFeeds() method");
-        List<String> allFeeds = new ArrayList<>();
-        this.testConnection();
-
-        Statement statement = connection.createStatement();
-        logger.info("Running query to fetch different types from the recipes");
-        ResultSet resultset = statement.executeQuery("SELECT Feed_Content FROM Feeds;");
-        while (resultset.next()) {
-            allFeeds.add(resultset.getString("Feed_Content"));
-        }
-        logger.info("Received data from db and added types to allFeeds list.");
-        return allFeeds;
-    }
-
-    @Override
-    public ArrayList<FeedDto> getFeedsById(int userId) throws SQLException {
+    public FeedDto getFeedsById(int feetId) throws SQLException {
         logger.info("Started getFeedsById() method");
-        ArrayList<FeedDto> userFeeds = null;
+        FeedDto userFeeds = null;
 
         this.testConnection();
 
         logger.info("Running select query to get user by userId");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Feeds WHERE User_id=?");
-        preparedStatement.setInt(1, userId);
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Feeds WHERE Feed_id=?");
+        preparedStatement.setInt(1, feetId);
         ResultSet resultSet = preparedStatement.executeQuery();
 
-        while (resultSet.next()) {
-            userFeeds.add(this.extractUserFeedsFromResult(resultSet));
-        }
+        userFeeds = this.extractUserFeedsFromResult(resultSet);
+
         logger.info("Returning received user feeds as response");
         return userFeeds;
     }
@@ -86,7 +67,7 @@ public class FeedDaoImpl implements IFeedDao {
 
     private FeedDto extractUserFeedsFromResult(ResultSet resultSet) throws SQLException {
         FeedDto userFeeds = new FeedDto();
-        if (resultSet != null) {
+        if (resultSet.next()) {
             userFeeds.setFeedId(resultSet.getInt("Feed_id"));
             userFeeds.setFeedContent(resultSet.getString("Feed_content"));
             userFeeds.setLikeCount(resultSet.getInt("Like_count"));
@@ -94,5 +75,20 @@ public class FeedDaoImpl implements IFeedDao {
             userFeeds.setComments(new ArrayList<CommentDto>());
         }
         return userFeeds;
+    }
+
+    private List<FeedDto> getUserFeedsList(ResultSet resultSet) throws SQLException {
+        List<FeedDto> userFeedsList = new ArrayList<>();
+        while (resultSet.next()) {
+            FeedDto userFeeds = new FeedDto();
+            userFeeds.setFeedId(resultSet.getInt("Feed_id"));
+            userFeeds.setFeedContent(resultSet.getString("Feed_content"));
+            userFeeds.setLikeCount(resultSet.getInt("Like_count"));
+            userFeeds.setUserId(resultSet.getInt("User_id"));
+            userFeeds.setComments(new ArrayList<CommentDto>());
+            userFeedsList.add(userFeeds);
+
+        }
+        return userFeedsList;
     }
 }

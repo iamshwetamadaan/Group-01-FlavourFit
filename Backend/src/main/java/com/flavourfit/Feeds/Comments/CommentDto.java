@@ -4,6 +4,8 @@ public class CommentDto {
     private int commentID;
     private String commentContent;
     private String username;
+    private int userId;
+    private int feedId;
 
     public int getCommentID() {
         return commentID;
@@ -27,5 +29,20 @@ public class CommentDto {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getFeedId() {
+        return feedId;
+    }
+
+    public void setFeedId(int feedId) {
+        this.feedId = feedId;
     }
 }

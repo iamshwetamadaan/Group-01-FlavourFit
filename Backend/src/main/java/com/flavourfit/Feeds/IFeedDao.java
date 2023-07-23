@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface IFeedDao {
-    List<String> getAllFeeds() throws SQLException;
 
-    ArrayList<FeedDto> getFeedsById(int userId) throws SQLException;
+    public FeedDto getFeedsById(int feetId) throws SQLException;
 }
