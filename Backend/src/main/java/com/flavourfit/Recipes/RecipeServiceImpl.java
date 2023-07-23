@@ -93,13 +93,13 @@ public class RecipeServiceImpl implements IRecipeService {
 
         try {
             RecipeDto recipe = this.recipeDao.getRecipeById(recipeId);
-
             List<IngredientDto> ingredientList = this.recipeDao.getRecipeIngredients(recipeId);
+
             List<IngredientDto> scaledIngredientList = RecipeConversionHelpers.scaleIngredients(scale, ingredientList);
 
-            if (system.equals(metricSystem)) {
+            if (system.equals(imperialSystem)) {
                 convertedIngredientList = RecipeConversionHelpers.metricToImperial(scaledIngredientList);
-            } else if (system.equals(imperialSystem)) {
+            } else if (system.equals(metricSystem)) {
                 convertedIngredientList = RecipeConversionHelpers.imperialToMetric(scaledIngredientList);
             }
 

@@ -171,7 +171,16 @@ public class RecipeDaoImpl implements IRecipeDao {
         List<IngredientDto> recipeIngredients = new ArrayList<>();
         this.testConnection();
 
+        logger.info("Running select query to get ingredients by recipeId");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Ingredients WHERE Recipe_id=?");
+        preparedStatement.setInt(1, recipeId);
+        ResultSet resultSet = preparedStatement.executeQuery();
 
+        while(resultSet.next()) {
+            recipeIngredients.add(this.extractIngredientFromResults(resultSet));
+        }
+
+        logger.info("Returning ingredients from recipe table as response");
         return recipeIngredients;
     }
 
