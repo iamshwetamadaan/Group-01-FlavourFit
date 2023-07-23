@@ -13,7 +13,7 @@ public interface IRecipeService {
 
     public ArrayList<Object> getRecipesByUser(int count, int userId) throws SQLException;
 
-    public ArrayList<Object> getFilteredRecipesByUser(int id , HashMap<String,Object> requestBody) throws SQLException;
+    public ArrayList<Object> getFilteredRecipesByUser(int userId, HashMap<String, Object> requestBody) throws SQLException;
 
     CompleteRecipeDto recordRecipe(CompleteRecipeDto completeRecipe, int userId) throws
             RecipeExceptions;

@@ -115,9 +115,9 @@ public class RecipeDaoImpl implements IRecipeDao {
         int count = (int) requestBody.get("count");
         String[] favourites = (String[]) requestBody.get("favourites");
 
-        if(count==0)
+        if (count == 0)
             throw new IllegalArgumentException("Count cannot be 0");
-        if(keyword.length()==0)
+        if (keyword.length() == 0)
             throw new IllegalArgumentException("Keyword cannot be empty");
 
         this.testConnection();
@@ -127,9 +127,9 @@ public class RecipeDaoImpl implements IRecipeDao {
                 "from Recipes join Saved_Recipes on Recipes.recipe_id = Saved_Recipes.recipe_id\n" +
                 "where Saved_Recipes.user_id=? and (Recipes.recipe_name like ? or Recipes.recipe_description like ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setInt(1,id);
-        preparedStatement.setString(2,"%"+keyword+"%");
-        preparedStatement.setString(3,"%"+keyword+"%");
+        preparedStatement.setInt(1, id);
+        preparedStatement.setString(2, "%" + keyword + "%");
+        preparedStatement.setString(3, "%" + keyword + "%");
         logger.info("Running query to fetch recipes for given user");
         ResultSet resultset = preparedStatement.executeQuery();
         while (resultset.next()) {

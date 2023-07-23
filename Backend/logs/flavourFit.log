@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 00:29:28.137 [main] INFO  com.flavourfit.FlavourFit - Starting FlavourFit using Java 20.0.1 with PID 27136 (C:\Users\Bharath\Documents\MS\Summer 2023\ASDC\Group_Project\group01\Backend\target\classes started by Bharath in C:\Users\Bharath\Documents\MS\Summer 2023\ASDC\Group_Project\group01\Backend)
 00:29:28.145 [main] DEBUG com.flavourfit.FlavourFit - Running with Spring Boot v3.1.1, Spring v6.0.10
 00:29:28.148 [main] INFO  com.flavourfit.FlavourFit - No active profile set, falling back to 1 default profile: "default"
@@ -39594,3 +39595,14 @@ Unconditional classes:
 23:21:38.678 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase -2147483647
 23:21:38.682 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Bean 'springBootLoggingLifecycle' completed its stop procedure
 23:21:38.725 [SpringApplicationShutdownHook] DEBUG o.s.s.c.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+=======
+06:58:18.173 [SpringApplicationShutdownHook] DEBUG o.s.b.a.ApplicationAvailabilityBean - Application availability state ReadinessState changed from ACCEPTING_TRAFFIC to REFUSING_TRAFFIC
+06:58:18.200 [SpringApplicationShutdownHook] DEBUG o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@7f0d96f2, started on Fri Jul 21 13:44:46 ADT 2023
+06:58:18.219 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147482623
+06:58:18.223 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Bean 'webServerGracefulShutdown' completed its stop procedure
+06:58:18.223 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147481599
+06:58:18.260 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Bean 'webServerStartStop' completed its stop procedure
+06:58:18.260 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase -2147483647
+06:58:18.260 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Bean 'springBootLoggingLifecycle' completed its stop procedure
+06:58:18.262 [SpringApplicationShutdownHook] DEBUG o.s.s.c.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+>>>>>>> c1e07053effd6a690f86eebe0847d4be73cb0d83

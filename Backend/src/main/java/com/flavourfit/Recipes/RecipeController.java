@@ -48,14 +48,14 @@ public class RecipeController {
 
     @GetMapping("/saved-recipes")
     public ResponseEntity<GetResponse> getRecipesByUser(
-            @RequestParam("count") int count
+            @RequestParam("count") int count, @RequestHeader("Authorization") String token
     ) {
         ArrayList<Object> recipes = new ArrayList<Object>();
         logger.info("Started getRecipeByUser() method");
 
         try {
-//            int userId = authService.extractUserIdFromToken(token);
-            int userId = 7;
+            int userId = authService.extractUserIdFromToken(token);
+//            int userId = 7;
             recipes = this.recipeService.getRecipesByUser(count,userId);
 //            CompleteRecipeDto addedRecipe = this.recipeService.recordRecipe(recipe, userId);
 
@@ -98,7 +98,6 @@ public class RecipeController {
         }
 
     }
-
     @PostMapping("/add")
     public ResponseEntity<PutResponse> recordRecipe(
             @RequestBody CompleteRecipeDto recipe, @RequestHeader("Authorization") String token

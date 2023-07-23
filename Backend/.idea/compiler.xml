@@ -8,7 +8,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Project" />
         <module name="Group01Project" />
-        <module name="Backend" />
         <module name="FlavourFitBackend" />
         <module name="FlavourFit" />
       </profile>

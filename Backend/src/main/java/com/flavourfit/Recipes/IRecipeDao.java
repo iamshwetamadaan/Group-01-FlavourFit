@@ -10,7 +10,8 @@ public interface IRecipeDao {
 
     public ArrayList<Object> getRecipesByUser(int id,int count) throws SQLException;
 
-    public ArrayList<Object> getFilteredRecipesByUser(int id, HashMap<String, Object> requestBody) throws SQLException;
+    public ArrayList<Object> getFilteredRecipesByUser(int userID , HashMap<String, Object> requestbody) throws SQLException;
+
 
     RecipeDto addRecipe(RecipeDto recipeDto, int userId) throws SQLException;
 }
