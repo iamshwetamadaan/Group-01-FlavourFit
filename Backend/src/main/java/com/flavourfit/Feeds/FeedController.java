@@ -83,7 +83,7 @@ public class FeedController {
 
         try {
             int offsetNumber = Integer.parseInt(offset);
-            ArrayList<FeedDto> feeds= this.feedService.getFeedsByUser(userId,offsetNumber);
+            List<FeedDto> feeds= this.feedService.getFeedsByUser(userId,offsetNumber);
             logger.info("Retrieved all the feeds");
             return ResponseEntity.ok().body(new GetResponse(true, "Successfully retrieved feed", feeds));
         } catch (Exception e) {

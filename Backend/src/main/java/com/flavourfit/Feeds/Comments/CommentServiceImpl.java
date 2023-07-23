@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class CommentServiceImpl implements ICommentsService{
     private static Logger logger = LoggerFactory.getLogger(CommentServiceImpl.class);
@@ -16,7 +18,7 @@ public class CommentServiceImpl implements ICommentsService{
         this.commentsDao = commentsDao;
     }
     @Override
-    public ArrayList<CommentDto> getCommentsByFeeds(int feedId) throws SQLException {
+    public List<CommentDto> getCommentsByFeeds(int feedId) throws SQLException {
         logger.info("Started method getCommentsByFeeds()");
         return commentsDao.getCommentsByFeedId(feedId);
     }
