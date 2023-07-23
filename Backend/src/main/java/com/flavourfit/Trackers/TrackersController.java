@@ -8,7 +8,11 @@ import com.flavourfit.ResponsesDTO.PutResponse;
 import com.flavourfit.Security.JwtService;
 import com.flavourfit.Trackers.Calories.*;
 import com.flavourfit.Trackers.Water.IWaterHistoryService;
+import com.flavourfit.Trackers.Water.WaterGraphDto;
 import com.flavourfit.Trackers.Water.WaterHistoryDto;
+import com.flavourfit.Trackers.Weights.IWeightHistoryService;
+import com.flavourfit.Trackers.Weights.WeightGraphDto;
+import com.flavourfit.Trackers.Weights.WeightHistoryDto;
 import com.flavourfit.User.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,16 +33,20 @@ public class TrackersController {
 
     private ICalorieHistoryService calorieHistoryService;
     private IWaterHistoryService waterHistoryService;
+
+    private IWeightHistoryService weightHistoryService;
     private IAuthService authService;
 
 
     @Autowired
     public TrackersController(
             ICalorieHistoryService calorieHistoryService, IWaterHistoryService waterHistoryService,
+            IWeightHistoryService weightHistoryService,
             IAuthService authService
     ) {
         this.calorieHistoryService = calorieHistoryService;
         this.waterHistoryService = waterHistoryService;
+        this.weightHistoryService = weightHistoryService;
         this.authService = authService;
     }
 
@@ -50,6 +58,11 @@ public class TrackersController {
     @Autowired
     public void setWaterHistoryService(IWaterHistoryService waterHistoryService) {
         this.waterHistoryService = waterHistoryService;
+    }
+
+    @Autowired
+    public void setWeightHistoryService(IWeightHistoryService weightHistoryService) {
+        this.weightHistoryService = weightHistoryService;
     }
 
 
@@ -108,6 +121,36 @@ public class TrackersController {
         }
     }
 
+
+
+
+    @PutMapping("/record-weight")
+    public ResponseEntity<Object> recordWeight(
+            @RequestBody Map<String, Object> request,
+            @RequestHeader("Authorization") String token
+    ) {
+        logger.info("Entered controller method recordWeight()");
+        double weight = (Double) request.get("weight");
+        int userId = authService.extractUserIdFromToken(token);
+
+        try {
+            logger.info("Updating water intake through weightHistoryService.");
+            this.weightHistoryService.recordWeight(weight, userId);
+            Map<String, Object> data = new HashMap<>();
+
+            logger.info("Fetching the total weight for current date.");
+            WeightHistoryDto todaysWeight = this.weightHistoryService.fetchWeightByUserIdDate(
+                    DateHelpers.getCurrentDateString(), userId);
+            data.put("todaysWeight", todaysWeight.getWeight());
+
+            logger.info("Updated record count. Returning response through api");
+            return ResponseEntity.ok().body(new PutResponse(true, "Successfully recorded Weight", data));
+        } catch (SQLException e) {
+            logger.error("Bad api request during recordWaterIntake()");
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to record Weight"));
+        }
+    }
+
     @GetMapping("/calorie-history")
     public ResponseEntity<GetResponse> fetchCalorieHistory(
             @RequestParam("startDate") String startDate,
@@ -124,4 +167,40 @@ public class TrackersController {
             return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to retrieved calorie history:" + e.getMessage()));
         }
     }
+
+    @GetMapping("/water-history")
+    public ResponseEntity<GetResponse> fetchWaterHistory(
+            @RequestParam("startDate") String startDate,
+            @RequestParam("endDate") String endDate,
+            @RequestHeader("Authorization") String token
+    ) {
+        logger.info("Entered controller method recordWaterIntake()");
+        int userId = authService.extractUserIdFromToken(token);
+
+        try {
+            List<WaterGraphDto> calories = this.waterHistoryService.fetchWaterHistoryByPeriod(startDate, endDate, userId);
+            return ResponseEntity.ok().body(new GetResponse(true, "Successfully retrieved water history", calories));
+        } catch (CalorieHistoryException e) {
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to retrieved water history:" + e.getMessage()));
+        }
+    }
+
+    @GetMapping("/weight-history")
+    public ResponseEntity<GetResponse> fetchWeightHistory(
+            @RequestParam("startDate") String startDate,
+            @RequestParam("endDate") String endDate,
+            @RequestHeader("Authorization") String token
+    ) {
+        logger.info("Entered controller method fetchWeightHistory()");
+        int userId = authService.extractUserIdFromToken(token);
+
+        try {
+            List<WeightGraphDto> calories = this.weightHistoryService.fetchWeightHistoryByPeriod(startDate, endDate, userId);
+            return ResponseEntity.ok().body(new GetResponse(true, "Successfully retrieved weight history", calories));
+        } catch (CalorieHistoryException e) {
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to retrieved weight history:" + e.getMessage()));
+        }
+    }
+
+
 }
