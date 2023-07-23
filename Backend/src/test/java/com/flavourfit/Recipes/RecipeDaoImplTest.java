@@ -3,6 +3,7 @@ package com.flavourfit.Recipes;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -24,7 +25,7 @@ class RecipeDaoImplTest {
 
     @Mock
     private PreparedStatement preparedStatement;
-    @InjectMock
+    @InjectMocks
     private RecipeDaoImpl recipeDao;
 
     @BeforeEach
