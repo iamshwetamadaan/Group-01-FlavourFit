@@ -1,5 +1,6 @@
 package com.flavourfit.User;
 
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +20,11 @@ public class UserDaoImpl implements IUserDao {
     private Connection connection;
 
     @Autowired
-    public UserDaoImpl(IDatabaseManager database) {
-        this.database = database;
-        this.connection = database.getConnection();
+    public UserDaoImpl() {
+        this.database = DatabaseManagerImpl.getInstance();
+        if (this.database != null && this.database.getConnection() != null) {
+            this.connection = this.database.getConnection();
+        }
     }
 
 
@@ -119,7 +122,8 @@ public class UserDaoImpl implements IUserDao {
         this.testConnection();
 
         logger.info("Creating a prepared statement update the record");
-        String query = "Update Users set First_name=?, Last_name=?, Phone=?, Email=?, Age=?" +
+        String query = "Update Users set" +
+                " First_name=?, Last_name=?, Phone=?, Email=?, Age=?" +
                 ",Street_address=?, City=?,State=?, Zip_code=?, Current_weight=?, Target_weight=?" +
                 "where User_id=?";
         PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -274,7 +278,8 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public int startExtendPremiumMembership(int userId, Date startDate, Date expiryDate, int paymentID) throws SQLException {
+    public int startExtendPremiumMembership(int userId, Date startDate, Date expiryDate, int paymentID) throws
+            SQLException {
 
         int premiumMembershipID = 0;
 
@@ -316,6 +321,7 @@ public class UserDaoImpl implements IUserDao {
 
         return premiumMembershipID;
     }
+
     @Override
     public boolean updateUserPayment(int userId, int paymentID, int premiumMembershipID) throws SQLException {
 
@@ -340,8 +346,8 @@ public class UserDaoImpl implements IUserDao {
             String query = "UPDATE Payments SET Premium_membership_id = ? where Payment_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             logger.info("Entering values in prepared statement with actual values to be inserted");
-            preparedStatement.setInt(0, premiumMembershipID );
-            preparedStatement.setInt(1, paymentID );
+            preparedStatement.setInt(0, premiumMembershipID);
+            preparedStatement.setInt(1, paymentID);
             logger.info("Execute the update of record to the table");
             preparedStatement.executeUpdate();
 
@@ -355,7 +361,8 @@ public class UserDaoImpl implements IUserDao {
         return paymentUpdated;
     }
 
-    private void replaceStatementPlaceholders(UserDto user, PreparedStatement preparedStatement, int count) throws SQLException {
+    private void replaceStatementPlaceholders(UserDto user, PreparedStatement preparedStatement, int count) throws
+            SQLException {
         if (user == null || preparedStatement == null) {
             return;
         }
