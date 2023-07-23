@@ -9,17 +9,16 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
+
 @Service
 public class FeedServiceImpl implements IFeedService {
     private static Logger logger = LoggerFactory.getLogger(FeedServiceImpl.class);
     private final IFeedDao feedDao;
-    private final IFeedService feedsService;
     private final ICommentsService commentsService;
 
     @Autowired
-    public FeedServiceImpl(IFeedDao feedDao, IFeedService feedsService, ICommentsService commentsService) {
+    public FeedServiceImpl(IFeedDao feedDao, ICommentsService commentsService) {
         this.feedDao = feedDao;
-        this.feedsService = feedsService;
         this.commentsService = commentsService;
     }
 

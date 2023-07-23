@@ -1,5 +1,6 @@
 package com.flavourfit.Feeds.Comments;
 
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,16 +9,19 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
+
 @Repository
-public class CommentDaoImpl implements ICommentsDao{
+public class CommentDaoImpl implements ICommentsDao {
     private static Logger logger = LoggerFactory.getLogger(CommentDaoImpl.class);
     private final IDatabaseManager database;
     private Connection connection;
 
     @Autowired
-    public CommentDaoImpl(IDatabaseManager database, Connection connection) {
-        this.database = database;
-        this.connection = connection;
+    public CommentDaoImpl() {
+        this.database = DatabaseManagerImpl.getInstance();
+        if (this.database != null && this.database.getConnection() != null) {
+            this.connection = this.database.getConnection();
+        }
     }
 
     private void testConnection() throws SQLException {
@@ -53,7 +57,7 @@ public class CommentDaoImpl implements ICommentsDao{
     }
 
     private void replaceStatementPlaceholders(CommentDto commentDto, PreparedStatement preparedStatement) throws
-                                                                                                 SQLException {
+            SQLException {
         if (commentDto == null || preparedStatement == null) {
             return;
         }
