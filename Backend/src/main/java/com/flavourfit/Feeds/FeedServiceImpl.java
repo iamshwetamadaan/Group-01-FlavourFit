@@ -26,11 +26,25 @@ public class FeedServiceImpl implements IFeedService {
     @Override
     public FeedDto getFeedsByID(int feedId) throws SQLException {
         logger.info("Started method getFeedsByID()");
-
         FeedDto feed = feedDao.getFeedsById(feedId);
         List<CommentDto> commentsForFeed = commentsService.getCommentsByFeeds(feedId);
         feed.setComments(commentsForFeed);
-
         return feed;
     }
+
+    @Override
+    public ArrayList<FeedDto> getFeedsByUser(int userID,int offset) throws SQLException {
+        logger.info("Started getFeedsByUser method()");
+        ArrayList<FeedDto> feeds = feedDao.getFeedsByUser(userID,offset);
+
+        logger.info("Received the feeds");
+        for(FeedDto feed : feeds){
+            List<CommentDto> commentsForFeed = commentsService.getCommentsByFeeds(feed.getFeedId());
+            feed.setComments(commentsForFeed);
+        }
+
+        logger.info("Receiving the feeds");
+        return feeds;
+    }
+
 }
