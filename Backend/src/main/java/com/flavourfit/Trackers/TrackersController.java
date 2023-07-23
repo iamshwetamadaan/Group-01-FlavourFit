@@ -1,6 +1,7 @@
 package com.flavourfit.Trackers;
 
 import com.flavourfit.Authentication.IAuthService;
+import com.flavourfit.Exceptions.CalorieHistoryException;
 import com.flavourfit.Helpers.DateHelpers;
 import com.flavourfit.ResponsesDTO.GetResponse;
 import com.flavourfit.ResponsesDTO.PutResponse;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -84,7 +86,7 @@ public class TrackersController {
 
             logger.info("Updated record count for User #" + userId + ". Returning response through api");
             return ResponseEntity.ok().body(new PutResponse(true, "Successfully recorded calorie count", data));
-        } catch (SQLException e) {
+        } catch (CalorieHistoryException e) {
             logger.error("Bad api request during recordCalorieCount()");
             return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to record calorieCount"));
         }
@@ -116,6 +118,7 @@ public class TrackersController {
             return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to record Water intake"));
         }
     }
+
 
 
 
@@ -207,4 +210,22 @@ public class TrackersController {
             return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to fetch Water intake"));
         }
     }*/
+
+    @GetMapping("/calorie-history")
+    public ResponseEntity<GetResponse> fetchCalorieHistory(
+            @RequestParam("startDate") String startDate,
+            @RequestParam("endDate") String endDate,
+            @RequestHeader("Authorization") String token
+    ) {
+        logger.info("Entered controller method recordWaterIntake()");
+        int userId = authService.extractUserIdFromToken(token);
+
+        try {
+            List<CalorieGraphDto> calories = this.calorieHistoryService.fetchCalorieHistoryByPeriod(startDate, endDate, userId);
+            return ResponseEntity.ok().body(new GetResponse(true, "Successfully retrieved calorie history", calories));
+        } catch (CalorieHistoryException e) {
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to retrieved calorie history:" + e.getMessage()));
+        }
+    }
+
 }

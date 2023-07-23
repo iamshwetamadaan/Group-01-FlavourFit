@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import logo from "./logo.svg";
 import { Container, Nav, Navbar } from "react-bootstrap";
+import { useEffect } from "react";
 
 function App() {
   return (
@@ -9,9 +10,9 @@ function App() {
         <Container>
           <Navbar.Brand href="#home">Navbar</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
+            <Nav.Link href="/home">Home</Nav.Link>
+            <Nav.Link href="/features">Features</Nav.Link>
+            <Nav.Link href="/pricing">Pricing</Nav.Link>
           </Nav>
         </Container>
       </Navbar>

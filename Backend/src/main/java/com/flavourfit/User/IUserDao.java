@@ -1,5 +1,6 @@
 package com.flavourfit.User;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -17,4 +18,10 @@ public interface IUserDao {
     public int updateUser(UserDto user) throws SQLException;
 
     UserDto getUserByEmail(String email) throws SQLException;
+
+    public int userToPremiumPayment(int userId, PremiumUserPaymentDetailsDto details) throws SQLException;
+
+    public int startExtendPremiumMembership(int userId, Date startDate, Date expiryDate, int paymentID) throws SQLException;
+
+    public boolean updateUserPayment(int userId, int paymentID, int premiumMembershipID) throws SQLException;
 }
