@@ -133,4 +133,19 @@ public class RecipeController {
             return ResponseEntity.internalServerError().body(new PutResponse(true, "Failed to save recipe"));
         }
     }
+
+    @PostMapping("/convert-recipe")
+    public ResponseEntity<PutResponse> covertRecipe(@RequestHeader("Authorization") String token, @RequestParam("recipeID") int recipeId, @RequestParam("scale") int scale, @RequestParam("system") String system) {
+        logger.info("Entered controller method covertRecipe()");
+        int userId = authService.extractUserIdFromToken(token);
+        try {
+
+            this.savedRecipesService.saveRecipe(recipeId, userId);
+            logger.info("Saved recipe for userId:{}", userId);
+            return ResponseEntity.ok().body(new PutResponse(true, "Successfully saved recipe"));
+        } catch (RecipeExceptions e) {
+            logger.error("Failed to Save recipe for userId:{}", userId);
+            return ResponseEntity.internalServerError().body(new PutResponse(true, "Failed to save recipe"));
+        }
+    }
 }

@@ -81,4 +81,14 @@ public class RecipeServiceImpl implements IRecipeService {
             throw new RecipeExceptions("Invalid recipe");
         }
     }
+
+    @Override
+    public CompleteRecipeDto convertRecipe(int recipeId, int scale, String system) throws RecipeExceptions {
+        try {
+            CompleteRecipeDto recipe = this.recipeDao.getRecipeById(recipeId);
+            return recipe;
+        } catch (SQLException e) {
+            throw new RecipeExceptions(e);
+        }
+    }
 }

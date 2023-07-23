@@ -14,4 +14,6 @@ public interface IRecipeDao {
 
 
     RecipeDto addRecipe(RecipeDto recipeDto, int userId) throws SQLException;
+
+    CompleteRecipeDto getRecipeById(int recipeId) throws SQLException;
 }

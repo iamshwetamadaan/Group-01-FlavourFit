@@ -2,8 +2,8 @@ package com.flavourfit.Recipes;
 
 import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.Recipes.Ingredients.IngredientDto;
 import com.flavourfit.ResponsesDTO.SavedRecipesResponse;
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,6 +148,14 @@ public class RecipeDaoImpl implements IRecipeDao {
         return recipes;
     }
 
+    @Override
+    public CompleteRecipeDto getRecipeById(int recipeId) throws SQLException {
+        logger.info("Started getRecipeById() method");
+        CompleteRecipeDto recipe = new CompleteRecipeDto();
+        this.testConnection();
+        return recipe;
+    }
+
     private void testConnection() throws SQLException {
         if (database == null && connection == null) {
             logger.error("SQL connection not found!");
@@ -171,5 +179,17 @@ public class RecipeDaoImpl implements IRecipeDao {
         preparedStatement.setString(2, recipe.getRecipeDescription());
         preparedStatement.setString(3, recipe.getTypes());
         preparedStatement.setBoolean(4, recipe.isEditable());
+    }
+
+    private IngredientDto extractIngredientFromResults(ResultSet resultSet) throws SQLException {
+        IngredientDto ingredient = new IngredientDto();
+        if(resultSet != null) {
+            ingredient.setIngredientId(resultSet.getInt("Ingredient_id"));
+            ingredient.setIngredientName(resultSet.getString("Ingredient_name"));
+            ingredient.setRecipeId(resultSet.getInt("Recipe_id"));
+            ingredient.setQuantity(resultSet.getDouble("quantity"));
+            ingredient.setQuantityUnit(resultSet.getString("quantity_unit"));
+        }
+        return ingredient;
     }
 }

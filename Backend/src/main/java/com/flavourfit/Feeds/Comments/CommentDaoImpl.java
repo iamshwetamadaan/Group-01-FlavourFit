@@ -45,7 +45,7 @@ public class CommentDaoImpl implements ICommentsDao {
         this.testConnection();
 
         logger.info("Running select query to get feed by feedId with some conditions");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Feeds WHERE Feed_id=? ORDER BY Comment_id DESC");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Comments WHERE Feed_id=? ORDER BY Comment_id DESC");
         preparedStatement.setInt(1, feedId);
         ResultSet resultSet = preparedStatement.executeQuery();
 
