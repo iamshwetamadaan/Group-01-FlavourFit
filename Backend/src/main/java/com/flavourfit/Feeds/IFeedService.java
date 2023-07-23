@@ -7,4 +7,6 @@ import java.util.List;
 public interface IFeedService {
 
     public FeedDto getFeedsByID(int feedId) throws SQLException;
+
+    public int increaseFeedLikes(int feedId) throws SQLException;
 }

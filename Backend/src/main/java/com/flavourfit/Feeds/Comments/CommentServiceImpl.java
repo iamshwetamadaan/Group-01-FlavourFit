@@ -20,6 +20,4 @@ public class CommentServiceImpl implements ICommentsService{
         logger.info("Started method getCommentsByFeeds()");
         return commentsDao.getCommentsByFeedId(feedId);
     }
-
-
 }

@@ -9,10 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -37,6 +34,18 @@ public class FeedController {
         try {
             FeedDto feed = this.feedService.getFeedsByID(feedID);
             return ResponseEntity.ok().body(new GetResponse(true, "Successfully retrieved feed", feed));
+        } catch (Exception e) {
+            logger.error("Failed to retrieve feed");
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to retrieve feed:" + e.getMessage()));
+        }
+    }
+
+    @PatchMapping("/like-feeds")
+    public ResponseEntity<GetResponse> updateLikesByFeedID(@RequestParam("feedID") int feedID) {
+        logger.info("Entered controller method updateLikesByFeedID()");
+        try {
+            int updatedFeedLikes = this.feedService.increaseFeedLikes(feedID);
+            return ResponseEntity.ok().body(new GetResponse(true, "Successfully retrieved feed", updatedFeedLikes));
         } catch (Exception e) {
             logger.error("Failed to retrieve feed");
             return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to retrieve feed:" + e.getMessage()));

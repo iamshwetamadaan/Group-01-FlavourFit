@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 @Service
 public class FeedServiceImpl implements IFeedService {
@@ -33,5 +32,13 @@ public class FeedServiceImpl implements IFeedService {
         feed.setComments(commentsForFeed);
 
         return feed;
+    }
+
+    @Override
+    public int increaseFeedLikes(int feedId) throws SQLException {
+        logger.info("Started method increaseFeedLikes()");
+
+        int updatedFeedLikes = feedDao.updateFeedLikes(feedId);
+        return updatedFeedLikes;
     }
 }
