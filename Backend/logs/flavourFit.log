@@ -1333,3 +1333,11 @@ Unconditional classes:
 11:35:10.964 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Bean 'springBootLoggingLifecycle' completed its stop procedure
 11:35:10.964 [SpringApplicationShutdownHook] DEBUG o.s.j.e.a.AnnotationMBeanExporter - Unregistering JMX-exposed beans on shutdown
 11:35:10.965 [SpringApplicationShutdownHook] DEBUG o.s.s.c.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+23:21:35.074 [main] INFO  c.f.Recipes.RecipeServiceImpl - Started method fetchAllRecipeTypes()
+23:21:35.095 [main] INFO  c.f.Recipes.RecipeServiceImpl - Started method fetchAllRecipeTypes()
+23:24:03.637 [main] INFO  c.f.Recipes.RecipeServiceImpl - Started method fetchAllRecipeTypes()
+23:24:03.655 [main] INFO  c.f.Recipes.RecipeServiceImpl - Started method fetchAllRecipeTypes()
+23:24:21.905 [main] INFO  c.f.Recipes.RecipeController - Entered controller method saveRecipe()
+23:24:21.923 [main] INFO  c.f.Recipes.RecipeController - Saved recipe for userId:1
+23:24:21.995 [main] INFO  c.f.Recipes.RecipeController - Started fetchAllRecipeTypes() method
+23:24:21.995 [main] INFO  c.f.Recipes.RecipeController - Successfully collected  recipe types.
