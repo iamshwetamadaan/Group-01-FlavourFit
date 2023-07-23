@@ -1,5 +1,6 @@
 ./Backend/HELP.md
 ./Backend/target/
+./Backend/logs/
 !./Backend/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
