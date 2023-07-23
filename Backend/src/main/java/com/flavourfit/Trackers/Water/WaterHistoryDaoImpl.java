@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class WaterHistoryDaoImpl implements IWaterHistoryDao {
@@ -126,10 +128,58 @@ public class WaterHistoryDaoImpl implements IWaterHistoryDao {
         return waterHistoryDto;
     }
 
+    /**
+     * Method to get the waterhistory for a period
+     *
+     * @param startDate -- Starting date of the period
+     * @param endDate   -- Ending date of the period
+     * @param userId    -- ID of the user
+     * @return -- List of water history objects found
+     * @throws SQLException
+     */
+    @Override
+    public List<WaterHistoryDto> getWaterHistoryByPeriod(String startDate, String endDate, int userId) throws
+                                                                                                           SQLException {
+        logger.info("Started getWaterHistoryByPeriod() method");
+
+        if (startDate == null || startDate.isEmpty()) {
+            logger.error("Invalid start date.");
+            throw new SQLException("Invalid start date.");
+        }
+
+        if (endDate == null || endDate.isEmpty()) {
+            logger.error("Invalid start date.");
+            throw new SQLException("Invalid end date.");
+        }
+
+        this.testConnection();
+
+        WaterHistoryDto waterHistoryDto = null;
+        String query = "SELECT * FROM Water_History WHERE User_id=? AND Update_Date Between ? AND ? ORDER BY Water_history_id DESC";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        logger.info("Replacing values in prepared statement with actual values for date and user id.");
+        preparedStatement.setInt(1, userId);
+        preparedStatement.setString(2, startDate);
+        preparedStatement.setString(3, endDate);
+
+        logger.info("Execute the query to get water intake for date.");
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        List<WaterHistoryDto> waterHistoryList = this.extractResultList(resultSet);
+
+        return waterHistoryList;
+    }
+
+
+
     private WaterHistoryDto extractResult(ResultSet resultSet) throws SQLException {
         if (resultSet == null) {
             throw new SQLException("Invalid result set!");
         }
+
+
+
         WaterHistoryDto waterHistoryDto = null;
         while (resultSet.next()) {
             int id = resultSet.getInt("Water_history_id");
@@ -157,4 +207,37 @@ public class WaterHistoryDaoImpl implements IWaterHistoryDao {
             this.connection = this.database.getConnection();
         }
     }
+
+    /**
+     * Method to extract list of waterHistory from result set
+     *
+     * @param resultSet -- Result set to be iterated
+     * @return -- List of waterHistory objects found from result
+     * @throws SQLException
+     */
+    private List<WaterHistoryDto> extractResultList(ResultSet resultSet) throws SQLException {
+        if (resultSet == null) {
+            throw new SQLException("Invalid result set!");
+        }
+        List<WaterHistoryDto> waterHistoryList = new ArrayList<>();
+        while (resultSet.next()) {
+            int id = resultSet.getInt("Water_history_id");
+            double waterintake = resultSet.getDouble("Water_intake");
+            String date = resultSet.getString("Update_Date");
+            int userId = resultSet.getInt("User_id");
+
+            WaterHistoryDto waterHistoryDto = new WaterHistoryDto(id, waterintake, date, userId);
+            waterHistoryList.add(waterHistoryDto);
+        }
+
+        return waterHistoryList;
+    }
+
+
+
+
+
+
+
+
 }
