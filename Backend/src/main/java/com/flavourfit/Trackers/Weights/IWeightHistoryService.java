@@ -1,7 +1,4 @@
 package com.flavourfit.Trackers.Weights;
-
-import com.flavourfit.Trackers.Water.WaterGraphDto;
-
 import java.sql.SQLException;
 import java.util.List;
 

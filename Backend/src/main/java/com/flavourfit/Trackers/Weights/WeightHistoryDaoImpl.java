@@ -1,7 +1,6 @@
 package com.flavourfit.Trackers.Weights;
 
 import com.flavourfit.DatabaseManager.IDatabaseManager;
-import com.flavourfit.Trackers.Water.WaterHistoryDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,12 +74,12 @@ import java.util.List;
                 logger.info("If water history row exists Execute the update of record to the table");
                 double updatedWeight = existingWeightHistoryDto.getWeight() + weightHistoryDto.getWeight();
                 existingWeightHistoryDto.setWeight(updatedWeight);
-                this.updateWaterHistory(existingWeightHistoryDto);
+                this.updateWeightHistory(existingWeightHistoryDto);
             }
             logger.info("Added water intake to the Water history table!");
         }
 
-        public void updateWaterHistory(WeightHistoryDto weightHistoryDto) throws SQLException {
+        public void updateWeightHistory(WeightHistoryDto weightHistoryDto) throws SQLException {
             logger.info("Started getWaterIntakeByUserIdDate() method");
 
             if (weightHistoryDto == null) {

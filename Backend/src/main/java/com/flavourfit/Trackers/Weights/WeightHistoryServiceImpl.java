@@ -1,9 +1,7 @@
 package com.flavourfit.Trackers.Weights;
 
-import com.flavourfit.Exceptions.WaterHistoryException;
+import com.flavourfit.Exceptions.WeightHistoryException;
 import com.flavourfit.Helpers.DateHelpers;
-import com.flavourfit.Trackers.Water.WaterGraphDto;
-import com.flavourfit.Trackers.Water.WaterHistoryDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,7 +108,7 @@ import java.util.List;
 
             return weights;
         } catch (Exception e) {
-            throw new WaterHistoryException(e);
+            throw new WeightHistoryException(e);
         }
 
     }

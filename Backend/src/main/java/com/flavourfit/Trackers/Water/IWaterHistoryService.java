@@ -10,5 +10,5 @@ public interface IWaterHistoryService {
     public WaterHistoryDto fetchWaterIntakeByUserIdDate(String date, int userId) throws SQLException;
 
 
-    List<WaterGraphDto> fetchCalorieHistoryByPeriod(String startDate, String endDate, int userId);
+    List<WaterGraphDto> fetchWaterHistoryByPeriod(String startDate, String endDate, int userId);
 }

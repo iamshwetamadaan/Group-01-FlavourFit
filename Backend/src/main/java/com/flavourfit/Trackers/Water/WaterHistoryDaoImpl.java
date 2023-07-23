@@ -162,7 +162,7 @@ public class WaterHistoryDaoImpl implements IWaterHistoryDao {
         preparedStatement.setString(2, startDate);
         preparedStatement.setString(3, endDate);
 
-        logger.info("Execute the query to get water intak for date.");
+        logger.info("Execute the query to get water intake for date.");
         ResultSet resultSet = preparedStatement.executeQuery();
 
         List<WaterHistoryDto> waterHistoryList = this.extractResultList(resultSet);

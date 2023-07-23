@@ -1312,3 +1312,780 @@ Unconditional classes:
 00:50:11.506 [main] INFO  com.flavourfit.FlavourFit - Started FlavourFit in 1.15 seconds (process running for 1.448)
 00:50:11.507 [main] DEBUG o.s.b.a.ApplicationAvailabilityBean - Application availability state LivenessState changed to CORRECT
 00:50:11.507 [main] DEBUG o.s.b.a.ApplicationAvailabilityBean - Application availability state ReadinessState changed to ACCEPTING_TRAFFIC
+00:52:08.518 [main] INFO  com.flavourfit.User.UserDaoImpl - Started getUserById() method
+00:52:08.518 [main] INFO  com.flavourfit.User.UserDaoImpl - Running select query to get premium user by userId
+00:52:08.519 [main] INFO  com.flavourfit.User.UserDaoImpl - Returning received user as response
+00:52:08.520 [main] INFO  com.flavourfit.User.UserDaoImpl - Started getUserById() method
+00:52:08.520 [main] INFO  com.flavourfit.User.UserDaoImpl - Running select query to get premium user by userId
+00:52:08.521 [main] INFO  com.flavourfit.User.UserDaoImpl - Returning received user as response
+01:48:27.004 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started recordWaterIntake() method!
+01:48:27.004 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Get current date string using DateHelpers static method
+01:48:27.005 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to record water intake!!
+01:48:27.006 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting recordWaterIntake() method!
+01:48:27.009 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started recordWaterIntake() method!
+01:48:27.009 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Get current date string using DateHelpers static method
+01:48:27.009 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to record water intake!!
+01:49:17.447 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started recordWaterIntake() method!
+01:49:17.448 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Get current date string using DateHelpers static method
+01:49:17.448 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to record water intake!!
+01:49:17.449 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting recordWaterIntake() method!
+01:49:17.453 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started recordWaterIntake() method!
+01:49:17.453 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Get current date string using DateHelpers static method
+01:49:17.453 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to record water intake!!
+01:49:46.448 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started recordWaterIntake() method!
+01:49:46.449 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Get current date string using DateHelpers static method
+01:49:46.449 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to record water intake!!
+01:49:46.450 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting recordWaterIntake() method!
+01:49:46.454 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started recordWaterIntake() method!
+01:49:46.454 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Get current date string using DateHelpers static method
+01:49:46.454 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to record water intake!!
+01:50:09.060 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started fetchWaterIntakeByUserIdDate() method!
+01:50:09.061 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to get water intake for given date!!
+01:50:09.062 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting fetchWaterIntakeByUserIdDate() method!
+01:50:09.066 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started fetchWaterIntakeByUserIdDate() method!
+01:50:09.066 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to get water intake for given date!!
+01:51:39.744 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started fetchWaterIntakeByUserIdDate() method!
+01:51:39.744 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to get water intake for given date!!
+01:51:39.745 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting fetchWaterIntakeByUserIdDate() method!
+01:51:39.749 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started fetchWaterIntakeByUserIdDate() method!
+01:51:39.749 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to get water intake for given date!!
+01:52:13.208 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started fetchWaterIntakeByUserIdDate() method!
+01:52:13.209 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to get water intake for given date!!
+01:52:13.210 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting fetchWaterIntakeByUserIdDate() method!
+01:52:48.562 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started recordWaterIntake() method!
+01:52:48.564 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Get current date string using DateHelpers static method
+01:52:48.565 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to record water intake!!
+01:52:48.566 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting recordWaterIntake() method!
+01:52:48.570 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started recordWaterIntake() method!
+01:52:48.570 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Get current date string using DateHelpers static method
+01:52:48.570 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to record water intake!!
+01:53:47.617 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started addWaterIntake() method
+01:53:47.617 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - WaterHistoryDto object not valid!!
+01:53:47.618 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started addWaterIntake() method
+01:53:47.618 [main] WARN  c.f.T.Water.WaterHistoryDaoImpl - Water intake count may be invalid!!
+01:53:47.619 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+01:53:47.619 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+01:53:47.619 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+01:53:47.619 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+01:53:47.619 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+01:53:47.619 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be inserted
+01:53:47.619 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the insertion of record to the table
+01:53:47.620 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Added water intake to the Water history table!
+01:53:47.620 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started addWaterIntake() method
+01:53:47.620 [main] WARN  c.f.T.Water.WaterHistoryDaoImpl - Water intake update date missing!!
+01:53:47.620 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+01:53:47.620 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid date input while fetching water history!!
+01:53:47.620 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started addWaterIntake() method
+01:53:47.620 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+01:53:47.620 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+01:53:47.620 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+01:53:47.620 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+01:53:47.620 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+01:53:47.620 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be inserted
+01:53:47.621 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the insertion of record to the table
+01:53:47.621 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Added water intake to the Water history table!
+01:53:53.455 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+01:53:53.455 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid data while updating water history!!
+01:53:53.456 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+01:53:53.457 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+01:53:53.457 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be updated
+01:53:53.458 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the update of record to the table
+01:53:53.458 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+01:53:53.458 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+01:53:53.458 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be updated
+01:53:53.458 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the update of record to the table
+01:56:19.758 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+01:57:32.355 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+01:57:32.356 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+01:57:32.356 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+01:57:32.356 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+01:57:32.357 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+01:57:32.357 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+01:57:32.357 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+01:57:32.357 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+01:57:32.357 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+01:57:32.357 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+01:57:32.357 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intak for date.
+01:58:26.306 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+01:58:26.307 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid data while updating water history!!
+01:58:26.307 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+01:58:26.308 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+01:58:26.308 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be updated
+01:58:26.308 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the update of record to the table
+01:58:26.309 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+01:58:26.309 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+01:58:26.309 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be updated
+01:58:26.309 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the update of record to the table
+01:59:49.062 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started addWaterIntake() method
+01:59:49.063 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - WaterHistoryDto object not valid!!
+01:59:49.064 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started addWaterIntake() method
+01:59:49.064 [main] WARN  c.f.T.Water.WaterHistoryDaoImpl - Water intake count may be invalid!!
+01:59:49.064 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+01:59:49.065 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+01:59:49.065 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+01:59:49.065 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+01:59:49.065 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+01:59:49.065 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be inserted
+01:59:49.065 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the insertion of record to the table
+01:59:49.065 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Added water intake to the Water history table!
+01:59:49.065 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started addWaterIntake() method
+01:59:49.065 [main] WARN  c.f.T.Water.WaterHistoryDaoImpl - Water intake update date missing!!
+01:59:49.066 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+01:59:49.066 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid date input while fetching water history!!
+01:59:49.066 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started addWaterIntake() method
+01:59:49.066 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+01:59:49.066 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+01:59:49.066 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+01:59:49.066 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+01:59:49.066 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+01:59:49.066 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be inserted
+01:59:49.066 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the insertion of record to the table
+01:59:49.066 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Added water intake to the Water history table!
+02:00:07.885 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Started addCalorieCount() method
+02:00:07.886 [main] ERROR c.f.T.Calories.CalorieHistoryDaoImpl - CalorieHistoryDto object not valid!!
+02:00:07.886 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Started addCalorieCount() method
+02:00:07.886 [main] WARN  c.f.T.Calories.CalorieHistoryDaoImpl - Calorie count may be invalid!!
+02:00:07.887 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Started getCalorieByUserIdDate() method
+02:00:07.887 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+02:00:07.887 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Execute the query to get calorie count for date.
+02:00:07.888 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Iterate result set to get total calorie count.
+02:00:07.888 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Creating a prepared statement to insert record.
+02:00:07.888 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Replacing values in prepared statement with actual values to be inserted
+02:00:07.888 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Execute the insertion of record to the table
+02:00:07.888 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Added Calories to the Calorie history table!
+02:00:07.888 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Started addCalorieCount() method
+02:00:07.888 [main] WARN  c.f.T.Calories.CalorieHistoryDaoImpl - Calorie update date missing!!
+02:00:07.888 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Started addCalorieCount() method
+02:00:07.888 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Started getCalorieByUserIdDate() method
+02:00:07.888 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+02:00:07.889 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Execute the query to get calorie count for date.
+02:00:07.889 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Iterate result set to get total calorie count.
+02:00:07.889 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Creating a prepared statement to insert record.
+02:00:07.889 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Replacing values in prepared statement with actual values to be inserted
+02:00:07.889 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Execute the insertion of record to the table
+02:00:07.889 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Added Calories to the Calorie history table!
+02:00:18.383 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:00:18.384 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid data while updating water history!!
+02:00:18.384 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:00:18.385 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+02:00:18.385 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be updated
+02:00:18.386 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the update of record to the table
+02:00:18.386 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:00:18.386 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+02:00:18.386 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be updated
+02:00:18.386 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the update of record to the table
+02:01:12.270 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:01:12.271 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid data while updating water history!!
+02:01:12.271 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:01:12.272 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+02:01:12.272 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be updated
+02:01:12.272 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the update of record to the table
+02:01:12.273 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:01:12.273 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+02:01:12.273 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be updated
+02:01:12.273 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the update of record to the table
+02:04:13.575 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:04:13.576 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid data while updating water history!!
+02:04:13.576 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:04:13.577 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+02:04:13.577 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be updated
+02:04:13.577 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the update of record to the table
+02:04:13.578 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:04:13.578 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+02:04:13.578 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be updated
+02:04:13.578 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the update of record to the table
+02:04:51.146 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started addWaterIntake() method
+02:04:51.147 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - WaterHistoryDto object not valid!!
+02:04:51.148 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started addWaterIntake() method
+02:04:51.148 [main] WARN  c.f.T.Water.WaterHistoryDaoImpl - Water intake count may be invalid!!
+02:04:51.149 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:04:51.149 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+02:04:51.149 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+02:04:51.149 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+02:04:51.149 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+02:04:51.150 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be inserted
+02:04:51.150 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the insertion of record to the table
+02:04:51.150 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Added water intake to the Water history table!
+02:04:51.150 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started addWaterIntake() method
+02:04:51.150 [main] WARN  c.f.T.Water.WaterHistoryDaoImpl - Water intake update date missing!!
+02:04:51.150 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:04:51.150 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid date input while fetching water history!!
+02:04:51.150 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started addWaterIntake() method
+02:04:51.150 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:04:51.150 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+02:04:51.150 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+02:04:51.150 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+02:04:51.151 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+02:04:51.151 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be inserted
+02:04:51.151 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the insertion of record to the table
+02:04:51.151 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Added water intake to the Water history table!
+02:04:55.720 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:04:55.721 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid data while updating water history!!
+02:04:55.721 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:04:55.722 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+02:04:55.722 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be updated
+02:04:55.722 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the update of record to the table
+02:04:55.722 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:04:55.723 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+02:04:55.723 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be updated
+02:04:55.723 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the update of record to the table
+02:06:04.949 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:07:05.399 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+02:07:05.400 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+02:07:05.400 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+02:07:05.400 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+02:07:05.400 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+02:07:05.400 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+02:07:05.400 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+02:07:05.401 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+02:07:05.401 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+02:07:05.401 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+02:07:05.401 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intak for date.
+02:07:47.457 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Started getCalorieByUserIdDate() method
+02:07:47.457 [main] ERROR c.f.T.Calories.CalorieHistoryDaoImpl - Invalid start date.
+02:07:47.458 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Started getCalorieByUserIdDate() method
+02:07:47.458 [main] ERROR c.f.T.Calories.CalorieHistoryDaoImpl - Invalid start date.
+02:07:47.458 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Started getCalorieByUserIdDate() method
+02:07:47.458 [main] ERROR c.f.T.Calories.CalorieHistoryDaoImpl - Invalid start date.
+02:07:47.458 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Started getCalorieByUserIdDate() method
+02:07:47.458 [main] ERROR c.f.T.Calories.CalorieHistoryDaoImpl - Invalid start date.
+02:07:47.458 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Started getCalorieByUserIdDate() method
+02:07:47.458 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+02:07:47.459 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Execute the query to get calorie count for date.
+02:08:03.996 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+02:08:03.997 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+02:08:03.997 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+02:08:03.997 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+02:08:03.997 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+02:08:03.997 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+02:08:03.997 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+02:08:03.997 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+02:08:03.997 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+02:08:03.998 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+02:08:03.998 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intak for date.
+02:11:14.762 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:11:15.822 [SpringApplicationShutdownHook] DEBUG o.s.b.a.ApplicationAvailabilityBean - Application availability state ReadinessState changed from ACCEPTING_TRAFFIC to REFUSING_TRAFFIC
+02:11:15.837 [SpringApplicationShutdownHook] DEBUG o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@51549490, started on Sun Jul 23 00:50:10 ADT 2023
+02:11:15.877 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147482623
+02:11:15.884 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Bean 'webServerGracefulShutdown' completed its stop procedure
+02:11:15.884 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147481599
+02:11:15.932 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Bean 'webServerStartStop' completed its stop procedure
+02:11:15.932 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase -2147483647
+02:11:15.934 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Bean 'springBootLoggingLifecycle' completed its stop procedure
+02:11:15.936 [SpringApplicationShutdownHook] DEBUG o.s.s.c.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+02:11:37.917 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:11:37.918 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+02:11:37.918 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+02:11:37.919 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+02:11:56.902 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:11:56.903 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+02:11:56.903 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+02:11:56.903 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+02:14:00.729 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+02:14:00.730 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+02:14:00.731 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+02:14:00.731 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+02:14:00.731 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+02:14:00.731 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+02:14:00.731 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+02:14:00.731 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+02:14:00.731 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+02:14:00.731 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+02:14:00.731 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+02:14:11.894 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:14:11.895 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+02:14:11.895 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+02:14:11.895 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+02:14:24.450 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:14:24.451 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+02:14:24.451 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+02:14:24.451 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+02:14:36.047 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:14:36.048 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+02:14:36.048 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+02:14:36.048 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+02:14:47.400 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:14:47.401 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+02:14:47.401 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+02:14:47.401 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+02:15:00.756 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:15:00.756 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid date input while fetching water history!!
+02:15:00.757 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:15:00.757 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+02:15:00.757 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+02:15:00.757 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+02:15:13.074 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:15:13.075 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+02:15:13.075 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+02:15:13.075 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+02:15:24.877 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:15:24.878 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid date input while fetching water history!!
+02:15:24.878 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:15:24.879 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+02:15:24.879 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+02:15:24.879 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+02:15:34.258 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:15:34.258 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid data while updating water history!!
+02:15:34.259 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:15:34.260 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+02:15:34.260 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be updated
+02:15:34.260 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the update of record to the table
+02:15:34.260 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:15:34.260 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+02:15:34.260 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be updated
+02:15:34.260 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the update of record to the table
+02:15:41.666 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started addWaterIntake() method
+02:15:41.666 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - WaterHistoryDto object not valid!!
+02:15:41.667 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started addWaterIntake() method
+02:15:41.667 [main] WARN  c.f.T.Water.WaterHistoryDaoImpl - Water intake count may be invalid!!
+02:15:41.667 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:15:41.668 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+02:15:41.668 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+02:15:41.668 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+02:15:41.668 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+02:15:41.668 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be inserted
+02:15:41.668 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the insertion of record to the table
+02:15:41.668 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Added water intake to the Water history table!
+02:15:41.669 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started addWaterIntake() method
+02:15:41.669 [main] WARN  c.f.T.Water.WaterHistoryDaoImpl - Water intake update date missing!!
+02:15:41.669 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:15:41.669 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid date input while fetching water history!!
+02:15:41.669 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started addWaterIntake() method
+02:15:41.669 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+02:15:41.669 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+02:15:41.669 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+02:15:41.669 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+02:15:41.669 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+02:15:41.669 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be inserted
+02:15:41.670 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the insertion of record to the table
+02:15:41.670 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Added water intake to the Water history table!
+02:15:49.618 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started recordWaterIntake() method!
+02:15:49.619 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Get current date string using DateHelpers static method
+02:15:49.619 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to record water intake!!
+02:15:49.620 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting recordWaterIntake() method!
+02:15:49.624 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started recordWaterIntake() method!
+02:15:49.624 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Get current date string using DateHelpers static method
+02:15:49.624 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to record water intake!!
+02:16:00.344 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started recordWaterIntake() method!
+02:16:00.345 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Get current date string using DateHelpers static method
+02:16:00.345 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to record water intake!!
+02:16:00.346 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting recordWaterIntake() method!
+02:16:08.011 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started fetchWaterIntakeByUserIdDate() method!
+02:16:08.012 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to get water intake for given date!!
+02:16:08.013 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting fetchWaterIntakeByUserIdDate() method!
+02:16:26.757 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started fetchWaterIntakeByUserIdDate() method!
+02:16:26.758 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to get water intake for given date!!
+02:16:26.758 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting fetchWaterIntakeByUserIdDate() method!
+02:16:26.762 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started fetchWaterIntakeByUserIdDate() method!
+02:16:26.762 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to get water intake for given date!!
+02:17:17.009 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started fetchWaterIntakeByUserIdDate() method!
+02:17:17.010 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to get water intake for given date!!
+02:17:17.010 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting fetchWaterIntakeByUserIdDate() method!
+02:17:30.361 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started fetchWaterIntakeByUserIdDate() method!
+02:17:30.361 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to get water intake for given date!!
+02:17:30.362 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting fetchWaterIntakeByUserIdDate() method!
+02:17:44.148 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started fetchWaterIntakeByUserIdDate() method!
+02:17:44.148 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to get water intake for given date!!
+02:17:44.149 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting fetchWaterIntakeByUserIdDate() method!
+02:18:40.309 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started fetchWaterIntakeByUserIdDate() method!
+02:18:40.309 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to get water intake for given date!!
+02:18:40.310 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting fetchWaterIntakeByUserIdDate() method!
+02:18:49.026 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started fetchWaterIntakeByUserIdDate() method!
+02:18:49.027 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to get water intake for given date!!
+02:18:49.028 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting fetchWaterIntakeByUserIdDate() method!
+02:18:58.694 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started recordWaterIntake() method!
+02:18:58.695 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Get current date string using DateHelpers static method
+02:18:58.695 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to record water intake!!
+02:18:58.696 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting recordWaterIntake() method!
+02:19:11.962 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started recordWaterIntake() method!
+02:19:11.963 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Get current date string using DateHelpers static method
+02:19:11.964 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to record water intake!!
+02:19:11.967 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting recordWaterIntake() method!
+02:19:11.976 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started recordWaterIntake() method!
+02:19:11.976 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Get current date string using DateHelpers static method
+02:19:11.976 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to record water intake!!
+09:40:35.130 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+09:40:35.130 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid date input while fetching water history!!
+09:40:35.131 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+09:40:35.131 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+09:40:35.131 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+09:40:35.131 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+09:40:53.496 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+09:40:53.497 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid data while updating water history!!
+09:40:53.498 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+09:40:53.498 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+09:40:53.499 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be updated
+09:40:53.499 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the update of record to the table
+09:40:53.499 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+09:40:53.499 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+09:40:53.499 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be updated
+09:40:53.499 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the update of record to the table
+09:40:58.802 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+09:40:58.803 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+09:40:58.803 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+09:40:58.803 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+09:42:17.960 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+09:42:17.961 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+09:42:17.961 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+09:42:17.961 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+09:42:49.056 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+09:42:49.057 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+09:42:49.058 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+09:42:49.058 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+09:42:56.481 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+09:42:56.482 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+09:42:56.482 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+09:42:56.482 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+09:42:56.482 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+09:42:56.482 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+09:42:56.482 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+09:42:56.482 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+09:42:56.483 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+09:42:56.483 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+09:42:56.483 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+09:48:05.868 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+09:48:05.869 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid data while updating water history!!
+09:48:05.870 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+09:48:05.870 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+09:48:05.871 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be updated
+09:48:05.871 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the update of record to the table
+09:48:28.401 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+09:48:28.402 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+09:48:28.403 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+09:48:28.403 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+09:48:28.403 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+09:48:28.403 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+09:48:28.403 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+09:48:28.403 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+09:48:28.403 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+09:48:28.403 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+09:48:28.403 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+09:48:42.829 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+09:48:42.829 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+09:48:42.830 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+09:48:42.830 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+09:48:42.830 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+09:48:42.830 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+09:48:42.830 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+09:48:42.830 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+09:48:42.830 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+09:48:42.830 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+09:48:42.831 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+09:53:42.938 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+09:53:42.938 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+09:53:42.939 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+09:53:42.939 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+09:53:42.939 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+09:53:42.939 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+09:53:42.939 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+09:53:42.939 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+09:53:42.939 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+09:53:42.940 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+09:53:42.940 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+09:54:35.133 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started recordWaterIntake() method!
+09:54:35.134 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Get current date string using DateHelpers static method
+09:54:35.134 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to record water intake!!
+09:54:35.135 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting recordWaterIntake() method!
+09:54:35.139 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started recordWaterIntake() method!
+09:54:35.139 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Get current date string using DateHelpers static method
+09:54:35.139 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to record water intake!!
+10:04:27.806 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started recordWaterIntake() method!
+10:04:27.807 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Get current date string using DateHelpers static method
+10:04:27.807 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to record water intake!!
+10:04:27.812 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting recordWaterIntake() method!
+10:09:56.455 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started addWeight() method
+10:09:56.457 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+10:09:56.457 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+10:09:56.457 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+10:09:56.457 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+10:09:56.457 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Creating a prepared statement to insert record.
+10:09:56.457 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values to be inserted
+10:09:56.458 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the insertion of record to the table
+10:09:56.458 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Added water intake to the Water history table!
+10:10:09.861 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+10:10:09.862 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Creating a prepared statement to insert record.
+10:10:09.863 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values to be updated
+10:10:09.863 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the update of record to the table
+15:31:43.101 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Started addCalorieCount() method
+15:31:43.103 [main] ERROR c.f.T.Calories.CalorieHistoryDaoImpl - CalorieHistoryDto object not valid!!
+15:31:43.105 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Started addCalorieCount() method
+15:31:43.105 [main] WARN  c.f.T.Calories.CalorieHistoryDaoImpl - Calorie count may be invalid!!
+15:31:43.107 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Started getCalorieByUserIdDate() method
+15:31:43.108 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+15:31:43.108 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Execute the query to get calorie count for date.
+15:31:43.109 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Iterate result set to get total calorie count.
+15:31:43.109 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Creating a prepared statement to insert record.
+15:31:43.109 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Replacing values in prepared statement with actual values to be inserted
+15:31:43.110 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Execute the insertion of record to the table
+15:31:43.110 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Added Calories to the Calorie history table!
+15:31:43.110 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Started addCalorieCount() method
+15:31:43.111 [main] WARN  c.f.T.Calories.CalorieHistoryDaoImpl - Calorie update date missing!!
+15:31:43.111 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Started addCalorieCount() method
+15:31:43.111 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Started getCalorieByUserIdDate() method
+15:31:43.112 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+15:31:43.112 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Execute the query to get calorie count for date.
+15:31:43.112 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Iterate result set to get total calorie count.
+15:31:43.112 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Creating a prepared statement to insert record.
+15:31:43.113 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Replacing values in prepared statement with actual values to be inserted
+15:31:43.113 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Execute the insertion of record to the table
+15:31:43.113 [main] INFO  c.f.T.Calories.CalorieHistoryDaoImpl - Added Calories to the Calorie history table!
+15:31:57.293 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started addWaterIntake() method
+15:31:57.295 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - WaterHistoryDto object not valid!!
+15:31:57.296 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started addWaterIntake() method
+15:31:57.296 [main] WARN  c.f.T.Water.WaterHistoryDaoImpl - Water intake count may be invalid!!
+15:31:57.298 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+15:31:57.299 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+15:31:57.300 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+15:31:57.300 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+15:31:57.300 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+15:31:57.300 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be inserted
+15:31:57.300 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the insertion of record to the table
+15:31:57.300 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Added water intake to the Water history table!
+15:31:57.301 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started addWaterIntake() method
+15:31:57.301 [main] WARN  c.f.T.Water.WaterHistoryDaoImpl - Water intake update date missing!!
+15:31:57.301 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+15:31:57.301 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid date input while fetching water history!!
+15:31:57.301 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started addWaterIntake() method
+15:31:57.301 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+15:31:57.301 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+15:31:57.302 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+15:31:57.302 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+15:31:57.303 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+15:31:57.303 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be inserted
+15:31:57.303 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the insertion of record to the table
+15:31:57.303 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Added water intake to the Water history table!
+15:32:00.911 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+15:32:00.912 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid data while updating water history!!
+15:32:00.913 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+15:32:00.915 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Creating a prepared statement to insert record.
+15:32:00.917 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values to be updated
+15:32:00.918 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the update of record to the table
+15:32:04.512 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterIntakeByUserIdDate() method
+15:32:04.513 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+15:32:04.513 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+15:32:04.513 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Iterate result set to get total water intake.
+15:32:08.492 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+15:32:08.493 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+15:32:08.493 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+15:32:08.493 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+15:32:08.494 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+15:32:08.494 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+15:32:08.494 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+15:32:08.494 [main] ERROR c.f.T.Water.WaterHistoryDaoImpl - Invalid start date.
+15:32:08.494 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Started getWaterHistoryByPeriod() method
+15:32:08.494 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Replacing values in prepared statement with actual values for date and user id.
+15:32:08.494 [main] INFO  c.f.T.Water.WaterHistoryDaoImpl - Execute the query to get water intake for date.
+15:32:14.897 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Started recordWaterIntake() method!
+15:32:14.898 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Get current date string using DateHelpers static method
+15:32:14.898 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Using waterHistoryDao to record water intake!!
+15:32:14.904 [main] INFO  c.f.T.Water.WaterHistoryServiceImpl - Exiting recordWaterIntake() method!
+15:34:15.363 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started addWeight() method
+15:34:15.364 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:34:15.365 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:34:15.365 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:34:15.365 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:34:15.365 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Creating a prepared statement to insert record.
+15:34:15.365 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values to be inserted
+15:34:15.365 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the insertion of record to the table
+15:34:15.366 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Added water intake to the Water history table!
+15:35:24.990 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started addWeight() method
+15:35:24.991 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:35:24.991 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:35:24.991 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:35:24.991 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:35:24.991 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Creating a prepared statement to insert record.
+15:35:24.991 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values to be inserted
+15:35:24.992 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the insertion of record to the table
+15:35:24.992 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Added water intake to the Water history table!
+15:36:31.835 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started addWeight() method
+15:36:31.836 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:36:31.836 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:36:31.836 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:36:31.837 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:36:31.837 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Creating a prepared statement to insert record.
+15:36:31.837 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values to be inserted
+15:36:31.837 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the insertion of record to the table
+15:36:31.837 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Added water intake to the Water history table!
+15:37:25.810 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started addWeight() method
+15:37:25.811 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:37:25.811 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:37:25.811 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:37:25.811 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:37:25.812 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Creating a prepared statement to insert record.
+15:37:25.812 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values to be inserted
+15:37:25.812 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the insertion of record to the table
+15:37:25.812 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Added water intake to the Water history table!
+15:37:54.794 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started addWeight() method
+15:37:54.795 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:37:54.795 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:37:54.795 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:37:54.795 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:37:54.796 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Creating a prepared statement to insert record.
+15:37:54.796 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values to be inserted
+15:37:54.796 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the insertion of record to the table
+15:37:54.796 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Added water intake to the Water history table!
+15:38:35.468 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started addWeight() method
+15:38:35.469 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:38:35.469 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:38:35.470 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:38:35.470 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:38:35.470 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Creating a prepared statement to insert record.
+15:38:35.470 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values to be inserted
+15:38:35.470 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the insertion of record to the table
+15:38:35.470 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Added water intake to the Water history table!
+15:39:35.362 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started addWeight() method
+15:39:35.362 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:39:35.363 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:39:35.363 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:39:35.363 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:39:35.363 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Creating a prepared statement to insert record.
+15:39:35.363 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values to be inserted
+15:39:35.363 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the insertion of record to the table
+15:39:35.364 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Added water intake to the Water history table!
+15:39:57.197 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:39:57.198 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Creating a prepared statement to insert record.
+15:39:57.198 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values to be updated
+15:39:57.199 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the update of record to the table
+15:41:09.451 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started addWeight() method
+15:41:09.452 [main] ERROR c.f.T.Weights.IWeightHistoryDao - WeightHistoryDto object not valid!!
+15:41:09.452 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started addWeight() method
+15:41:09.452 [main] WARN  c.f.T.Weights.IWeightHistoryDao - Weight may be invalid!!
+15:41:09.453 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:41:09.453 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:41:09.454 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:41:09.454 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:41:09.454 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Creating a prepared statement to insert record.
+15:41:09.454 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values to be inserted
+15:41:09.454 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the insertion of record to the table
+15:41:09.454 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Added water intake to the Water history table!
+15:41:09.454 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started addWeight() method
+15:41:09.454 [main] WARN  c.f.T.Weights.IWeightHistoryDao - Weight update date missing!!
+15:41:09.454 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:41:09.454 [main] ERROR c.f.T.Weights.IWeightHistoryDao - Invalid date input while fetching water history!!
+15:41:09.454 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started addWeight() method
+15:41:09.455 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:41:09.455 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:41:09.455 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:41:09.455 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:41:09.455 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Creating a prepared statement to insert record.
+15:41:09.455 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values to be inserted
+15:41:09.455 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the insertion of record to the table
+15:41:09.455 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Added water intake to the Water history table!
+15:41:17.472 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started addWeight() method
+15:41:17.472 [main] ERROR c.f.T.Weights.IWeightHistoryDao - WeightHistoryDto object not valid!!
+15:41:17.473 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started addWeight() method
+15:41:17.473 [main] WARN  c.f.T.Weights.IWeightHistoryDao - Weight may be invalid!!
+15:41:17.474 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:41:17.474 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:41:17.474 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:41:17.474 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:41:17.474 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Creating a prepared statement to insert record.
+15:41:17.475 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values to be inserted
+15:41:17.475 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the insertion of record to the table
+15:41:17.475 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Added water intake to the Water history table!
+15:41:17.475 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started addWeight() method
+15:41:17.475 [main] WARN  c.f.T.Weights.IWeightHistoryDao - Weight update date missing!!
+15:41:17.475 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:41:17.475 [main] ERROR c.f.T.Weights.IWeightHistoryDao - Invalid date input while fetching water history!!
+15:41:17.475 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started addWeight() method
+15:41:17.475 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:41:17.475 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:41:17.475 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:41:17.475 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:41:17.476 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Creating a prepared statement to insert record.
+15:41:17.476 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values to be inserted
+15:41:17.476 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the insertion of record to the table
+15:41:17.476 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Added water intake to the Water history table!
+15:42:07.147 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:42:07.148 [main] ERROR c.f.T.Weights.IWeightHistoryDao - Invalid data while updating water history!!
+15:42:07.149 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:42:07.149 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Creating a prepared statement to insert record.
+15:42:07.150 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values to be updated
+15:42:07.150 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the update of record to the table
+15:42:16.460 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:42:16.461 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:42:16.461 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:42:16.461 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:42:21.083 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:42:21.084 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:42:21.084 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:43:21.670 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:44:33.808 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:44:33.809 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:44:33.809 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:44:33.809 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:45:13.047 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:45:13.048 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:45:13.048 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:45:13.048 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:46:21.667 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:46:21.669 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:46:21.669 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:46:21.669 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:46:30.482 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:46:30.483 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:46:30.483 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:46:30.483 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:46:38.892 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:46:38.893 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:46:38.893 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:46:38.893 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:48:00.855 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWeightHistoryByPeriod() method
+15:48:00.856 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:48:00.856 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get calorie count for date.
+15:48:31.574 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWeightHistoryByPeriod() method
+15:48:31.575 [main] ERROR c.f.T.Weights.IWeightHistoryDao - Invalid start date.
+15:48:55.560 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:48:55.561 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:48:55.562 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:49:06.993 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:49:06.994 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:49:06.995 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:49:46.324 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:49:46.325 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:49:46.325 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:49:46.325 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:50:53.471 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:50:53.473 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:50:53.473 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:50:53.473 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:52:05.634 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:52:05.635 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:52:05.635 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:52:05.635 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:52:14.737 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:52:14.738 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:52:14.738 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:52:14.738 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:53:54.741 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:53:54.742 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:53:54.742 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:53:54.742 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:54:07.310 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:54:07.311 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:54:07.311 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:54:07.311 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:54:50.332 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:54:50.333 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:54:50.333 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:54:50.333 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:55:34.834 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:55:34.835 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:55:34.835 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:55:34.836 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:56:17.080 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:56:17.081 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:56:17.081 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:56:17.081 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:56:31.297 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:56:31.298 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:56:31.298 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:56:31.298 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:56:56.220 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:56:56.221 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:56:56.222 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:56:56.222 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.
+15:57:09.993 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Started getWaterIntakeByUserIdDate() method
+15:57:09.994 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Replacing values in prepared statement with actual values for date and user id.
+15:57:09.994 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Execute the query to get water intake for date.
+15:57:09.994 [main] INFO  c.f.T.Weights.IWeightHistoryDao - Iterate result set to get total water intake.

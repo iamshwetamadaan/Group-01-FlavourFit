@@ -67,7 +67,7 @@ public class WaterHistoryServiceImpl implements IWaterHistoryService {
      * @return -- GetResponse object with list of calories
      */
     @Override
-    public List<WaterGraphDto> fetchCalorieHistoryByPeriod(String startDate, String endDate, int userId)  {
+    public List<WaterGraphDto> fetchWaterHistoryByPeriod(String startDate, String endDate, int userId)  {
         if (startDate == null || startDate.isEmpty()) {
             logger.error("Invalid start date.");
             //   throw new CalorieHistoryException("Invalid start date.");
