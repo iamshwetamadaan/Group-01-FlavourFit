@@ -23,4 +23,6 @@ public interface IUserService {
     public int paymentForPremium(int userID, PremiumUserPaymentDetailsDto details) throws PaymentException, SQLException;
 
     public boolean startExtendPremium(int userID, int paymentID) throws SQLException;
+
+    void clearPassword(String email) throws UserNotFoundException;
 }

@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -54,7 +55,7 @@ public class FeedDaoImplTest {
         when(resultSet.getString("feed_content")).thenReturn("Test feed content");
 
         // Act
-        ArrayList<FeedDto> userFeeds = feedDao.getFeedsByUser(userId, offset);
+        List<FeedDto> userFeeds = feedDao.getFeedsByUser(userId, offset);
 
         // Assert
         assertEquals(1, userFeeds.size());

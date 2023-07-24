@@ -1,5 +1,6 @@
 package com.flavourfit.Authentication;
 
+import com.flavourfit.Exceptions.AuthException;
 import com.flavourfit.Exceptions.UserNotFoundException;
 import com.flavourfit.ResponsesDTO.AuthResponse;
 import com.flavourfit.ResponsesDTO.PutResponse;
@@ -9,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -58,6 +61,32 @@ public class AuthController {
         } catch (RuntimeException e) {
             logger.error("Bad api request during registerUser()");
             return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to register user"));
+        }
+    }
+
+    @PostMapping("/request-otp")
+    public ResponseEntity<Object> requestGuestOtp(@RequestBody String email) {
+        logger.info("Entered requestGuestOtp() method");
+        try {
+            this.authService.sendOtpMail(email);
+            return ResponseEntity.ok().body(new PutResponse(true, "Sent otp successfully to " + email));
+        } catch (AuthException e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.internalServerError().body(new PutResponse(false, e.getMessage()));
+        }
+    }
+
+    @PostMapping("/guest-login")
+    public ResponseEntity<Object> guestLogin(@RequestBody UserDto user) {
+        try {
+            AuthResponse response = this.authService.authenticateUser(user);
+            return ResponseEntity.ok().body(response);
+        } catch (UserNotFoundException e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Invalid otp"));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().body(new PutResponse(false, e.getMessage()));
         }
     }
 }
