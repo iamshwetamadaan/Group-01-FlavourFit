@@ -3,15 +3,18 @@ package com.flavourfit.Trackers;
 import com.flavourfit.Authentication.IAuthService;
 import com.flavourfit.Exceptions.CalorieHistoryException;
 import com.flavourfit.Exceptions.WaterHistoryException;
+import com.flavourfit.Exceptions.WeightHistoryException;
 import com.flavourfit.Helpers.DateHelpers;
 import com.flavourfit.ResponsesDTO.GetResponse;
 import com.flavourfit.Trackers.Calories.CalorieGraphDto;
 import com.flavourfit.Trackers.Calories.CalorieHistoryDto;
 import com.flavourfit.Trackers.Calories.ICalorieHistoryService;
 import com.flavourfit.Trackers.Water.IWaterHistoryService;
+import com.flavourfit.Trackers.Water.WaterGraphDto;
 import com.flavourfit.Trackers.Water.WaterHistoryDto;
 import com.flavourfit.Trackers.Weights.IWeightHistoryService;
 import com.flavourfit.Trackers.Weights.WeightGraphDto;
+import com.flavourfit.Trackers.Weights.WeightHistoryDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -128,35 +131,59 @@ public class TrackersControllerTest {
 
 
     @Test
-    void testFetchWeightHistory_Success() {
-        // Mocking parameters
-        String startDate = "2023-07-01";
-        String endDate = "2023-07-15";
-        String token = "yourAuthToken";
-        int userId = 1; // Example user ID
+    public void fetchWeightHistoryTest() throws WeightHistoryException {
+        String startDate = "2023-07-10";
+        String endDate = "2023-07-22";
+        int userId = 1;
 
-        // Mocking authService
-        when(authService.extractUserIdFromToken(token)).thenReturn(userId);
+        WeightGraphDto weightGraphDto = new WeightGraphDto("2023-07-20", 2000d);
+        List<WeightGraphDto> weightGraphDtoList = new ArrayList<>();
+        weightGraphDtoList.add(weightGraphDto);
 
-        // Mocking weightHistoryService
-        List<WeightGraphDto> weightGraphDtos = Arrays.asList(
-                new WeightGraphDto("2023-07-01", 65.5),
-                new WeightGraphDto("2023-07-05", 65.2),
-                new WeightGraphDto("2023-07-10", 64.8)
-        );
-        when(weightHistoryService.fetchWeightHistoryByPeriod(startDate, endDate, userId)).thenReturn(weightGraphDtos);
+        // Success case
+        when(authService.extractUserIdFromToken("Bearer token")).thenReturn(userId);
+        when(weightHistoryService.fetchWeightHistoryByPeriod(startDate, endDate, userId)).thenReturn(
+                weightGraphDtoList);
+        Map<String, Object> requestBody = new HashMap<>();
+        ResponseEntity<GetResponse> responseEntity = trackersController.fetchWeightHistory(
+                startDate, endDate, "Bearer token");
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
-        // Performing the request to the controller
-        ResponseEntity<GetResponse> responseEntity = trackersController.fetchWeightHistory(startDate, endDate, token);
+        // WeightHistoryException is thrown
+        when(weightHistoryService.fetchWeightHistoryByPeriod(startDate, endDate, userId))
+                .thenThrow(new WeightHistoryException("Failed to retrieved weight history"));
+        ResponseEntity<GetResponse> responseEntity2 = trackersController.fetchWeightHistory(
+                startDate, endDate, "Bearer token");
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity2.getStatusCode());
+        assertEquals(null, responseEntity2.getBody().getData());
+    }
 
-        // Assertions
-        assert responseEntity != null;
-        assert responseEntity.getStatusCode() == HttpStatus.OK;
 
-        GetResponse responseBody = responseEntity.getBody();
-        assert responseBody != null;
-        assert responseBody.isSuccess();
-        assert responseBody.getMessage().equals("Successfully retrieved weight history");
-        assert responseBody.getData().equals(weightGraphDtos);
+    @Test
+    public void fetchWaterHistoryTest() throws WaterHistoryException {
+        String startDate = "2023-07-10";
+        String endDate = "2023-07-22";
+        int userId = 1;
+
+        WaterGraphDto waterGraphDto = new WaterGraphDto("2023-07-20", 2000d);
+        List<WaterGraphDto> waterGraphDtoList = new ArrayList<>();
+        waterGraphDtoList.add(waterGraphDto);
+
+        // Success case
+        when(authService.extractUserIdFromToken("Bearer token")).thenReturn(userId);
+        when(waterHistoryService.fetchWaterHistoryByPeriod(startDate, endDate, userId)).thenReturn(
+                waterGraphDtoList);
+        Map<String, Object> requestBody = new HashMap<>();
+        ResponseEntity<GetResponse> responseEntity = trackersController.fetchWaterHistory(
+                startDate, endDate, "Bearer token");
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        // WaterHistoryException is thrown
+        when(waterHistoryService.fetchWaterHistoryByPeriod(startDate, endDate, userId))
+                .thenThrow(new WaterHistoryException("Failed to retrieved weight history"));
+        ResponseEntity<GetResponse> responseEntity2 = trackersController.fetchWaterHistory(
+                startDate, endDate, "Bearer token");
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity2.getStatusCode());
+        assertEquals(null, responseEntity2.getBody().getData());
     }
 }
