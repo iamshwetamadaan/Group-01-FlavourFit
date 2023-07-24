@@ -34,7 +34,7 @@ public class FeedDaoImpl implements IFeedDao {
         this.testConnection();
 
         logger.info("Running select query to get feeds by feedId");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Feeds WHERE Feed_id=?");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Feeds WHERE Feed_id=? order by feed_id desc");
         preparedStatement.setInt(1, feetId);
         ResultSet resultSet = preparedStatement.executeQuery();
         if(resultSet.next()){
