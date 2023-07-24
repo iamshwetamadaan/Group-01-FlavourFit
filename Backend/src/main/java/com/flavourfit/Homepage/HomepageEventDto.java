@@ -15,9 +15,18 @@ public class HomepageEventDto {
         private String Hostname;
         private String Event_description;
 
+    public HomepageEventDto(int eventId, String eventName, String startDate, String endDate, String capacity, String hostName, String eventDescription) {
+        this.event_ID = eventId;
+        this.Event_name = eventName;
+        this.Start_date = startDate;
+        this.End_date = endDate;
+        this.Capacity = capacity;
+        this.Hostname = hostName;
+        this.Event_description =eventDescription;
+    }
 
 
-        public int getevent_ID() {
+    public int getevent_ID() {
             return event_ID;
         }
 
