@@ -165,4 +165,5 @@ UserService implements IUserService {
         this.userDao.clearGuestPassword(email);
         logger.info("End clearPassword() method");
     }
+
 }

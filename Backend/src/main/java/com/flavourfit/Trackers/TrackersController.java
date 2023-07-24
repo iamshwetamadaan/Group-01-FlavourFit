@@ -2,10 +2,12 @@ package com.flavourfit.Trackers;
 
 import com.flavourfit.Authentication.IAuthService;
 import com.flavourfit.Exceptions.CalorieHistoryException;
+import com.flavourfit.Exceptions.WaterHistoryException;
+import com.flavourfit.Exceptions.WeightHistoryException;
 import com.flavourfit.Helpers.DateHelpers;
 import com.flavourfit.ResponsesDTO.GetResponse;
 import com.flavourfit.ResponsesDTO.PutResponse;
-import com.flavourfit.Security.JwtService;
+import com.flavourfit.ResponsesDTO.TrackersResponse;
 import com.flavourfit.Trackers.Calories.*;
 import com.flavourfit.Trackers.Water.IWaterHistoryService;
 import com.flavourfit.Trackers.Water.WaterGraphDto;
@@ -13,7 +15,6 @@ import com.flavourfit.Trackers.Water.WaterHistoryDto;
 import com.flavourfit.Trackers.Weights.IWeightHistoryService;
 import com.flavourfit.Trackers.Weights.WeightGraphDto;
 import com.flavourfit.Trackers.Weights.WeightHistoryDto;
-import com.flavourfit.User.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -202,5 +203,77 @@ public class TrackersController {
         }
     }
 
+    @GetMapping("/getcalories-byuserIDDate")
+    public ResponseEntity<GetResponse> fetchCaloriesbyUserIDDate(
+            @RequestParam("Date") String Date,
+            @RequestHeader("Authorization") String token
+    ) {
+        logger.info("Entered controller method fetchWaterIntakebyUserIDDate()");
+        int userId = authService.extractUserIdFromToken(token);
+
+        try {
+            CalorieHistoryDto calories = this.calorieHistoryService.fetchCalorieByUserIdDate(Date, userId);
+            return ResponseEntity.ok().body(new GetResponse(true, "Successfully retrieved calories for the date ", calories));
+        } catch (CalorieHistoryException e) {
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to retrieve calories for the date :" + e.getMessage()));
+        }
+    }
+
+    @GetMapping("/getweight-byuserIDDate")
+    public ResponseEntity<GetResponse> fetchWeightbyUserIDDate(
+            @RequestParam("Date") String Date,
+            @RequestHeader("Authorization") String token
+    ) {
+        logger.info("Entered controller method fetchWeightbyUserIDDate()");
+        int userId = authService.extractUserIdFromToken(token);
+
+        try {
+            WeightHistoryDto weight = this.weightHistoryService.fetchWeightByUserIdDate(Date, userId);
+            return ResponseEntity.ok().body(new GetResponse(true, "Successfully retrieved weight for the date ", weight));
+        } catch (WeightHistoryException e) {
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to retrieve weight for the date :" + e.getMessage()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/getwaterIntake-byuserIDDate")
+    public ResponseEntity<GetResponse> fetchWaterIntakebyUserIDDate(
+            @RequestParam("Date") String Date,
+            @RequestHeader("Authorization") String token
+    ) {
+        logger.info("Entered controller method fetchWaterIntakebyUserIDDate()");
+        int userId = authService.extractUserIdFromToken(token);
+
+        try {
+            WaterHistoryDto waterIntake = this.waterHistoryService.fetchWaterIntakeByUserIdDate(Date, userId);
+            return ResponseEntity.ok().body(new GetResponse(true, "Successfully retrieved water intake for the date ", waterIntake));
+        } catch (WaterHistoryException e) {
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to retrieve water intake for the date :" + e.getMessage()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/current")
+    public ResponseEntity<TrackersResponse> fetchTrackersByUserIdCurrent(
+            @RequestHeader("Authorization") String token
+    ) {
+        logger.info("Entered controller method fetchWaterIntakebyUserIDDate()");
+        int userId = authService.extractUserIdFromToken(token);
+
+        try {
+            WaterHistoryDto waterIntake = this.waterHistoryService.fetchWaterIntakeByUserIdCurrent(userId);
+            CalorieHistoryDto calories = this.calorieHistoryService.fetchCalorieByUserIdCurrent(userId);
+            WeightHistoryDto weight = this.weightHistoryService.fetchWeightByUserIdCurrent(userId);
+
+            TrackersResponse response = new TrackersResponse(true, "Successfully retrieved water intake and calories", waterIntake, calories, weight);
+
+            // Return the combined response
+            return ResponseEntity.ok().body(response);
+         }   catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

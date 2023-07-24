@@ -25,4 +25,6 @@ public interface IUserService {
     public boolean startExtendPremium(int userID, int paymentID) throws SQLException;
 
     void clearPassword(String email) throws UserNotFoundException;
+
+
 }
