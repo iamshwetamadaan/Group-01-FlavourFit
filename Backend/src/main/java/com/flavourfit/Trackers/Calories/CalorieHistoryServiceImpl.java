@@ -2,16 +2,13 @@ package com.flavourfit.Trackers.Calories;
 
 import com.flavourfit.Exceptions.CalorieHistoryException;
 import com.flavourfit.Helpers.DateHelpers;
-import com.flavourfit.ResponsesDTO.GetResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -125,5 +122,21 @@ public class CalorieHistoryServiceImpl implements ICalorieHistoryService {
             }
         }
         return null;
+    }
+
+    @Override
+    public CalorieHistoryDto fetchCalorieByUserIdCurrent(int userId) {
+        logger.info("Started fetchCalorieCountByDate() method!");
+
+        CalorieHistoryDto calorieHistoryDto = null;
+        logger.info("Using calorieHistoryDao to get calorie count current!!");
+        try {
+            calorieHistoryDto = this.calorieHistoryDao.getCaloriesByUserIdCurrent(userId);
+        } catch (SQLException e) {
+            throw new CalorieHistoryException(e);
+        }
+
+        logger.info("Exiting fetchCalorieCountByDate() method!");
+        return calorieHistoryDto;
     }
 }
