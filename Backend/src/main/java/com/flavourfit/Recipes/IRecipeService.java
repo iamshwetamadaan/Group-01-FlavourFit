@@ -17,4 +17,6 @@ public interface IRecipeService {
 
     CompleteRecipeDto recordRecipe(CompleteRecipeDto completeRecipe, int userId) throws
             RecipeExceptions;
+
+    CompleteRecipeDto convertRecipe(int recipeId, double scale, String system) throws RecipeExceptions;
 }

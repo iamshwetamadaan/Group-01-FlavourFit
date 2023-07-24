@@ -15,7 +15,9 @@ import java.time.ZoneId;
 
 
 @Service
-public class UserService implements IUserService {
+public class
+
+UserService implements IUserService {
     private static Logger logger = LoggerFactory.getLogger(UserService.class);
     private final PasswordEncoder passwordEncoder;
     private final IUserDao userDao;
