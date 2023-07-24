@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -58,9 +59,9 @@ public class FeedServiceImpl implements IFeedService {
         return feed;
     }
 
-    public List<FeedDto> getFeedsByUser(int userID,int offset) throws SQLException {
+    public ArrayList<FeedDto> getFeedsByUser(int userID, int offset) throws SQLException {
         logger.info("Started getFeedsByUser method()");
-        List<FeedDto> feeds = feedDao.getFeedsByUser(userID,offset);
+        ArrayList<FeedDto> feeds = feedDao.getFeedsByUser(userID,offset);
 
         logger.info("Received the feeds");
         for(FeedDto feed : feeds){
