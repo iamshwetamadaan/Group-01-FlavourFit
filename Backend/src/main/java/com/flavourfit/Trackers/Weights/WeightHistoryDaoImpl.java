@@ -1,6 +1,7 @@
 package com.flavourfit.Trackers.Weights;
 
 import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.User.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,7 @@ import java.util.List;
 
             logger.info("Creating a prepared statement to insert record.");
             String query = "UPDATE Weight_History SET weight=? WHERE weight_history_id=?";
+           // UserService.updateUserWeight(weightHistoryDto.getWeight());
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             logger.info("Replacing values in prepared statement with actual values to be updated");
             preparedStatement.setDouble(1, weightHistoryDto.getWeight());

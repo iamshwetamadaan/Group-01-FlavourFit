@@ -28,4 +28,6 @@ public interface IUserDao {
     public boolean updateUserPayment(int userId, int paymentID, int premiumMembershipID) throws SQLException;
 
     void clearGuestPassword(String email) throws UserNotFoundException;
+
+
 }
