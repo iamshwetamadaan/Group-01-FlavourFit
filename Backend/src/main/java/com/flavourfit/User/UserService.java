@@ -12,7 +12,6 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Calendar;
 
 
 @Service
@@ -82,7 +81,8 @@ public class UserService implements IUserService {
         }
     }
 
-    public int paymentForPremium(int userID, PremiumUserPaymentDetailsDto details) throws PaymentException, SQLException {
+    public int paymentForPremium(int userID, PremiumUserPaymentDetailsDto details) throws PaymentException,
+            SQLException {
 
         String cardNumber = details.getCardNumber();
         String cvv = details.getCvv();
@@ -99,7 +99,7 @@ public class UserService implements IUserService {
             throw new PaymentException("Invalid Payment: CVV entered is not valid");
         }
 
-        if (expiryMonth.length() != 2 && expiryYear.length() != 2 ) {
+        if (expiryMonth.length() != 2 && expiryYear.length() != 2) {
             logger.warn("Invalid MM/YY syntax");
             throw new PaymentException("Invalid Payment: MM/YY syntax entered is not valid");
         } else {
@@ -149,5 +149,18 @@ public class UserService implements IUserService {
             }
         }
         return hasStartExtend;
+    }
+
+    @Override
+    public void clearPassword(String email) throws UserNotFoundException {
+        logger.info("Entered clearPassword() method");
+
+        if (email == null || email.isEmpty()) {
+            logger.error("Invalid email {} while clearing password", email);
+            throw new UserNotFoundException("Invalid email " + email);
+        }
+
+        this.userDao.clearGuestPassword(email);
+        logger.info("End clearPassword() method");
     }
 }

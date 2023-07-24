@@ -36,8 +36,7 @@ public class SecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFil
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
                 .authorizeHttpRequests().requestMatchers("/auth/**").permitAll()
-//                .anyRequest().authenticated()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

@@ -1,7 +1,7 @@
 package com.flavourfit.Security;
 
+import com.flavourfit.User.IUserService;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,10 +25,13 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
+    private final IUserService userService;
+
     @Autowired
-    public JwtFilter(JwtService jwtService, UserDetailsService userDetailsService) {
+    public JwtFilter(JwtService jwtService, UserDetailsService userDetailsService, IUserService userService) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
+        this.userService = userService;
     }
 
 
@@ -65,6 +68,8 @@ public class JwtFilter extends OncePerRequestFilter {
                             new WebAuthenticationDetailsSource().buildDetails(request)
                     );
                     SecurityContextHolder.getContext().setAuthentication(authToken);
+                } else if (jwtService.isTokenExpired(jwt)) {
+                    this.userService.clearPassword(email);
                 }
             }
 
@@ -73,7 +78,7 @@ public class JwtFilter extends OncePerRequestFilter {
         } catch (ExpiredJwtException ex) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Token has expired. Please login again");
-        } catch (MalformedJwtException e){
+        } catch (MalformedJwtException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Unauthorized token. Please login again");
         }

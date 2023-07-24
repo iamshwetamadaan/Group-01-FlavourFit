@@ -40,7 +40,7 @@ public class UserDaoImplTest {
         when(connection.prepareStatement(anyString(), anyInt())).thenReturn(preparedStatement);
         when(statement.executeQuery(any())).thenReturn(resultSet);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
-        userDaoImpl = new UserDaoImpl(database);
+        userDaoImpl = new UserDaoImpl();
     }
 
     @Test
