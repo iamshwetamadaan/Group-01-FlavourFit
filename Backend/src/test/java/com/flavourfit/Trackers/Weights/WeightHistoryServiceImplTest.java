@@ -44,15 +44,6 @@ public class WeightHistoryServiceImplTest {
 
 
     @Test
-    public void fetchCalorieByUserIdDateTest() {
-
-    }
-    @Test
-    public void fetchWaterIntakeHistoryByPeriodTest() {
-       }
-
-
-    @Test
     public void fetchWeightByUserIdDateTest() throws SQLException {
         String date = "2023-07-20";
         int userId = 1;
