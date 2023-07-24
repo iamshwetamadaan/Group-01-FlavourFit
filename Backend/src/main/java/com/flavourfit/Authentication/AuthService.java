@@ -1,5 +1,8 @@
 package com.flavourfit.Authentication;
 
+import com.flavourfit.Emails.EmailDto;
+import com.flavourfit.Emails.IEmailService;
+import com.flavourfit.Exceptions.AuthException;
 import com.flavourfit.Exceptions.DuplicateUserException;
 import com.flavourfit.Exceptions.UserNotFoundException;
 import com.flavourfit.Resources.Helpers;
@@ -23,17 +26,21 @@ public class AuthService implements IAuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+
+    private final IEmailService emailService;
+
     private static Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     public AuthService(
             IUserDao userDao, PasswordEncoder passwordEncoder, JwtService jwtService,
-            AuthenticationManager authenticationManager
+            AuthenticationManager authenticationManager, IEmailService emailService
     ) {
         this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
+        this.emailService = emailService;
     }
 
     /**
@@ -92,7 +99,7 @@ public class AuthService implements IAuthService {
 
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-
+            user.setType("registered");
             this.userDao.addUser(user);
             var authToken = jwtService.generateToken(user);
             response.setToken(authToken);
@@ -107,7 +114,7 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-        public int extractUserIdFromToken(String token) throws UserNotFoundException {
+    public int extractUserIdFromToken(String token) throws UserNotFoundException {
         if (token == null || token.isEmpty()) {
             throw new RuntimeException("Invalid token");
         }
@@ -120,5 +127,65 @@ public class AuthService implements IAuthService {
         } catch (SQLException e) {
             throw new UserNotFoundException(e);
         }
+    }
+
+    private String generateOtp() {
+        String allowedCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvxyz0123456789";
+        StringBuilder s = new StringBuilder(6);
+
+        for (int i = 0; i < 6; i++) {
+
+            //generating a random number using math.random()
+            int index = (int) (allowedCharacters.length() * Math.random());
+
+            //adding Random character one by one at the end of s
+            s.append(allowedCharacters.charAt(index));
+        }
+
+        return s.toString();
+    }
+
+    @Override
+    public void sendOtpMail(String email) throws AuthException {
+        logger.info("Entered service method sendOtpMail()");
+        if (email == null || email.isEmpty()) {
+            logger.error("Email is invalid: {}", email);
+            throw new AuthException("Invalid email");
+        }
+
+        UserDto existingUser = null;
+        try {
+            existingUser = this.userDao.getUserByEmail(email);
+            if (existingUser!=null && existingUser.getType().equalsIgnoreCase("registered")) {
+                throw new AuthException("User is already registered");
+            }
+        } catch (SQLException e) {
+            logger.info("Guest user does not exist. Continue with otp generation.");
+        }
+
+        String otp = this.generateOtp();
+        String subject = "OTP for FlavourFit guest login";
+        String body = "Your otp is " + otp;
+        EmailDto emailDto = new EmailDto(email, body, subject);
+        this.emailService.sendMail(emailDto);
+
+        try {
+            String encodedOtp = this.passwordEncoder.encode(otp);
+            if (existingUser != null) {
+                this.userDao.resetUserPassword(existingUser.getUserId(), encodedOtp);
+            } else {
+                UserDto guestUser = new UserDto();
+                guestUser.setEmail(email);
+                guestUser.setType("guest");
+                guestUser.setPassword(encodedOtp);
+                this.userDao.addUser(guestUser);
+
+            }
+        } catch (SQLException e) {
+            throw new AuthException(e);
+        }
+
+
+        logger.info("Successfully sent otp to the guest user");
     }
 }
