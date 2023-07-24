@@ -33,7 +33,33 @@ public class FeedServiceImpl implements IFeedService {
     }
 
     @Override
-    public ArrayList<FeedDto> getFeedsByUser(int userID,int offset) throws SQLException {
+    public int increaseFeedLikes(int feedId) throws SQLException {
+        logger.info("Started method increaseFeedLikes()");
+
+        int updatedFeedLikes = feedDao.updateFeedLikes(feedId);
+        return updatedFeedLikes;
+    }
+
+    @Override
+    public FeedDto removeCommentFromFeed(int commentId) throws SQLException {
+        logger.info("Started method removeCommentFromFeed()");
+
+        FeedDto feed = feedDao.getFeedsById(commentId);
+        int feedId = feed.getFeedId();
+        boolean commentRemove = commentsService.removeCommentFromFeed(feedId, commentId);
+
+        if (commentRemove) {
+            List<CommentDto> updatedCommentsForFeed = commentsService.getCommentsByFeeds(feedId);
+            feed.setComments(updatedCommentsForFeed);
+        } else {
+            logger.warn("Invalid commentId parameter");
+            throw new RuntimeException("Invalid commentId");
+        }
+
+        return feed;
+    }
+
+    public ArrayList<FeedDto> getFeedsByUser(int userID, int offset) throws SQLException {
         logger.info("Started getFeedsByUser method()");
         ArrayList<FeedDto> feeds = feedDao.getFeedsByUser(userID,offset);
 

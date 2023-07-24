@@ -41,6 +41,29 @@ public class FeedController {
         }
     }
 
+    @PatchMapping("/like-feeds")
+    public ResponseEntity<GetResponse> updateLikesByFeedID(@RequestParam("feedID") int feedID) {
+        logger.info("Entered controller method updateLikesByFeedID()");
+        try {
+            int updatedFeedLikes = this.feedService.increaseFeedLikes(feedID);
+            return ResponseEntity.ok().body(new GetResponse(true, "Successfully updated feed likes", updatedFeedLikes));
+        } catch (Exception e) {
+            logger.error("Failed to increase likes for feed");
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to update feed likes:" + e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("comment-feed")
+    public ResponseEntity<GetResponse> removeCommentsByFeedID(@RequestParam("feedID") int feedID, @RequestParam("commentID") int commentID) {
+        logger.info("Entered controller method removeCommentsByFeedID()");
+        try {
+            FeedDto feed = this.feedService.removeCommentFromFeed(commentID);
+            return ResponseEntity.ok().body(new GetResponse(true, "Successfully removed comment"));
+        } catch (Exception e) {
+            logger.error("Failed to remove the comment from feed");
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to remove comment:" + e.getMessage()));
+        }
+    }
     @GetMapping("/get-all-feeds")
     public ResponseEntity<GetResponse> getAllFeedsByUser(
             @RequestParam("offset") String offset
@@ -66,6 +89,7 @@ public class FeedController {
         } catch (Exception e) {
             logger.error("Failed to retrieve the feeds");
             return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to retrieve feed:" + e.getMessage()));
+
         }
     }
 
