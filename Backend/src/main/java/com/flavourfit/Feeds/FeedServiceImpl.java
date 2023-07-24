@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,11 +25,51 @@ public class FeedServiceImpl implements IFeedService {
     @Override
     public FeedDto getFeedsByID(int feedId) throws SQLException {
         logger.info("Started method getFeedsByID()");
-
         FeedDto feed = feedDao.getFeedsById(feedId);
         List<CommentDto> commentsForFeed = commentsService.getCommentsByFeeds(feedId);
         feed.setComments(commentsForFeed);
+        return feed;
+    }
+
+    @Override
+    public int increaseFeedLikes(int feedId) throws SQLException {
+        logger.info("Started method increaseFeedLikes()");
+
+        int updatedFeedLikes = feedDao.updateFeedLikes(feedId);
+        return updatedFeedLikes;
+    }
+
+    @Override
+    public FeedDto removeCommentFromFeed(int commentId) throws SQLException {
+        logger.info("Started method removeCommentFromFeed()");
+
+        FeedDto feed = feedDao.getFeedsById(commentId);
+        int feedId = feed.getFeedId();
+        boolean commentRemove = commentsService.removeCommentFromFeed(feedId, commentId);
+
+        if (commentRemove) {
+            List<CommentDto> updatedCommentsForFeed = commentsService.getCommentsByFeeds(feedId);
+            feed.setComments(updatedCommentsForFeed);
+        } else {
+            logger.warn("Invalid commentId parameter");
+            throw new RuntimeException("Invalid commentId");
+        }
 
         return feed;
     }
+
+    public List<FeedDto> getFeedsByUser(int userID,int offset) throws SQLException {
+        logger.info("Started getFeedsByUser method()");
+        List<FeedDto> feeds = feedDao.getFeedsByUser(userID,offset);
+
+        logger.info("Received the feeds");
+        for(FeedDto feed : feeds){
+            List<CommentDto> commentsForFeed = commentsService.getCommentsByFeeds(feed.getFeedId());
+            feed.setComments(commentsForFeed);
+        }
+
+        logger.info("Receiving the feeds");
+        return feeds;
+    }
+
 }

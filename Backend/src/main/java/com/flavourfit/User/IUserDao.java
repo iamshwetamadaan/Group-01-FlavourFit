@@ -1,5 +1,7 @@
 package com.flavourfit.User;
 
+import com.flavourfit.Exceptions.UserNotFoundException;
+
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
@@ -24,4 +26,6 @@ public interface IUserDao {
     public int startExtendPremiumMembership(int userId, Date startDate, Date expiryDate, int paymentID) throws SQLException;
 
     public boolean updateUserPayment(int userId, int paymentID, int premiumMembershipID) throws SQLException;
+
+    void clearGuestPassword(String email) throws UserNotFoundException;
 }
