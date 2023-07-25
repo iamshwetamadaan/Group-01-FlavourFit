@@ -79,7 +79,6 @@ class RecipeControllerTest {
         // Assert the result
         assertEquals("Successfully saved recipe", responseBody.getMessage());
 
-
         // Failure Case
         // Recipe not found case
         doThrow(new RecipeExceptions("Recipe not found")).when(savedRecipesService).saveRecipe(recipeId, userId);

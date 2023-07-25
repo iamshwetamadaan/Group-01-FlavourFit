@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,22 +46,27 @@ public class UserControllerTest {
     }
     @Test
     public void userPremiumPaymentTest() throws PaymentException {
-        /**
         // Pass Case
         PremiumUserPaymentDetailsDto requestValid = new PremiumUserPaymentDetailsDto();
         int user_id = 1;
+        String testToken = "token";
+        when(authService.extractUserIdFromToken(testToken)).thenReturn(user_id);
+
         requestValid.setCardNumber("9876543210123456");
         requestValid.setExpiryMonth("02");
         requestValid.setExpiryYear("23");
         requestValid.setCvv("667");
-        requestValid.setStartDate();
-        requestValid.setEndDate();
 
-        ResponseEntity responseEntity1 = userController.getUserPaymentForPremium(, requestValid);
+        LocalDate currentDate = LocalDate.now();
+        LocalDate nextYearDate = currentDate.plusYears(1);
+
+        requestValid.setStartDate(java.sql.Date.valueOf(currentDate));
+        requestValid.setEndDate(java.sql.Date.valueOf(nextYearDate));
+
+        ResponseEntity responseEntity1 = userController.getUserPaymentForPremium(testToken, requestValid);
 
         assertEquals(HttpStatus.OK, responseEntity1.getStatusCode());
-        assertEquals((String) requestValid.get("userID"), responseEntity1.getBody());
-         **/
+
     }
 
 
