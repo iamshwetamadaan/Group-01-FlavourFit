@@ -49,6 +49,7 @@ public class HealthCoachDaoImplTest {
 
         ArrayList<HealthCoachDto> resultCoaches = healthCoachDao.getAllHealthCoaches();
 
+        
         assertTrue(resultCoaches.isEmpty());
     }
 }
