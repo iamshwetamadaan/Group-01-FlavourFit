@@ -9,4 +9,6 @@ public interface ICalorieHistoryDao {
     CalorieHistoryDto getCalorieByUserIdDate(String date, int userId) throws SQLException;
 
     List<CalorieHistoryDto> getCalorieHistoryByPeriod(String startDate, String endDate, int userId) throws SQLException;
+
+    CalorieHistoryDto getCaloriesByUserIdCurrent(int userId) throws SQLException;
 }

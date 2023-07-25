@@ -11,6 +11,8 @@ public interface IWeightHistoryDao {
 
 
     List<WeightHistoryDto> getWeightHistoryByPeriod(String startDate, String endDate, int userId) throws SQLException;
+
+    WeightHistoryDto getWeightByUserIdCurrent(int userId) throws SQLException;
 }
 
 

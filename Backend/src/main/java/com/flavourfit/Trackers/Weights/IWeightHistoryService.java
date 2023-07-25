@@ -11,6 +11,8 @@ public interface IWeightHistoryService {
 
 
     List<WeightGraphDto> fetchWeightHistoryByPeriod(String startDate, String endDate, int userId);
+
+    WeightHistoryDto fetchWeightByUserIdCurrent(int userId) throws SQLException;
 }
 
 

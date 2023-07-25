@@ -12,6 +12,6 @@ public interface IFeedService {
 
     FeedDto removeCommentFromFeed(int commentId) throws SQLException;
 
-    public List<FeedDto> getFeedsByUser(int userID, int offset) throws SQLException;
+    public ArrayList<FeedDto> getFeedsByUser(int userID, int offset) throws SQLException;
 
 }

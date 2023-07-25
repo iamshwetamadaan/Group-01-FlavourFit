@@ -91,6 +91,7 @@ import java.util.List;
 
             logger.info("Creating a prepared statement to insert record.");
             String query = "UPDATE Weight_History SET weight=? WHERE weight_history_id=?";
+           // UserService.updateUserWeight(weightHistoryDto.getWeight());
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             logger.info("Replacing values in prepared statement with actual values to be updated");
             preparedStatement.setDouble(1, weightHistoryDto.getWeight());
@@ -119,10 +120,10 @@ import java.util.List;
             preparedStatement.setString(1, date);
             preparedStatement.setInt(2, userId);
 
-            logger.info("Execute the query to get water intake for date.");
+            logger.info("Execute the query to get weight for date.");
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            logger.info("Iterate result set to get total water intake.");
+            logger.info("Iterate result set to get weight.");
             weightHistoryDto = this.extractResult(resultSet);
 
             return weightHistoryDto;
@@ -155,12 +156,35 @@ import java.util.List;
         preparedStatement.setString(2, startDate);
         preparedStatement.setString(3, endDate);
 
-        logger.info("Execute the query to get calorie count for date.");
+        logger.info("Execute the query to get weight for date.");
         ResultSet resultSet = preparedStatement.executeQuery();
 
         List<WeightHistoryDto> weightHistoryList = this.extractResultList(resultSet);
 
         return weightHistoryList;
+    }
+
+    @Override
+    public WeightHistoryDto getWeightByUserIdCurrent(int userId) throws SQLException {
+        logger.info("Started getWaterIntakeByUserIdDate() method");
+
+
+        this.testConnection();
+
+        WeightHistoryDto weightHistoryDto = null;
+        String query = "SELECT * FROM Weight_History WHERE   User_id=? ORDER BY Update_Date DESC LIMIT 1";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        logger.info("Replacing values in prepared statement with actual values for date and user id.");
+        preparedStatement.setInt(1, userId);
+
+        logger.info("Execute the query to get WEIGHT current.");
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        logger.info("Iterate result set to get WEIGHT current.");
+        weightHistoryDto = this.extractResult(resultSet);
+
+        return weightHistoryDto;
     }
 
 

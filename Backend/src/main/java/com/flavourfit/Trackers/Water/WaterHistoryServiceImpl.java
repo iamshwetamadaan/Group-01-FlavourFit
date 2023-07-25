@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -121,6 +120,18 @@ public class WaterHistoryServiceImpl implements IWaterHistoryService {
             }
             return null;
         }
+
+    @Override
+    public WaterHistoryDto fetchWaterIntakeByUserIdCurrent(int userId) throws SQLException {
+        logger.info("Started fetchWaterIntakeByUserIdCurrent() method!");
+
+        WaterHistoryDto waterHistoryDto = null;
+        logger.info("Using waterHistoryDao to get water intake for given date!!");
+        waterHistoryDto = this.waterHistoryDao.getWaterIntakeByUserIdCurrent(userId);
+
+        logger.info("Exiting fetchWaterIntakeByUserIdDate() method!");
+        return waterHistoryDto;
+    }
 
     }
 
