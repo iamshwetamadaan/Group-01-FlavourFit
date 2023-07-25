@@ -361,6 +361,7 @@ public class UserDaoImpl implements IUserDao {
         }
     }
 
+
     private void replaceStatementPlaceholders(UserDto user, PreparedStatement preparedStatement, int count) throws
             SQLException {
         if (user == null || preparedStatement == null) {

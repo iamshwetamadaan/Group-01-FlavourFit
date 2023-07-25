@@ -128,6 +128,28 @@ public class WaterHistoryDaoImpl implements IWaterHistoryDao {
         return waterHistoryDto;
     }
 
+    @Override
+    public WaterHistoryDto getWaterIntakeByUserIdCurrent( int userId) throws SQLException {
+        logger.info("Started getWaterIntakeByUserIdCurrent() method");
+
+        this.testConnection();
+
+        WaterHistoryDto waterHistoryDto = null;
+        String query = "SELECT * FROM Water_History WHERE User_id=? ORDER BY Update_Date DESC LIMIT 1";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        logger.info("Replacing values in prepared statement with actual values for date and user id.");
+        preparedStatement.setInt(1, userId);
+
+        logger.info("Execute the query to get water intake curent.");
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        logger.info("Iterate result set to get total water intake.");
+        waterHistoryDto = this.extractResult(resultSet);
+
+        return waterHistoryDto;
+    }
+
     /**
      * Method to get the waterhistory for a period
      *

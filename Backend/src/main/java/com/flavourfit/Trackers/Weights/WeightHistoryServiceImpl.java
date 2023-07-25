@@ -49,12 +49,12 @@ import java.util.List;
         public WeightHistoryDto fetchWeightByUserIdDate(String date, int userId) throws SQLException {
             logger.info("Started fetchWaterIntakeByUserIdDate() method!");
 
-            WeightHistoryDto waterHistoryDto = null;
+            WeightHistoryDto weightHistoryDto = null;
             logger.info("Using waterHistoryDao to get water intake for given date!!");
-            waterHistoryDto = this.weightHistoryDao.getWeightByUserIdDate(date, userId);
+            weightHistoryDto = this.weightHistoryDao.getWeightByUserIdDate(date, userId);
 
             logger.info("Exiting fetchWaterIntakeByUserIdDate() method!");
-            return waterHistoryDto;
+            return weightHistoryDto;
         }
 
     /**
@@ -120,6 +120,19 @@ import java.util.List;
         }
         return null;
     }
+
+    @Override
+    public WeightHistoryDto fetchWeightByUserIdCurrent(  int userId) throws SQLException {
+        logger.info("Started fetchWaterIntakeByUserIdDate() method!");
+
+        WeightHistoryDto weightHistoryDto = null;
+        logger.info("Using waterHistoryDao to get water intake for given date!!");
+        weightHistoryDto = this.weightHistoryDao.getWeightByUserIdCurrent(userId);
+
+        logger.info("Exiting fetchWaterIntakeByUserIdDate() method!");
+        return weightHistoryDto;
+    }
 }
+
 
 
