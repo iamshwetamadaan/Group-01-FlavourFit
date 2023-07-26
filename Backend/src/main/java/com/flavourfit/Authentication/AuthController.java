@@ -65,9 +65,10 @@ public class AuthController {
     }
 
     @PostMapping("/request-otp")
-    public ResponseEntity<Object> requestGuestOtp(@RequestBody String email) {
+    public ResponseEntity<Object> requestGuestOtp(@RequestBody Map<String,String> requestBody) {
         logger.info("Entered requestGuestOtp() method");
         try {
+            String email = requestBody.get("email");
             this.authService.sendOtpMail(email);
             return ResponseEntity.ok().body(new PutResponse(true, "Sent otp successfully to " + email));
         } catch (AuthException e) {
