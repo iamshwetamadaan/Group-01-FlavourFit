@@ -1,0 +1,13 @@
+.container-userProfile{
+    min-height: 100vh;
+    background: #050725;
+    padding-top: 50px;
+}
+
+.form-container{
+    max-width: 70%;
+    padding: 20px 30px;
+    background: #d8e4ed;
+    display: flex;
+    flex-direction: column;
+}
