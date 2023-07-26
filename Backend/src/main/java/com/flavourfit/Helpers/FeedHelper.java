@@ -1,3 +1,4 @@
+
 package com.flavourfit.Helpers;
 
 import com.flavourfit.Exceptions.RecipeExceptions;
@@ -39,3 +40,4 @@ public class FeedHelper {
         return feed;
     }
 }
+

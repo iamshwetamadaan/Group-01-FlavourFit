@@ -2,6 +2,7 @@ package com.flavourfit.Recipes.Ingredients;
 
 import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.Exceptions.RecipeExceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,32 @@ public class IngredientsDaoImpl implements IIngredientsDao {
         ingredients = this.extractIngredients(resultSet);
         logger.info("Extracted ingredients from result set", recipeId);
         return ingredients;
+    }
+
+    @Override
+    public void updateIngredients(List<IngredientDto> ingredients) throws SQLException {
+        logger.info("Entered updateIngredients() method");
+
+        this.testConnection();
+
+        String query = "UPDATE Ingredients SET Ingredient_name=?,quantity=?,quantity_unit=? WHERE Ingredient_id=?";
+        PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+
+        logger.info("Adding all ingredients to the prepared statement");
+        for (IngredientDto ingredient : ingredients) {
+            if (ingredient.getRecipeId() == 0) {
+                logger.error("Invalid recipe id for ingredient");
+                throw new RecipeExceptions("Invalid recipe id for ingredient");
+            }
+            preparedStatement.setString(1, ingredient.getIngredientName());
+            preparedStatement.setDouble(2, ingredient.getQuantity());
+            preparedStatement.setString(3, ingredient.getQuantityUnit());
+            preparedStatement.setInt(4, ingredient.getIngredientId());
+            preparedStatement.addBatch();
+        }
+
+        logger.info("Updated records to ingredients table.");
+        preparedStatement.executeBatch();
     }
 
     private void testConnection() throws SQLException {

@@ -241,3 +241,7 @@ CREATE TABLE `Fitness_Tips` (
 -- Add editable field to recipes
 ALTER TABLE `Recipes`
     ADD COLUMN `editable` TINYINT NULL DEFAULT 0 AFTER `Types`;
+
+-- Add comment username to comments
+ALTER TABLE `Comments`
+    ADD COLUMN `Comment_username` VARCHAR(100) NULL DEFAULT NULL;

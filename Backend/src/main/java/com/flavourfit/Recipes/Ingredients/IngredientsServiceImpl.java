@@ -53,4 +53,21 @@ public class IngredientsServiceImpl implements IIngredientsService {
         }
     }
 
+    @Override
+    public void updateIngredients(List<IngredientDto> ingredients) throws RecipeExceptions {
+        logger.info("Entered updateIngredients() method.");
+        if (ingredients == null) {
+            logger.error("Invalid ingredients list");
+            throw new RecipeExceptions("Invalid ingredients list");
+        }
+
+        try {
+            this.ingredientsDao.updateIngredients(ingredients);
+            logger.info("Successfully updated ingredients for recipe");
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            throw new RecipeExceptions(e);
+        }
+    }
+
 }

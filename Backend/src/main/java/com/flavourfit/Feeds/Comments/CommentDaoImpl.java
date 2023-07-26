@@ -2,6 +2,7 @@ package com.flavourfit.Feeds.Comments;
 
 import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.Exceptions.FeedsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,33 +65,84 @@ public class CommentDaoImpl implements ICommentsDao {
         logger.info("Started deleteCommentInFeed() method");
         boolean commentDeleted = false;
 
-        if (database != null) {
-            Connection connection = this.database.getConnection();
+        this.testConnection();
 
-            if (connection == null) {
-                logger.error("SQL connection not found!");
-                throw new SQLException("SQL connection not found!");
-            }
+        logger.info("Running delete query to get comment for a specific feed");
+        String query = "DELETE from Comments WHERE Comment_id=? AND Feed_id=?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        logger.info("Replacing values in prepared statement with actual values to be inserted");
+        preparedStatement.setInt(1, commentId);
+        preparedStatement.setInt(2, feedId);
+        logger.info("Execute the update of record to the table");
+        int commentToBeDeleted = preparedStatement.executeUpdate();
 
-            logger.info("Running delete query to get comment for a specific feed");
-            String query = "DELETE from Comments WHERE Comment_id=? AND Feed_id=?";
-            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            logger.info("Replacing values in prepared statement with actual values to be inserted");
-            preparedStatement.setInt(1, commentId);
-            preparedStatement.setInt(2, feedId);
-            logger.info("Execute the update of record to the table");
-            int commentToBeDeleted = preparedStatement.executeUpdate();
-
-            if (commentToBeDeleted > 0) {
-                logger.info("Comment deleted successfully.");
-                commentDeleted = true;
-            } else {
-                logger.error("Comment with the given ID not found to be deleted.");
-            }
+        if (commentToBeDeleted > 0) {
+            logger.info("Comment deleted successfully.");
+            commentDeleted = true;
+        } else {
+            logger.error("Comment with the given ID not found to be deleted.");
         }
 
         logger.info("Returning boolean value to show whether feed's list of comments updated or not as response");
         return commentDeleted;
+    }
+
+    @Override
+    public void addComment(CommentDto commentDto) throws SQLException {
+        logger.info("Started addComment() method");
+
+        if (commentDto.getCommentContent() == null || commentDto.getCommentContent().isEmpty()) {
+            logger.error("Invalid data while adding comment");
+            throw new FeedsException("Invalid comment");
+        } else if (commentDto.getFeedId() == 0 || commentDto.getUserId() == 0) {
+            logger.error("Invalid feed/user id while adding comment");
+            throw new FeedsException("Invalid feed/user id");
+        }
+
+        this.testConnection();
+
+        logger.info("Creating a prepared statement to insert record.");
+        String query = "INSERT INTO Comments (Comment_content,Feed_id,User_id,Comment_username) VALUES (?,?,?,?)";
+
+        logger.info("Replacing values in prepared statement with actual values to be inserted");
+        PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+        preparedStatement.setString(1, commentDto.getCommentContent());
+        preparedStatement.setInt(2, commentDto.getFeedId());
+        preparedStatement.setInt(3, commentDto.getUserId());
+        preparedStatement.setString(4, commentDto.getUsername());
+
+        logger.info("Execute the insertion of comment to the table");
+        preparedStatement.executeUpdate();
+
+        logger.info("Added comment with content: {}, by {}", commentDto.getCommentContent(), commentDto.getUsername());
+    }
+
+    @Override
+    public void updateComment(CommentDto commentDto) throws SQLException {
+        logger.info("Started updateComment() method");
+
+        if (commentDto.getCommentContent() == null || commentDto.getCommentContent().isEmpty()) {
+            logger.error("Invalid data while updating comment");
+            throw new FeedsException("Invalid comment");
+        } else if (commentDto.getCommentId() == 0) {
+            logger.error("Invalid comment id while updating comment");
+            throw new FeedsException("Invalid comment id");
+        }
+
+        this.testConnection();
+
+        logger.info("Creating a prepared statement to update record.");
+        String query = "UPDATE Comments SET Comment_content=? WHERE Comment_id=?";
+
+        logger.info("Replacing values in prepared statement with actual values to be updated");
+        PreparedStatement preparedStatement = this.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        preparedStatement.setString(1, commentDto.getCommentContent());
+        preparedStatement.setInt(2, commentDto.getCommentId());
+
+        logger.info("Execute the update of comment to the table");
+        preparedStatement.executeUpdate();
+
+        logger.info("Updated comment with content: {}, by {}", commentDto.getCommentContent(), commentDto.getUsername());
     }
 
     private void replaceStatementPlaceholders(CommentDto commentDto, PreparedStatement preparedStatement) throws
@@ -107,10 +159,11 @@ public class CommentDaoImpl implements ICommentsDao {
     private CommentDto extractCommentsFromResult(ResultSet resultSet) throws SQLException {
         CommentDto comments = new CommentDto();
         if (resultSet != null) {
-            comments.setCommentID(resultSet.getInt("Comment_id"));
+            comments.setCommentId(resultSet.getInt("Comment_id"));
             comments.setCommentContent(resultSet.getString("Comment_content"));
             comments.setUserId(resultSet.getInt("User_id"));
             comments.setFeedId(resultSet.getInt("Feed_id"));
+            comments.setUsername(resultSet.getString("Comment_username"));
         }
         return comments;
     }

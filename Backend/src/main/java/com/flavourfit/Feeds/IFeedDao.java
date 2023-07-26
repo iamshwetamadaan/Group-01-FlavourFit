@@ -13,4 +13,7 @@ public interface IFeedDao {
 
     public ArrayList<FeedDto> getFeedsByUser(int userId,int offset) throws SQLException;
 
+    int addPost(FeedDto feed) throws SQLException;
+
+    void updatePost(FeedDto feed) throws SQLException;
 }

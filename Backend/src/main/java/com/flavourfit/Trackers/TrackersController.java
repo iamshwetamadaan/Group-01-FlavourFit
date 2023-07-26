@@ -51,22 +51,6 @@ public class TrackersController {
         this.authService = authService;
     }
 
-    @Autowired
-    public void setCalorieHistoryService(ICalorieHistoryService calorieHistoryService) {
-        this.calorieHistoryService = calorieHistoryService;
-    }
-
-    @Autowired
-    public void setWaterHistoryService(IWaterHistoryService waterHistoryService) {
-        this.waterHistoryService = waterHistoryService;
-    }
-
-    @Autowired
-    public void setWeightHistoryService(IWeightHistoryService weightHistoryService) {
-        this.weightHistoryService = weightHistoryService;
-    }
-
-
     @PutMapping("/record-calories")
     public ResponseEntity<Object> recordCalories(
             @RequestBody Map<String, Object> requestBody,
