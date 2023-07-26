@@ -8,6 +8,7 @@ import Home from "../Home/Home";
 import Registration from "../Registration/Registration";
 import GuestLogin from "../GuestLogin/GuestLogin";
 import Trackers from "../Trackers/Trackers";
+import UserProfile from "../UserProfile/userProfile";
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -16,10 +17,12 @@ const AppRouter = () => (
         <Route path="home" element={<Home />} />
         <Route path="" element={<Navigate to="/home" />} />
         <Route path="trackers" element={<Trackers />} />
+          <Route path="/edit-profile" element={<UserProfile/>}/>
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/guest-login" element={<GuestLogin />} />
       <Route path="/register" element={<Registration />} />
+
     </Routes>
   </BrowserRouter>
 );
