@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 @Repository
 public class FeedDaoImpl implements IFeedDao {
     private static Logger logger = LoggerFactory.getLogger(FeedDaoImpl.class);
@@ -38,7 +39,7 @@ public class FeedDaoImpl implements IFeedDao {
         preparedStatement.setInt(1, feedID);
 
         ResultSet resultSet = preparedStatement.executeQuery();
-        if(resultSet.next()){
+        if (resultSet.next()) {
             userFeeds = this.extractUserFeedsFromResult(resultSet);
         }
 
@@ -48,41 +49,33 @@ public class FeedDaoImpl implements IFeedDao {
 
     @Override
     public int updateFeedLikes(int feedId) throws SQLException {
-
         int likesUpdated = 0;
         logger.info("Started updateFeedLikes() method");
 
-        if (database != null) {
-            Connection connection = this.database.getConnection();
+        this.testConnection();
 
-            if (connection == null) {
-                logger.error("SQL connection not found!");
-                throw new SQLException("SQL connection not found!");
-            }
+        logger.info("Creating a prepared statement to first get the record for which like have to increase.");
+        PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT * from Feeds WHERE Feed_id=?");
+        preparedStatement1.setInt(1, feedId);
+        ResultSet resultSet = preparedStatement1.executeQuery();
 
-            logger.info("Creating a prepared statement to first get the record for which like have to increase.");
-            PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT * from Feeds WHERE Feed_id=?");
-            preparedStatement1.setInt(1, feedId);
-            ResultSet resultSet = preparedStatement1.executeQuery();
+        likesUpdated = this.extractUserFeedsFromResult(resultSet).getLikeCount();
+        likesUpdated = +1;
 
-            likesUpdated = this.extractUserFeedsFromResult(resultSet).getLikeCount();
-            likesUpdated = +1;
+        logger.info("Creating a prepared statement to update record.");
+        String query = "UPDATE Feeds SET like_count = ? where Feed_id = ?";
+        PreparedStatement preparedStatement2 = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        logger.info("Replacing values in prepared statement with actual values to be inserted");
+        preparedStatement2.setInt(1, likesUpdated);
+        preparedStatement2.setInt(2, feedId);
+        logger.info("Execute the update of record to the table");
+        preparedStatement2.executeUpdate();
 
-            logger.info("Creating a prepared statement to update record.");
-            String query = "UPDATE Feeds SET like_count = ? where Feed_id = ?";
-            PreparedStatement preparedStatement2 = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            logger.info("Replacing values in prepared statement with actual values to be inserted");
-            preparedStatement2.setInt(1, likesUpdated);
-            preparedStatement2.setInt(2, feedId);
-            logger.info("Execute the update of record to the table");
-            preparedStatement2.executeUpdate();
-
-            ResultSet keys = preparedStatement2.getGeneratedKeys();
-            long updatedLikesFeedID;
-            while (keys.next()) {
-                updatedLikesFeedID = keys.getLong(1);
-                logger.info("Updated likes with feedId: {}, to the Feeds table!", updatedLikesFeedID);
-            }
+        ResultSet keys = preparedStatement2.getGeneratedKeys();
+        long updatedLikesFeedID;
+        while (keys.next()) {
+            updatedLikesFeedID = keys.getLong(1);
+            logger.info("Updated likes with feedId: {}, to the Feeds table!", updatedLikesFeedID);
         }
 
         return likesUpdated;
@@ -103,7 +96,7 @@ public class FeedDaoImpl implements IFeedDao {
 
 
         logger.info("Obtained the result of select query");
-        while(resultSet.next()){
+        while (resultSet.next()) {
             FeedDto feed = new FeedDto();
             feed = this.extractUserFeedsFromResult(resultSet);
             userFeeds.add(feed);
@@ -111,6 +104,61 @@ public class FeedDaoImpl implements IFeedDao {
 
         logger.info("Returning received user feeds as response");
         return userFeeds;
+    }
+
+    @Override
+    public int addPost(FeedDto feed) throws SQLException {
+        logger.info("Started addPost() method");
+
+
+        if (feed == null || feed.getFeedContent() == null || feed.getUserId() == 0) {
+            logger.error("Feed object not valid!!");
+            throw new SQLException("Feed object not valid!!");
+        }
+
+        this.testConnection();
+
+        logger.info("Creating a prepared statement to insert record.");
+        String query = "INSERT INTO Feeds (Feed_content,User_id) "
+                + " VALUES(?,?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        logger.info("Replacing values in prepared statement with actual values to be inserted");
+        preparedStatement.setString(1, feed.getFeedContent());
+        preparedStatement.setInt(2, feed.getUserId());
+        logger.info("Execute the insertion of record to the table");
+        preparedStatement.executeUpdate();
+
+        ResultSet keys = preparedStatement.getGeneratedKeys();
+        long newFeedId = 0;
+        while (keys.next()) {
+            newFeedId = keys.getLong(1);
+            logger.info("Added feed with feedId: {}, to the Feeds table!", newFeedId);
+        }
+        return (int) newFeedId;
+    }
+
+    @Override
+    public void updatePost(FeedDto feed) throws SQLException {
+        logger.info("Started updatePost() method");
+
+
+        if (feed == null || feed.getFeedContent() == null || feed.getUserId() == 0 || feed.getFeedId() == 0) {
+            logger.error("Feed object not valid!!");
+            throw new SQLException("Feed object not valid!!");
+        }
+
+        this.testConnection();
+
+        logger.info("Creating a prepared statement to insert record.");
+        String query = "UPDATE Feeds SET Feed_content=?, Like_count=? WHERE Feed_Id=?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        logger.info("Replacing values in prepared statement with actual values to be inserted");
+        preparedStatement.setString(1, feed.getFeedContent());
+        preparedStatement.setInt(2, feed.getLikeCount());
+        preparedStatement.setInt(3, feed.getFeedId());
+        logger.info("Execute the update of record to the table");
+        preparedStatement.executeUpdate();
+        logger.info("Updated feed with feedId: {}, to the Feeds table!", feed.getFeedId());
     }
 
     private void testConnection() throws SQLException {
@@ -138,11 +186,11 @@ public class FeedDaoImpl implements IFeedDao {
 
     private FeedDto extractUserFeedsFromResult(ResultSet resultSet) throws SQLException {
         FeedDto userFeeds = new FeedDto();
-            userFeeds.setFeedId(resultSet.getInt("Feed_id"));
-            userFeeds.setFeedContent(resultSet.getString("Feed_content"));
-            userFeeds.setLikeCount(resultSet.getInt("Like_count"));
-            userFeeds.setUserId(resultSet.getInt("User_id"));
-            userFeeds.setComments(new ArrayList<CommentDto>());
+        userFeeds.setFeedId(resultSet.getInt("Feed_id"));
+        userFeeds.setFeedContent(resultSet.getString("Feed_content"));
+        userFeeds.setLikeCount(resultSet.getInt("Like_count"));
+        userFeeds.setUserId(resultSet.getInt("User_id"));
+        userFeeds.setComments(new ArrayList<CommentDto>());
         return userFeeds;
     }
 
