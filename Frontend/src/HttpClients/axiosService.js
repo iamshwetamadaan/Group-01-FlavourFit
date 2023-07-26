@@ -29,6 +29,9 @@ const axiosRequest = (request, success = null, failure = null) => {
       if (error?.response?.status === 401) {
         window.location.href = "/login";
       }
+      if (failure) {
+        failure(error);
+      }
     });
 };
 

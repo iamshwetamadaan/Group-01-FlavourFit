@@ -35,6 +35,7 @@ UserService implements IUserService {
             logger.error("Invalid user parameter");
             throw new RuntimeException("Invalid user");
         }
+
         return this.userDao.updateUser(user);
     }
 
