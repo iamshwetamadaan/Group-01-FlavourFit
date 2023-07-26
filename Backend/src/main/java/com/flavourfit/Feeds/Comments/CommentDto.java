@@ -1,18 +1,18 @@
 package com.flavourfit.Feeds.Comments;
 
 public class CommentDto {
-    private int commentID;
+    private int commentId;
     private String commentContent;
     private String username;
     private int userId;
     private int feedId;
 
-    public int getCommentID() {
-        return commentID;
+    public int getCommentId() {
+        return commentId;
     }
 
-    public void setCommentID(int commentID) {
-        this.commentID = commentID;
+    public void setCommentId(int commentId) {
+        this.commentId = commentId;
     }
 
     public String getCommentContent() {

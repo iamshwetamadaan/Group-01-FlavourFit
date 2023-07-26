@@ -11,6 +11,9 @@ public interface IFeedDao {
 
     int updateFeedLikes(int feedId) throws SQLException;
 
-    public List<FeedDto> getFeedsByUser(int userId,int offset) throws SQLException;
+    public ArrayList<FeedDto> getFeedsByUser(int userId,int offset) throws SQLException;
 
+    int addPost(FeedDto feed) throws SQLException;
+
+    void updatePost(FeedDto feed) throws SQLException;
 }

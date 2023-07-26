@@ -27,4 +27,7 @@ public interface IUserService {
     void clearPassword(String email) throws UserNotFoundException;
 
 
+    void updateUserWeight(double weight, int userId) throws UserNotFoundException;
+
+    double fetchUserCurrentWeight(int userId) throws UserNotFoundException;
 }

@@ -361,6 +361,50 @@ public class UserDaoImpl implements IUserDao {
         }
     }
 
+    @Override
+    public void updateUserWeight(double weight, int userId) throws SQLException {
+        logger.info("Entered updateUserWeight() method");
+
+        if (userId == 0) {
+            logger.error("Invalid user ");
+            throw new UserNotFoundException("Invalid user");
+        }
+
+        this.testConnection();
+
+        String query = "UPDATE Users SET Current_weight=? WHERE User_id=?";
+        logger.info("Creating query to update weight");
+        PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+        preparedStatement.setDouble(1, weight);
+        preparedStatement.setInt(2, userId);
+        preparedStatement.executeUpdate();
+        logger.info("Updated weight of user with id {}", userId);
+    }
+
+    @Override
+    public double getUserCurrentWeight(int userId) throws SQLException {
+        logger.info("Entered getUserCurrentWeight() method");
+
+        if (userId == 0) {
+            logger.error("Invalid user ");
+            throw new UserNotFoundException("Invalid user");
+        }
+
+        this.testConnection();
+
+        String query = "SELECT Current_weight FROM Users WHERE User_id=?";
+        logger.info("Creating query to fetch current weight");
+        PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+        preparedStatement.setInt(1, userId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        double currentWeight = 0.0d;
+        while (resultSet.next()) {
+            currentWeight = resultSet.getDouble("Current_weight");
+        }
+        logger.info("Fetched weight of user with id {}", userId);
+        return currentWeight;
+    }
 
     private void replaceStatementPlaceholders(UserDto user, PreparedStatement preparedStatement, int count) throws
             SQLException {

@@ -29,11 +29,11 @@ public class FeedServiceImplTest {
 
     @Test
     public void getFeedsByUserTest() throws SQLException {
-        List<FeedDto> mockFeeds = new ArrayList<>();
+        ArrayList<FeedDto> mockFeeds = new ArrayList<>();
 
         when(feedDao.getFeedsByUser(4, 0)).thenReturn(mockFeeds);
 
-        List<FeedDto> resultFeeds = feedService.getFeedsByUser(4, 0);
+        ArrayList<FeedDto> resultFeeds = feedService.getFeedsByUser(4, 0);
 
         // Assert
         assertTrue(resultFeeds.isEmpty());

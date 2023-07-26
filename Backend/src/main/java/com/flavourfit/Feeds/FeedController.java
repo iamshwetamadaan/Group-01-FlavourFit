@@ -1,17 +1,17 @@
 package com.flavourfit.Feeds;
 
 import com.flavourfit.Authentication.IAuthService;
-import com.flavourfit.Exceptions.CalorieHistoryException;
+import com.flavourfit.Feeds.Comments.CommentDto;
 import com.flavourfit.Feeds.Comments.ICommentsService;
 import com.flavourfit.ResponsesDTO.GetResponse;
-import com.flavourfit.Trackers.Calories.CalorieGraphDto;
+import com.flavourfit.ResponsesDTO.PutResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +22,7 @@ public class FeedController {
     private IFeedService feedService;
     private IAuthService authService;
     private ICommentsService commentsService;
+
     @Autowired
     public FeedController(IFeedService feedService, IAuthService authService, ICommentsService commentsService) {
         this.feedService = feedService;
@@ -54,7 +55,9 @@ public class FeedController {
     }
 
     @DeleteMapping("comment-feed")
-    public ResponseEntity<GetResponse> removeCommentsByFeedID(@RequestParam("feedID") int feedID, @RequestParam("commentID") int commentID) {
+    public ResponseEntity<GetResponse> removeCommentsByFeedID(
+            @RequestParam("feedID") int feedID, @RequestParam("commentID") int commentID
+    ) {
         logger.info("Entered controller method removeCommentsByFeedID()");
         try {
             FeedDto feed = this.feedService.removeCommentFromFeed(commentID);
@@ -64,32 +67,103 @@ public class FeedController {
             return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to remove comment:" + e.getMessage()));
         }
     }
+
     @GetMapping("/get-all-feeds")
     public ResponseEntity<GetResponse> getAllFeedsByUser(
-            @RequestParam("offset") String offset
-            ,@RequestHeader("Authorization") String token)
-    {
+            @RequestParam("offset") String offset, @RequestHeader("Authorization") String token
+    ) {
         logger.info("Entered controller method getAllFeedsByUser()");
         int userId;
 
-        try{
-           userId = authService.extractUserIdFromToken(token);
-//            userId=7;
-        }
-        catch(Exception e){
+        try {
+            userId = authService.extractUserIdFromToken(token);
+        } catch (Exception e) {
             logger.error("Failed to retrieve feed");
             return ResponseEntity.badRequest().body(new GetResponse(false, "Token not valid" + e.getMessage()));
         }
 
         try {
             int offsetNumber = Integer.parseInt(offset);
-            List<FeedDto> feeds= this.feedService.getFeedsByUser(userId,offsetNumber);
+            ArrayList<FeedDto> feeds = this.feedService.getFeedsByUser(userId, offsetNumber);
             logger.info("Retrieved all the feeds");
             return ResponseEntity.ok().body(new GetResponse(true, "Successfully retrieved feed", feeds));
         } catch (Exception e) {
             logger.error("Failed to retrieve the feeds");
             return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to retrieve feed:" + e.getMessage()));
 
+        }
+    }
+
+    @PutMapping("/record-post")
+    public ResponseEntity<PutResponse> recordPost(
+            @RequestBody FeedDto feedDto, @RequestHeader("Authorization") String token
+    ) {
+        logger.info("Entered controller method recordPost()");
+        int userId;
+
+        try {
+            userId = authService.extractUserIdFromToken(token);
+        } catch (Exception e) {
+            logger.error("Failed to record feed: ", e.getMessage());
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Token not valid" + e.getMessage()));
+        }
+
+        try {
+            FeedDto updatedFeed = this.feedService.recordPost(feedDto, userId);
+            logger.info("Recorded feed with id {}", updatedFeed.getFeedId());
+            return ResponseEntity.ok().body(new PutResponse(true, "Successfully recorded feed", updatedFeed));
+        } catch (Exception e) {
+            logger.error("Failed to record the feed");
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to record the feed:" + e.getMessage()));
+        }
+    }
+
+    @PutMapping("/record-comment")
+    public ResponseEntity<PutResponse> recordComment(
+            @RequestBody CommentDto commentDto, @RequestHeader("Authorization") String token
+    ) {
+        logger.info("Entered controller method recordComment()");
+        int userId;
+
+        try {
+            userId = authService.extractUserIdFromToken(token);
+        } catch (Exception e) {
+            logger.error("Failed to record comment: ", e.getMessage());
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Token not valid" + e.getMessage()));
+        }
+
+        try {
+            this.commentsService.recordComment(commentDto, userId);
+            logger.info("Recorded comment");
+            List<CommentDto> updatedComments = this.commentsService.getCommentsByFeeds(commentDto.getFeedId());
+            return ResponseEntity.ok().body(new PutResponse(true, "Successfully recorded comment", updatedComments));
+        } catch (Exception e) {
+            logger.error("Failed to record the comment");
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to record the comment:" + e.getMessage()));
+        }
+    }
+
+    @PutMapping("post-recipe")
+    public ResponseEntity<PutResponse> postRecipeOnFeed(
+            @RequestParam("recipeId") int recipeId, @RequestHeader("Authorization") String token
+    ) {
+        logger.info("Entered controller method postRecipeOnFeed()");
+        int userId;
+
+        try {
+            userId = authService.extractUserIdFromToken(token);
+        } catch (Exception e) {
+            logger.error("Failed to record comment: ", e.getMessage());
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Token not valid" + e.getMessage()));
+        }
+
+        try {
+            logger.info("Posting recipe with id {} on feed", recipeId);
+            FeedDto newFeed = this.feedService.postRecipe(recipeId, userId);
+            return ResponseEntity.ok().body(new PutResponse(true, "Successfully posted recipe", newFeed));
+        } catch (Exception e) {
+            logger.error("Failed to post recipe: {}", e.getMessage());
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to post recipe: " + e.getMessage()));
         }
     }
 

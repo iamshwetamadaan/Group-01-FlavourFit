@@ -2,6 +2,7 @@ package com.flavourfit.User;
 
 import com.flavourfit.Authentication.IAuthService;
 import com.flavourfit.Exceptions.UserNotFoundException;
+import com.flavourfit.Trackers.Weights.IWeightHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.flavourfit.ResponsesDTO.PutResponse;
 import org.slf4j.LoggerFactory;
@@ -20,13 +21,19 @@ import java.util.Map;
 @RequestMapping("/users")
 public class UserController {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
-    private IUserService userService;
-    private IAuthService authService;
+    private final IUserService userService;
+    private final IAuthService authService;
+
+    private final IWeightHistoryService weightHistoryService;
 
     @Autowired
-    public UserController(IUserService userService, IAuthService authService) {
+    public UserController(
+            IUserService userService, IAuthService authService,
+            IWeightHistoryService weightHistoryService
+    ) {
         this.userService = userService;
         this.authService = authService;
+        this.weightHistoryService = weightHistoryService;
     }
 
     @PutMapping({"/reset-password"})
@@ -99,7 +106,7 @@ public class UserController {
                 logger.info("Successfully loaded premium user details");
                 userdata.put("Premium user details", premiumuserDto);
                 return ResponseEntity.ok()
-                                     .body(new PutResponse(true, "Successfully loaded premium user details", userdata));
+                        .body(new PutResponse(true, "Successfully loaded premium user details", userdata));
             } else {
                 logger.error("Failed to load user details");
                 return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to load user details"));
@@ -111,7 +118,9 @@ public class UserController {
     }
 
     @PostMapping("/make-payment")
-    public ResponseEntity<PutResponse> getUserPaymentForPremium(@RequestHeader("Authorization") String token, @RequestBody PremiumUserPaymentDetailsDto request) {
+    public ResponseEntity<PutResponse> getUserPaymentForPremium(
+            @RequestHeader("Authorization") String token, @RequestBody PremiumUserPaymentDetailsDto request
+    ) {
         logger.info("Entered controller method getUserPaymentForPremium()");
         int userID = this.authService.extractUserIdFromToken(token);
         try {
@@ -121,7 +130,7 @@ public class UserController {
 
                 if (paymentID != 0) {
                     return ResponseEntity.ok()
-                                         .body(new PutResponse(true, "Successfully completed user premium membership payment"));
+                            .body(new PutResponse(true, "Successfully completed user premium membership payment"));
                 } else {
                     return ResponseEntity.badRequest().body(new PutResponse(false, "Failed payment for user"));
                 }
@@ -136,7 +145,9 @@ public class UserController {
     }
 
     @PostMapping("/get-premium")
-    public ResponseEntity<PutResponse> startPremiumMembership(@RequestHeader("Authorization") String token, @RequestBody int paymentID) {
+    public ResponseEntity<PutResponse> startPremiumMembership(
+            @RequestHeader("Authorization") String token, @RequestBody int paymentID
+    ) {
         logger.info("Entered controller method startPremiumMembership()");
         int userID = this.authService.extractUserIdFromToken(token);
         try {
@@ -146,7 +157,7 @@ public class UserController {
 
                 if (startExtendMembership) {
                     return ResponseEntity.ok()
-                                         .body(new PutResponse(true, "Successfully completed user premium membership initialization/extension"));
+                            .body(new PutResponse(true, "Successfully completed user premium membership initialization/extension"));
                 } else {
                     return ResponseEntity.badRequest().body(new PutResponse(false, "Failed membership initialization/extension for user"));
                 }
@@ -160,5 +171,35 @@ public class UserController {
         }
     }
 
+    @PutMapping("/update-weight")
+    public ResponseEntity<PutResponse> updateUserWeight(
+            @RequestBody Map<String, Double> body, @RequestHeader("Authorization") String token
+    ) {
+        logger.info("Entered controller method updateUserWeight()");
+        int userId;
+
+        try {
+            userId = authService.extractUserIdFromToken(token);
+        } catch (Exception e) {
+            logger.error("Failed to record comment: ", e.getMessage());
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Token not valid" + e.getMessage()));
+        }
+
+        if (body.get("weight") == null) {
+            logger.error("Weight not sent in body");
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Weight not sent in body"));
+        }
+
+        try {
+            double weight = body.get("weight");
+            this.userService.updateUserWeight(weight, userId);
+            this.weightHistoryService.recordWeight(weight, userId);
+            logger.info("Updated weight of user {} successfully", userId);
+            return ResponseEntity.ok().body(new PutResponse(true, "Updated weight of user successfully"));
+        } catch (Exception e) {
+            logger.error("Failed to record comment: ", e.getMessage());
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Token not valid" + e.getMessage()));
+        }
+    }
 
 }

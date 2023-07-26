@@ -8,4 +8,6 @@ public interface IIngredientsService {
     void addIngredients(List<IngredientDto> ingredients, int recipeId) throws RecipeExceptions;
 
     List<IngredientDto> fetchRecipeIngredients(int recipeId) throws RecipeExceptions;
+
+    void updateIngredients(List<IngredientDto> ingredients) throws RecipeExceptions;
 }

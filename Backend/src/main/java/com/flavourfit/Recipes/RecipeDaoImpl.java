@@ -2,6 +2,7 @@ package com.flavourfit.Recipes;
 
 import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.Exceptions.RecipeExceptions;
 import com.flavourfit.Recipes.Ingredients.IngredientDto;
 import com.flavourfit.ResponsesDTO.SavedRecipesResponse;
 import org.slf4j.Logger;
@@ -51,7 +52,7 @@ public class RecipeDaoImpl implements IRecipeDao {
     }
 
     @Override
-    public RecipeDto addRecipe(RecipeDto recipeDto,int userId) throws SQLException {
+    public RecipeDto addRecipe(RecipeDto recipeDto, int userId) throws SQLException {
         logger.info("Started addRecipe() method");
         if (recipeDto == null) {
             logger.error("Invalid recipe");
@@ -84,7 +85,7 @@ public class RecipeDaoImpl implements IRecipeDao {
         logger.info("Started getRecipesByUser() method");
         ArrayList<Object> recipes = new ArrayList<Object>();
 
-        if(count==0)
+        if (count == 0)
             throw new SQLException("Count cannot be 0");
 
         this.testConnection();
@@ -95,7 +96,7 @@ public class RecipeDaoImpl implements IRecipeDao {
         ResultSet resultset = statement.executeQuery("SELECT Recipes.recipe_id, Recipes.recipe_name, Recipes.recipe_description,Recipes.types \n" +
                 "FROM Recipes\n" +
                 "INNER JOIN Saved_Recipes ON Recipes.recipe_id=Saved_Recipes.recipe_id\n" +
-                "where Saved_Recipes.user_id="+id);
+                "where Saved_Recipes.user_id=" + id);
         while (resultset.next()) {
             SavedRecipesResponse recipe = new SavedRecipesResponse();
 
@@ -176,13 +177,41 @@ public class RecipeDaoImpl implements IRecipeDao {
         preparedStatement.setInt(1, recipeId);
         ResultSet resultSet = preparedStatement.executeQuery();
 
-        while(resultSet.next()) {
+        while (resultSet.next()) {
             recipeIngredients.add(this.extractIngredientFromResults(resultSet));
         }
 
         logger.info("Returning ingredients from recipe table as response");
         return recipeIngredients;
     }
+
+    @Override
+    public void updateRecipe(RecipeDto recipeDto) throws SQLException {
+        logger.info("Entered dao method updateRecipe()");
+        if (recipeDto == null || recipeDto.getRecipeId() == 0) {
+            logger.error("Invalid recipe");
+            throw new RecipeExceptions("Invalid recipe");
+        }
+
+        this.testConnection();
+
+        if (!recipeDto.isEditable()) {
+            logger.error("Cannot edit this recipe with id {}", recipeDto.getRecipeId());
+            throw new RecipeExceptions("Cannot edit this recipe");
+        }
+
+        String query = "UPDATE Recipes SET Recipe_name=?, Recipe_description=?, Types=? WHERE Recipe_id=?";
+        PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+
+        logger.info("Creating query to update recipe");
+        preparedStatement.setString(1, recipeDto.getRecipeName());
+        preparedStatement.setString(2, recipeDto.getRecipeDescription());
+        preparedStatement.setString(3, recipeDto.getTypes());
+        preparedStatement.setInt(4, recipeDto.getRecipeId());
+        preparedStatement.executeUpdate();
+        logger.info("Updated recipe. recipeId: {}", recipeDto.getRecipeId());
+    }
+
 
     private void testConnection() throws SQLException {
         if (database == null && connection == null) {
@@ -211,7 +240,7 @@ public class RecipeDaoImpl implements IRecipeDao {
 
     private IngredientDto extractIngredientFromResults(ResultSet resultSet) throws SQLException {
         IngredientDto ingredient = new IngredientDto();
-        if(resultSet != null) {
+        if (resultSet != null) {
             ingredient.setIngredientId(resultSet.getInt("Ingredient_id"));
             ingredient.setIngredientName(resultSet.getString("Ingredient_name"));
             ingredient.setRecipeId(resultSet.getInt("Recipe_id"));
@@ -223,11 +252,12 @@ public class RecipeDaoImpl implements IRecipeDao {
 
     private RecipeDto extractRecipeFromResults(ResultSet resultSet) throws SQLException {
         RecipeDto recipe = new RecipeDto();
-        if (resultSet != null) {
+        if (resultSet.next()) {
             recipe.setRecipeId(resultSet.getInt("Recipe_id"));
             recipe.setRecipeName(resultSet.getString("Recipe_name"));
             recipe.setRecipeDescription(resultSet.getString("Recipe_description"));
             recipe.setTypes(resultSet.getString("Types"));
+            recipe.setEditable(resultSet.getBoolean("editable"));
         }
         return recipe;
     }
