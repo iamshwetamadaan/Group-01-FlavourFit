@@ -5,14 +5,16 @@ import { useEffect } from "react";
 
 function App() {
   return (
-    <div className="App">
-      <Navbar bg="dark" data-bs-theme="dark">
+    <div className="App" style={{backgroundColor:"#d8e4ed"}}>
+      <Navbar style={{backgroundColor:"#0e1361"}} data-bs-theme="dark">
         <Container>
-          <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+          <Navbar.Brand href="#home">FlavourFit</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link href="/home">Home</Nav.Link>
-            <Nav.Link href="/features">Features</Nav.Link>
-            <Nav.Link href="/pricing">Pricing</Nav.Link>
+            <Nav.Link href="/features">Recipe</Nav.Link>
+            <Nav.Link href="/pricing">Trackers</Nav.Link>
+            <Nav.Link href="/pricing">Feed</Nav.Link>
+            <Nav.Link href="/pricing">Permium</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
