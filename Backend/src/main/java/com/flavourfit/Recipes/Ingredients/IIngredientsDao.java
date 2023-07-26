@@ -7,4 +7,6 @@ public interface IIngredientsDao {
     void addIngredients(List<IngredientDto> ingredients) throws SQLException;
 
     List<IngredientDto> getRecipeIngredients(int recipeId) throws SQLException;
+
+    void updateIngredients(List<IngredientDto> ingredients) throws SQLException;
 }

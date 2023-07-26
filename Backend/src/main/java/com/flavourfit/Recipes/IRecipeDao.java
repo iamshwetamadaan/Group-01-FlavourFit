@@ -19,4 +19,6 @@ public interface IRecipeDao {
     public RecipeDto getRecipeById(int recipeId) throws SQLException;
 
     public List<IngredientDto> getRecipeIngredients(int recipeId) throws SQLException;
+
+    void updateRecipe(RecipeDto recipeDto) throws SQLException;
 }

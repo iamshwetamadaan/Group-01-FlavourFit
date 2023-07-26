@@ -45,14 +45,14 @@ public class RecipeServiceImpl implements IRecipeService {
     @Override
     public ArrayList<Object> getRecipesByUser(int count, int userId) throws SQLException {
         logger.info("Started method getRecipesByUser()");
-        return recipeDao.getRecipesByUser(userId,count);
+        return recipeDao.getRecipesByUser(userId, count);
     }
 
     @Override
 
     public ArrayList<Object> getFilteredRecipesByUser(int id, HashMap<String, Object> requestBody) throws SQLException {
         logger.info("Started method getFilteredRecipesByUser");
-        return recipeDao.getFilteredRecipesByUser(id,requestBody);
+        return recipeDao.getFilteredRecipesByUser(id, requestBody);
     }
 
     @Override
@@ -110,5 +110,51 @@ public class RecipeServiceImpl implements IRecipeService {
         } catch (SQLException e) {
             throw new RecipeExceptions(e);
         }
+    }
+
+    @Override
+    public CompleteRecipeDto fetchRecipeByRecipeId(int recipeId) throws RecipeExceptions {
+        logger.info("Enter service method fetchRecipeByRecipeId()");
+        if (recipeId == 0) {
+            logger.error("Invalid recipe");
+            throw new RecipeExceptions("Invalid recipe");
+        }
+
+        try {
+            logger.info("Fetching recipe with id {}", recipeId);
+            CompleteRecipeDto completeRecipeDto = new CompleteRecipeDto();
+            RecipeDto recipe = this.recipeDao.getRecipeById(recipeId);
+            List<IngredientDto> ingredients = this.ingredientsService.fetchRecipeIngredients(recipeId);
+            completeRecipeDto.setRecipe(recipe);
+            completeRecipeDto.setIngredients(ingredients);
+            return completeRecipeDto;
+        } catch (SQLException e) {
+            throw new RecipeExceptions("Recipe not found", e);
+        }
+    }
+
+    @Override
+    public CompleteRecipeDto updateRecipe(CompleteRecipeDto completeRecipeDto) throws RecipeExceptions {
+        logger.info("Enter service method updateRecipe()");
+        if (completeRecipeDto == null || completeRecipeDto.getRecipe() == null) {
+            logger.error("Invalid recipe");
+            throw new RecipeExceptions("Invalid recipe");
+        }
+
+        if (!completeRecipeDto.getRecipe().isEditable()) {
+            logger.error("This recipe is not editable");
+            throw new RecipeExceptions("This recipe is not editable");
+        }
+
+        try {
+            logger.info("Updating recipe and ingredients");
+            this.recipeDao.updateRecipe(completeRecipeDto.getRecipe());
+            this.ingredientsService.updateIngredients(completeRecipeDto.getIngredients());
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            throw new RecipeExceptions(e);
+        }
+
+        return completeRecipeDto;
     }
 }
