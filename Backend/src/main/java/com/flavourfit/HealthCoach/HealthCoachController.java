@@ -45,12 +45,12 @@ public class HealthCoachController {
     @PostMapping("/book-appointment")
     public ResponseEntity<PutResponse> bookAppointments(
             @RequestBody AppointmentsDto appointment
-//            , @RequestHeader("Authorization") String token
+            , @RequestHeader("Authorization") String token
             ) {
         logger.info("Entered controller method bookAppointments()");
         try {
-//            int userId = authService.extractUserIdFromToken(token);
-            int userId=7;
+            int userId = authService.extractUserIdFromToken(token);
+//            int userId=7;
             int count = appointmentService.bookAppointments(appointment,userId);
             if(count>0){
                 logger.info("Booked an appointment with health coach");
