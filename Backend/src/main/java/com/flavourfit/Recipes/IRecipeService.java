@@ -19,4 +19,8 @@ public interface IRecipeService {
             RecipeExceptions;
 
     CompleteRecipeDto convertRecipe(int recipeId, double scale, String system) throws RecipeExceptions;
+
+    CompleteRecipeDto fetchRecipeByRecipeId(int recipeId) throws RecipeExceptions;
+
+    CompleteRecipeDto updateRecipe(CompleteRecipeDto completeRecipeDto) throws RecipeExceptions;
 }
