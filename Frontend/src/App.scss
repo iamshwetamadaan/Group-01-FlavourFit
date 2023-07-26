@@ -3,6 +3,13 @@
   overflow-x: hidden;
 }
 
+
+
+// .App {
+//   text-align: center;
+// }
+
+
 .App {
   min-height: 100vh;
   background: #050725;
@@ -11,6 +18,10 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.blue-text-color{
+  color:#0e1361;
 }
 
 @media (prefers-reduced-motion: no-preference) {
