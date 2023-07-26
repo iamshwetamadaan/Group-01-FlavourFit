@@ -245,3 +245,71 @@ ALTER TABLE `Recipes`
 -- Add comment username to comments
 ALTER TABLE `Comments`
     ADD COLUMN `Comment_username` VARCHAR(100) NULL DEFAULT NULL;
+
+-- Create stored procedures for calorie and water streaks
+DELIMITER $$
+CREATE PROCEDURE `iterateCalorieDates`(IN userId INT,OUT avgCal DOUBLE, OUT totalRows INT)
+BEGIN
+  DECLARE done INT DEFAULT FALSE;
+  DECLARE currentDate DATE;
+  DECLARE calories DOUBLE;
+  DECLARE rowCount INT;
+
+  SET currentDate = curdate();
+  SET avgCal = 0.0;
+  SET totalRows = 0;
+
+  my_loop: LOOP
+SELECT COUNT(*), Calorie_Count INTO rowCount,calories
+FROM Calorie_History
+WHERE Update_Date = currentDate AND User_id=userId;
+
+IF calories >= 0 || calories <=0 THEN
+		SET avgCal = avgCal + calories;
+END IF;
+
+    SET totalRows = totalRows + rowCount;
+
+    IF rowCount = 0 THEN
+      LEAVE my_loop;
+END IF;
+
+    SET currentDate = DATE_SUB(currentDate, INTERVAL 1 DAY);
+END LOOP my_loop;
+
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE `iterateWaterDates`(IN userId INT,OUT avgWater DOUBLE, OUT totalRows INT)
+BEGIN
+  DECLARE done INT DEFAULT FALSE;
+  DECLARE currentDate DATE;
+  DECLARE water DOUBLE;
+  DECLARE rowCount INT;
+
+  SET currentDate = curdate();
+  SET avgWater = 0.0;
+  SET totalRows = 0;
+
+  my_loop: LOOP
+SELECT COUNT(*), Water_intake INTO rowCount,water
+FROM Water_History
+WHERE Update_Date = currentDate AND User_id=userId;
+
+IF water >= 0 || water <=0 THEN
+		SET avgWater = avgWater + water;
+END IF;
+
+    SET totalRows = totalRows + rowCount;
+
+    IF rowCount = 0 THEN
+      LEAVE my_loop;
+END IF;
+
+    SET currentDate = DATE_SUB(currentDate, INTERVAL 1 DAY);
+END LOOP my_loop;
+
+END$$
+DELIMITER ;
+

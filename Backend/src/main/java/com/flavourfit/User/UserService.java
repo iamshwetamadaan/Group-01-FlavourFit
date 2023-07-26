@@ -166,4 +166,43 @@ UserService implements IUserService {
         logger.info("End clearPassword() method");
     }
 
+    @Override
+    public void updateUserWeight(double weight, int userId) throws UserNotFoundException {
+        logger.info("Enter service method updateUserWeight()");
+        if (userId == 0) {
+            logger.error("Invalid user {}", userId);
+            throw new UserNotFoundException("Invalid user");
+        }
+
+        if (weight <= 0) {
+            logger.error("Invalid weight value");
+            throw new RuntimeException("Invalid weight value");
+        }
+        try {
+            this.userDao.updateUserWeight(weight, userId);
+            logger.info("Updated weight for user {}", userId);
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            throw new UserNotFoundException(e);
+        }
+    }
+
+    @Override
+    public double fetchUserCurrentWeight(int userId) throws UserNotFoundException {
+        logger.info("Enter service method fetchUserCurrentWeight()");
+        if (userId == 0) {
+            logger.error("Invalid user {}", userId);
+            throw new UserNotFoundException("Invalid user");
+        }
+
+        try {
+            double weight = this.userDao.getUserCurrentWeight(userId);
+            logger.info("Fetched weight for user {} successfully", userId);
+            return weight;
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
 }

@@ -2,6 +2,7 @@ package com.flavourfit.Homepage;
 
 import com.flavourfit.Authentication.IAuthService;
 import com.flavourfit.Exceptions.UserNotFoundException;
+import com.flavourfit.ResponsesDTO.GetResponse;
 import com.flavourfit.ResponsesDTO.PutResponse;
 import com.flavourfit.User.IUserService;
 import com.flavourfit.User.UserController;
@@ -30,7 +31,7 @@ public class HomepageController {
     private IHomepageService homepageService;
 
     @Autowired
-    public HomepageController( IAuthService authService , IHomepageService homepageService) {
+    public HomepageController(IAuthService authService, IHomepageService homepageService) {
         this.authService = authService;
         this.homepageService = homepageService;
     }
@@ -41,17 +42,37 @@ public class HomepageController {
     ) {
         logger.info("Entered controller method getExcercise by user");
         int userId = this.authService.extractUserIdFromToken(token);
-//        int userId=7;
         try {
             HashMap<String, Object> result = homepageService.getExerciseByUser(userId);
-                return ResponseEntity.ok().body(new PutResponse(true, "Successfully obtained the routines", result));
+            return ResponseEntity.ok().body(new PutResponse(true, "Successfully obtained the routines", result));
         } catch (UserNotFoundException e) {
             logger.error(e.getMessage());
             return ResponseEntity.badRequest().body(new PutResponse(false, e.getMessage()));
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             logger.error(e.getMessage());
             return ResponseEntity.badRequest().body(new PutResponse(false, e.getMessage()));
+        }
+    }
+
+    @GetMapping("/tracker-summary")
+    public ResponseEntity<GetResponse> fetchTrackerSummary(@RequestHeader("Authorization") String token) {
+        logger.info("Entered controller method fetchTrackerSummary()");
+        int userId;
+
+        try {
+            userId = authService.extractUserIdFromToken(token);
+        } catch (Exception e) {
+            logger.error("Failed to record comment: ", e.getMessage());
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Token not valid" + e.getMessage()));
+        }
+
+        try {
+            Map trackerSummary = this.homepageService.fetchTrackerSummary(userId);
+            logger.info("Fetched tracker summary for user {}", userId);
+            return ResponseEntity.ok().body(new GetResponse(true, "Successfully fetched trackerSummary", trackerSummary));
+        } catch (Exception e) {
+            logger.error("Failed to fetch tracker summary : {}", e.getMessage());
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to fetch tracker summary" + e.getMessage()));
         }
     }
 }
