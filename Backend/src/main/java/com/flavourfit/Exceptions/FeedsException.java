@@ -1,3 +1,4 @@
+
 package com.flavourfit.Exceptions;
 
 public class FeedsException extends RuntimeException{
@@ -13,3 +14,4 @@ public class FeedsException extends RuntimeException{
         super(cause);
     }
 }
+
