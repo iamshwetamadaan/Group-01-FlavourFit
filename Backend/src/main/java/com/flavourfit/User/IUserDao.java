@@ -30,4 +30,7 @@ public interface IUserDao {
     void clearGuestPassword(String email) throws UserNotFoundException;
 
 
+    void updateUserWeight(double weight, int userId) throws SQLException;
+
+    double getUserCurrentWeight(int userId) throws SQLException;
 }
