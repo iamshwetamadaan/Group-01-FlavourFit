@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Button, Container, Form, Image } from "react-bootstrap";
 import "./login.scss";
+
+import { Button, Container, Form, Image } from "react-bootstrap";
 import Logo from "../resources/Images/logo.png";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -71,6 +72,7 @@ const Login = (props) => {
               variant="outline-primary"
               type="button"
               className="login-links"
+              onClick={() => navigate("/register")}
             >
               Create an account?
             </Button>
