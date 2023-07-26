@@ -18,7 +18,8 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class HomepageServiceImpl implements IHomepageService {
+public class
+HomepageServiceImpl implements IHomepageService {
 
     private static Logger logger = LoggerFactory.getLogger(CalorieHistoryServiceImpl.class);
     private final IHomepageDao homepageDao;
