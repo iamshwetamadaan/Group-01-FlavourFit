@@ -1,0 +1,9 @@
+{
+  "Conversion_metrics" :  [
+    { "Quantity1" : "100", "Type1" :  "g", "Quantity2" : "3.53", "Type2" :  "oz"},
+    { "Quantity1" : "1", "Type1" :  "kg", "Quantity2" : "2.20", "Type2" :  "ib"},
+    { "Quantity1" : "100", "Type1" :  "ml", "Quantity2" : "3.38", "Type2" :  "fl oz"},
+    { "Quantity1" : "1", "Type1" :  "L", "Quantity2" : "4.23", "Type2" :  "cups"},
+    { "Quantity1" : "1", "Type1" :  "cup", "Quantity2" : "240", "Type2" :  "ml"}
+  ]
+}
