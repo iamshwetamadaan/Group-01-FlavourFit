@@ -57,8 +57,6 @@ const Calories = ({ data, options, updateDate, addCalories }) => {
 
       return newState;
     });
-
-    console.log(data);
   }, [data]);
 
   return (

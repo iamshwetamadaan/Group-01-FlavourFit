@@ -32,7 +32,7 @@ const RegistrationDetails = ({ user, handleChange, handleContinue }) => {
               required
               type="number"
               name="height"
-              placeholder="190.5"
+              placeholder="Enter height in cm"
               value={user.height}
               onChange={handleChange}
             />
@@ -43,7 +43,7 @@ const RegistrationDetails = ({ user, handleChange, handleContinue }) => {
               required
               type="number"
               name="weight"
-              placeholder="70"
+              placeholder="Enter weight in kg"
               value={user.weight}
               onChange={handleChange}
             />
@@ -53,7 +53,7 @@ const RegistrationDetails = ({ user, handleChange, handleContinue }) => {
             <Form.Control
               type="number"
               name="targetWeight"
-              placeholder="60"
+              placeholder="Enter target weight in kg (optional)"
               value={user.targetWeight}
               onChange={handleChange}
             />

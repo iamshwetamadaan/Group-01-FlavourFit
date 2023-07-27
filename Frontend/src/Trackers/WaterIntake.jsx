@@ -58,8 +58,6 @@ const WaterIntake = ({ data, options, updateDate, addWater }) => {
 
       return newState;
     });
-
-    console.log(data);
   }, [data]);
 
   return (

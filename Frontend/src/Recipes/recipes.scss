@@ -1,0 +1,76 @@
+.ff-recipes {
+  padding-top: 30px;
+
+  .ff-recipes-header {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+
+    .ff-recipes-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 600;
+      font-size: 20px;
+      .add-recipe {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        img {
+          margin-right: 10px;
+        }
+      }
+    }
+
+    .recipes-subtitle {
+      padding: 10px 0px;
+      font-weight: 600;
+    }
+  }
+
+  .recipe-types {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-weight: bold;
+    gap: 20px;
+
+    .recipe-type {
+      cursor: pointer;
+    }
+  }
+
+  .selected-filters {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+
+    .recipe-filter {
+      background: #3f4b6e;
+      color: white;
+      padding: 2px 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 10px;
+
+      img {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .recipes-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-top: 30px;
+    gap: 20px;
+  }
+}

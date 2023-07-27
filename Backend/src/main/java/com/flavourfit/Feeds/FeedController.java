@@ -17,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/feeds")
+@CrossOrigin
 public class FeedController {
     private static Logger logger = LoggerFactory.getLogger(FeedController.class);
     private IFeedService feedService;
@@ -143,7 +144,7 @@ public class FeedController {
         }
     }
 
-    @PutMapping("post-recipe")
+    @PutMapping("/post-recipe")
     public ResponseEntity<PutResponse> postRecipeOnFeed(
             @RequestParam("recipeId") int recipeId, @RequestHeader("Authorization") String token
     ) {
