@@ -7,10 +7,18 @@
 //   text-align: center;
 // }
 
+.text-white{
+  color:white
+}
+
+
 .App {
   min-height: 100vh;
-  background: #0e1361;
-  padding-bottom: 30px;
+  background-color: #050725;
+// .App {
+//   min-height: 100vh;
+//   background: #0e1361;
+//   padding-bottom: 30px;
 }
 
 .App-logo {
@@ -18,8 +26,8 @@
   pointer-events: none;
 }
 
-.blue-text-color {
-  color: #0e1361;
+.blue-text-color{
+  color:#0e1361 !important;
 }
 
 @media (prefers-reduced-motion: no-preference) {

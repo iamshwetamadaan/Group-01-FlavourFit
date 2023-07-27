@@ -89,9 +89,9 @@ public class FeedDaoImpl implements IFeedDao {
         this.testConnection();
 
         logger.info("Running select query to get feeds by user");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Feeds WHERE User_id=? limit 10 offset ?");
-        preparedStatement.setInt(1, userId);
-        preparedStatement.setInt(2, offset);
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Feeds limit 10 offset ?");
+        preparedStatement.setInt(1, offset);
+//        preparedStatement.setInt(2, offset);
         ResultSet resultSet = preparedStatement.executeQuery();
 
 
