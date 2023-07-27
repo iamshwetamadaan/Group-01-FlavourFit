@@ -17,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/feeds")
+@CrossOrigin
 public class FeedController {
     private static Logger logger = LoggerFactory.getLogger(FeedController.class);
     private IFeedService feedService;

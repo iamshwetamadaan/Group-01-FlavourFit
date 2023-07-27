@@ -1,7 +1,5 @@
 import { Outlet } from "react-router-dom";
-import logo from "./logo.svg";
 import { Container, Nav, Navbar, Image } from "react-bootstrap";
-import { useEffect } from "react";
 import Logo from "./resources/Images/logo.png";
 
 function App() {

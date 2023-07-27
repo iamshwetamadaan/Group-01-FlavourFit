@@ -9,6 +9,7 @@ import Registration from "../Registration/Registration";
 import GuestLogin from "../GuestLogin/GuestLogin";
 import Trackers from "../Trackers/Trackers";
 import UserProfile from "../UserProfile/userProfile";
+import Feeds from "../Feeds/Feeds";
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -18,6 +19,7 @@ const AppRouter = () => (
         <Route path="" element={<Navigate to="/home" />} />
         <Route path="trackers" element={<Trackers />} />
           <Route path="/edit-profile" element={<UserProfile/>}/>
+          <Route path="/feed" element={<Feeds></Feeds>}/>
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/guest-login" element={<GuestLogin />} />

@@ -1,0 +1,33 @@
+.hover-class:hover{
+    border-bottom: 0.5px solid white !important;
+    cursor:pointer;
+}
+
+.hover-class{
+    color: white;
+}
+
+
+
+.active-class{
+    border-bottom: 0.5px solid white !important;
+}
+
+.button-style{
+    margin-top:40px;
+   margin-left:16%;
+}
+
+.font-90{
+    font-size:90%;
+}
+
+.feeds-div{
+    width:60%;
+    margin:auto;
+    margin-top: 30px;
+}
+
+.cursor:hover{
+    cursor:pointer;
+}
