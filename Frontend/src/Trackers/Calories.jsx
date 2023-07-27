@@ -13,8 +13,9 @@ import {
 } from "chart.js";
 import chevLeft from "../resources/Images/chevron-left.svg";
 import chevRight from "../resources/Images/chevron-right.svg";
+import plusCircle from "../resources/Images/circle-plus-solid.svg";
 
-const Calories = ({ data, options, updateDate }) => {
+const Calories = ({ data, options, updateDate, addCalories }) => {
   ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -56,13 +57,21 @@ const Calories = ({ data, options, updateDate }) => {
 
       return newState;
     });
-
-    console.log(data);
   }, [data]);
 
   return (
     <div className="tracker-container">
-      <div className="tracker-title">Calories</div>
+      <div className="tracker-title">
+        <div>Calories</div>
+        <img
+          src={plusCircle}
+          width={30}
+          alt="+"
+          title="Record calories"
+          style={{ cursor: "pointer" }}
+          onClick={addCalories}
+        />
+      </div>
       <div className="tracker-current">
         <div className="tracker-current-value ff-green">
           {data?.calorieCount ?? 0.0}

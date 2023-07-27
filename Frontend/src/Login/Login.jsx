@@ -81,6 +81,7 @@ const Login = (props) => {
               variant="outline-primary"
               type="button"
               className="login-links"
+              onClick={() => navigate("/guest-login")}
             >
               Guest Sign-in
             </Button>

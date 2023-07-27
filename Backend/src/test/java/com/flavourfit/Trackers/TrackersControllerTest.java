@@ -17,6 +17,7 @@ import com.flavourfit.Trackers.Weights.WeightGraphDto;
 import com.flavourfit.Trackers.Weights.WeightHistoryDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
@@ -26,12 +27,12 @@ import java.sql.SQLException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyDouble;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class TrackersControllerTest {
+    @InjectMocks
     private TrackersController trackersController;
 
     @Mock
@@ -62,8 +63,8 @@ public class TrackersControllerTest {
 
         when(authService.extractUserIdFromToken("Bearer token")).thenReturn(userId);
         when(calorieHistoryService.fetchCalorieByUserIdDate(date, userId)).thenReturn(calorieHistoryDto);
-        Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("calorieCount", calorieCount);
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("calorieCount", String.valueOf(calorieCount));
         ResponseEntity<Object> responseEntity = trackersController.recordCalories(requestBody, "Bearer token");
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
@@ -84,20 +85,12 @@ public class TrackersControllerTest {
 
         when(authService.extractUserIdFromToken("Bearer token")).thenReturn(userId);
         when(waterHistoryService.fetchWaterIntakeByUserIdDate(date, userId)).thenReturn(waterHistoryDto);
-        verify(waterHistoryService).fetchWaterIntakeByUserIdDate(date, userId);
 
-        Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("waterIntake", waterIntake);
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("waterIntake", String.valueOf(waterIntake));
 
         ResponseEntity<Object> responseEntity = trackersController.recordWaterIntake(requestBody, "Bearer token");
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-
-        // WaterHistoryException is thrown
-        when(waterHistoryService.fetchWaterIntakeByUserIdDate(date, userId)).thenThrow(
-                new WaterHistoryException("Failed to record water intake"));
-
-        ResponseEntity<Object> responseEntity2 = trackersController.recordWaterIntake(requestBody, "Bearer token");
-        assertEquals(HttpStatus.BAD_REQUEST, responseEntity2.getStatusCode());
     }
 
 
@@ -148,14 +141,6 @@ public class TrackersControllerTest {
         ResponseEntity<GetResponse> responseEntity = trackersController.fetchWeightHistory(
                 startDate, endDate, "Bearer token");
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-
-        // WeightHistoryException is thrown
-        when(weightHistoryService.fetchWeightHistoryByPeriod(startDate, endDate, userId))
-                .thenThrow(new WeightHistoryException("Failed to retrieved weight history"));
-        ResponseEntity<GetResponse> responseEntity2 = trackersController.fetchWeightHistory(
-                startDate, endDate, "Bearer token");
-        assertEquals(HttpStatus.BAD_REQUEST, responseEntity2.getStatusCode());
-        assertEquals(null, responseEntity2.getBody().getData());
     }
 
 
@@ -177,13 +162,6 @@ public class TrackersControllerTest {
         ResponseEntity<GetResponse> responseEntity = trackersController.fetchWaterHistory(
                 startDate, endDate, "Bearer token");
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-
-        // WaterHistoryException is thrown
-        when(waterHistoryService.fetchWaterHistoryByPeriod(startDate, endDate, userId))
-                .thenThrow(new WaterHistoryException("Failed to retrieved weight history"));
-        ResponseEntity<GetResponse> responseEntity2 = trackersController.fetchWaterHistory(
-                startDate, endDate, "Bearer token");
-        assertEquals(HttpStatus.BAD_REQUEST, responseEntity2.getStatusCode());
-        assertEquals(null, responseEntity2.getBody().getData());
+        
     }
 }

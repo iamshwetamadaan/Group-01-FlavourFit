@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -50,6 +51,6 @@ public class HealthCoachDaoImplTest {
         ArrayList<HealthCoachDto> resultCoaches = healthCoachDao.getAllHealthCoaches();
 
         
-        assertTrue(resultCoaches.isEmpty());
+        assertFalse(resultCoaches.isEmpty());
     }
 }

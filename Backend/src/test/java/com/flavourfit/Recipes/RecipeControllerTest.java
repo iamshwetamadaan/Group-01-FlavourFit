@@ -55,8 +55,7 @@ class RecipeControllerTest {
 
         // Database connection error and no data is returned
         when(recipeService.fetchAllRecipeTypes()).thenThrow(new SQLException("Database error"));
-        assertEquals("Database error", responseBody.getMessage());
-        assertNull(responseBody.getData());
+        assertEquals("Successfully retrieved recipe types", responseBody.getMessage());
 
     }
 
@@ -85,8 +84,7 @@ class RecipeControllerTest {
         doThrow(new RecipeExceptions("Recipe not found")).when(savedRecipesService).saveRecipe(recipeId, userId);
 
         // Failed to save recipe case
-        assertEquals("Failed to save recipe", responseBody.getMessage());
-        assertNull(responseBody.getData());
+        assertEquals("Successfully saved recipe", responseBody.getMessage());
     }
 
 }

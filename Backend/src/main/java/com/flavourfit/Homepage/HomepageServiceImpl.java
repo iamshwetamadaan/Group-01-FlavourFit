@@ -4,9 +4,11 @@ import com.flavourfit.Exceptions.TrackerException;
 import com.flavourfit.Exceptions.UserNotFoundException;
 import com.flavourfit.Homepage.DTO.FitnessStreakDTO;
 import com.flavourfit.Homepage.DTO.RoutineDTO;
+import com.flavourfit.Trackers.Calories.CalorieHistoryDto;
 import com.flavourfit.Trackers.Calories.CalorieHistoryServiceImpl;
 import com.flavourfit.Trackers.Calories.ICalorieHistoryService;
 import com.flavourfit.Trackers.Water.IWaterHistoryService;
+import com.flavourfit.Trackers.Water.WaterHistoryDto;
 import com.flavourfit.User.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,8 +81,18 @@ HomepageServiceImpl implements IHomepageService {
         Map<String, Object> trackerSummary = new HashMap<>();
         try {
             logger.info("Fetching current water intake and calories from respective services.");
-            double waterIntake = this.waterHistoryService.fetchWaterIntakeByUserIdCurrent(userId).getWaterIntake();
-            double calorieCount = this.calorieHistoryService.fetchCalorieByUserIdCurrent(userId).getCalorieCount();
+            WaterHistoryDto waterHistoryDto = this.waterHistoryService.fetchWaterIntakeByUserIdCurrent(userId);
+            CalorieHistoryDto calorieHistoryDto = this.calorieHistoryService.fetchCalorieByUserIdCurrent(userId);
+            double waterIntake = 0.0d;
+            double calorieCount = 0.0d;
+
+            if(waterHistoryDto!=null){
+                waterIntake=waterHistoryDto.getWaterIntake();
+            }
+
+            if(calorieHistoryDto!=null){
+                calorieCount=calorieHistoryDto.getCalorieCount();
+            }
 
             logger.info("Fetching currentWeight from userService");
             double currentWeight = this.userService.fetchUserCurrentWeight(userId);

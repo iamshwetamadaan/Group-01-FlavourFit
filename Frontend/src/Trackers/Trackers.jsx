@@ -1,7 +1,7 @@
 import React from "react";
 import "./trackers.scss";
 import Calories from "./Calories";
-import { Container } from "react-bootstrap";
+import { Container, Modal } from "react-bootstrap";
 import { useState } from "react";
 import { useEffect } from "react";
 import { axiosRequest } from "../HttpClients/axiosService";
@@ -9,8 +9,11 @@ import { formatDateToString } from "../Helper";
 import WaterIntake from "./WaterIntake";
 import Weights from "./Weights";
 import { useCallback } from "react";
+import RecordCalorieModal from "./RecordCalorieModal";
+import RecordWaterModal from "./RecordWaterModal";
 
 export const options = {
+  responsive: true,
   plugins: {
     legend: {
       display: false,
@@ -35,10 +38,10 @@ export const options = {
   },
 };
 
-export const getStartAndEndDate = (date) => {
+export const getStartAndEndDate = (date, period = 6) => {
   let endDate = formatDateToString(new Date(date));
   let startDate = new Date(date);
-  startDate.setDate(startDate.getDate() - 6);
+  startDate.setDate(startDate.getDate() - period);
   startDate = formatDateToString(startDate);
 
   return {
@@ -74,11 +77,27 @@ const Trackers = (props) => {
   });
 
   const [weightDates, setWeightDates] = useState({
-    startDate: getStartAndEndDate(new Date()).startDate,
-    endDate: getStartAndEndDate(new Date()).endDate,
+    startDate: getStartAndEndDate(new Date(), 90).startDate,
+    endDate: getStartAndEndDate(new Date(), 90).endDate,
   });
 
-  useEffect(() => {
+  const [showCalModal, setShowCalModal] = useState(false);
+  const handleShowCalModal = () => {
+    setShowCalModal(true);
+  };
+  const handleCloseCalModal = () => {
+    setShowCalModal(false);
+  };
+
+  const [showWaterModal, setShowWaterModal] = useState(false);
+  const handleShowWaterModal = () => {
+    setShowWaterModal(true);
+  };
+  const handleCloseWaterModal = () => {
+    setShowWaterModal(false);
+  };
+
+  const fetchTrackerSummary = () => {
     axiosRequest(
       {
         url: "/home/tracker-summary",
@@ -117,6 +136,10 @@ const Trackers = (props) => {
       },
       (error) => {}
     );
+  };
+
+  useEffect(() => {
+    fetchTrackerSummary();
   }, []);
 
   useEffect(() => {
@@ -205,11 +228,11 @@ const Trackers = (props) => {
       let updatedDates = { ...calorieDates };
       if (increase) {
         let date = new Date(updatedDates.endDate);
-        date.setDate(date.getDate() + 7);
+        date.setDate(date.getDate() + 8);
         updatedDates = getStartAndEndDate(date);
       } else {
         let date = new Date(updatedDates.startDate);
-        date.setDate(date.getDate() + 1);
+        date.setDate(date.getDate());
         updatedDates = getStartAndEndDate(date);
       }
 
@@ -228,11 +251,11 @@ const Trackers = (props) => {
       let updatedDates = { ...waterDates };
       if (increase) {
         let date = new Date(updatedDates.endDate);
-        date.setDate(date.getDate() + 7);
+        date.setDate(date.getDate() + 8);
         updatedDates = getStartAndEndDate(date);
       } else {
         let date = new Date(updatedDates.startDate);
-        date.setDate(date.getDate() + 1);
+        date.setDate(date.getDate());
         updatedDates = getStartAndEndDate(date);
       }
 
@@ -249,14 +272,15 @@ const Trackers = (props) => {
   const updateWeightDate = useCallback(
     (increase = false) => {
       let updatedDates = { ...weightDates };
+      debugger;
       if (increase) {
         let date = new Date(updatedDates.endDate);
-        date.setDate(date.getDate() + 7);
-        updatedDates = getStartAndEndDate(date);
+        date.setDate(date.getDate() + 92);
+        updatedDates = getStartAndEndDate(date, 90);
       } else {
         let date = new Date(updatedDates.startDate);
-        date.setDate(date.getDate() + 1);
-        updatedDates = getStartAndEndDate(date);
+        date.setDate(date.getDate());
+        updatedDates = getStartAndEndDate(date, 90);
       }
 
       setWeightDates((prevState) => {
@@ -269,18 +293,46 @@ const Trackers = (props) => {
     [weightDates]
   );
 
+  const handleCalorieRecordSuccess = () => {
+    fetchTrackerSummary();
+    setCalorieDates({
+      startDate: getStartAndEndDate(new Date()).startDate,
+      endDate: getStartAndEndDate(new Date()).endDate,
+    });
+  };
+
+  const handleWaterRecordSuccess = () => {
+    fetchTrackerSummary();
+    setWaterDates({
+      startDate: getStartAndEndDate(new Date()).startDate,
+      endDate: getStartAndEndDate(new Date()).endDate,
+    });
+  };
+
   return (
     <div className="flavour-fit-trackers">
+      <RecordCalorieModal
+        show={showCalModal}
+        handleClose={handleCloseCalModal}
+        handleSuccess={handleCalorieRecordSuccess}
+      />
+      <RecordWaterModal
+        show={showWaterModal}
+        handleClose={handleCloseWaterModal}
+        handleSuccess={handleWaterRecordSuccess}
+      />
       <Container className="calorie-water-container">
         <Calories
           data={calorieData}
           options={options}
           updateDate={updateCalorieDate}
+          addCalories={handleShowCalModal}
         />
         <WaterIntake
           data={waterData}
           options={options}
           updateDate={updateWaterDate}
+          addWater={handleShowWaterModal}
         />
       </Container>
       <Container className="weights-container">
