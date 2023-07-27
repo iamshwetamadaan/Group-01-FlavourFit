@@ -101,8 +101,6 @@ const Weights = ({ data, updateDate }) => {
 
       return newState;
     });
-
-    console.log(data);
   }, [data]);
 
   return (
