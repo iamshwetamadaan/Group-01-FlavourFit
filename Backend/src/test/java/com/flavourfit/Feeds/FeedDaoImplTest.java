@@ -58,8 +58,8 @@ public class FeedDaoImplTest {
         List<FeedDto> userFeeds = feedDao.getFeedsByUser(userId, offset);
 
         // Assert
-        assertEquals(1, userFeeds.size());
+        assertEquals(10, userFeeds.size());
         assertEquals(7, userFeeds.get(0).getUserId());
-        assertEquals("Post on diet recipe", userFeeds.get(0).getFeedContent());
+        assertEquals("Post on diet recipe every saturday", userFeeds.get(0).getFeedContent());
     }
 }
