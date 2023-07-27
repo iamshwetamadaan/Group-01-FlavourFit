@@ -144,7 +144,7 @@ public class FeedController {
         }
     }
 
-    @PutMapping("post-recipe")
+    @PutMapping("/post-recipe")
     public ResponseEntity<PutResponse> postRecipeOnFeed(
             @RequestParam("recipeId") int recipeId, @RequestHeader("Authorization") String token
     ) {

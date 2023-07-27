@@ -83,7 +83,7 @@ public class UserController {
             UserDto userDto = this.userService.fetchUserById(userID);
             if (userDto != null) {
                 logger.info("Successfully loaded user details.");
-                userdata.put("user details", userDto);
+                userdata.put("userDetails", userDto);
                 return ResponseEntity.ok().body(new PutResponse(true, "Successfully loaded user details", userdata));
             } else {
                 logger.error("Failed to load user details");

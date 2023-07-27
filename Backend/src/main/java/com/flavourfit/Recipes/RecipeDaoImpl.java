@@ -116,24 +116,61 @@ public class RecipeDaoImpl implements IRecipeDao {
         ArrayList<Object> recipes = new ArrayList<Object>();
 
         String keyword = (String) requestBody.get("keyword");
+        String typesStr = ((String) requestBody.get("types"));
+        String[] types=null;
+        if(typesStr!=null && !typesStr.isEmpty()){
+            types = typesStr.split(",");
+        }
+
         int count = (int) requestBody.get("count");
-        String[] favourites = (String[]) requestBody.get("favourites");
 
         if (count == 0)
             throw new IllegalArgumentException("Count cannot be 0");
-        if (keyword.length() == 0)
-            throw new IllegalArgumentException("Keyword cannot be empty");
 
         this.testConnection();
 
         logger.info("Creating a prepared statement to get the records the record");
-        String query = "select Recipes.recipe_id, Recipes.recipe_name , Recipes.recipe_description, Recipes.types \n" +
-                "from Recipes join Saved_Recipes on Recipes.recipe_id = Saved_Recipes.recipe_id\n" +
-                "where Saved_Recipes.user_id=? and (Recipes.recipe_name like ? or Recipes.recipe_description like ?)";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setInt(1, id);
-        preparedStatement.setString(2, "%" + keyword + "%");
-        preparedStatement.setString(3, "%" + keyword + "%");
+        StringBuilder sql = new StringBuilder("SELECT * FROM Recipes");
+
+        boolean hasTypes = types!=null && types.length > 0;
+        boolean hasKeyword = (keyword != null && !keyword.isEmpty());
+
+        if (hasTypes || hasKeyword) {
+            sql.append(" WHERE ");
+        }
+
+        if (hasTypes) {
+            sql.append("Types IN (");
+            for (int i = 0; i < types.length; i++) {
+                sql.append("?");
+                if (i != types.length - 1) {
+                    sql.append(",");
+                }
+            }
+            sql.append(")");
+        }
+
+        if (hasTypes && hasKeyword) {
+            sql.append(" AND ");
+        }
+
+        if (hasKeyword) {
+            sql.append("(Recipe_name LIKE ? OR Recipe_description LIKE ?)");
+        }
+
+        PreparedStatement preparedStatement = this.connection.prepareStatement(sql.toString());
+        int index = 1;
+        if (hasTypes) {
+            for (String type : types) {
+                preparedStatement.setString(index++, type);
+            }
+        }
+
+        if (hasKeyword) {
+            preparedStatement.setString(index++, "%" + keyword + "%");
+            preparedStatement.setString(index, "%" + keyword + "%");
+        }
+
         logger.info("Running query to fetch recipes for given user");
         ResultSet resultset = preparedStatement.executeQuery();
         while (resultset.next()) {

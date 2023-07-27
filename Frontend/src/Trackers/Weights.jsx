@@ -1,12 +1,13 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend,
@@ -15,9 +16,16 @@ import chevLeft from "../resources/Images/chevron-left.svg";
 import chevRight from "../resources/Images/chevron-right.svg";
 
 export const options = {
+  responsive: true, // Instruct chart js to respond nicely.
+  maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height
   plugins: {
     legend: {
       display: false,
+      labels: {
+        font: {
+          size: 9,
+        },
+      },
     },
     title: {
       display: false,
@@ -28,13 +36,23 @@ export const options = {
       grid: {
         display: false,
       },
+      ticks: {
+        font: {
+          size: 14,
+        },
+      },
     },
     y: {
-      stacked: true,
+      min: 0,
+      ticks: {
+        stepSize: 20,
+        font: {
+          size: 14,
+        },
+      },
       grid: {
         display: false,
       },
-      grace: "0",
     },
   },
 };
@@ -43,7 +61,8 @@ const Weights = ({ data, updateDate }) => {
   ChartJS.register(
     CategoryScale,
     LinearScale,
-    BarElement,
+    PointElement,
+    LineElement,
     Title,
     Tooltip,
     Legend
@@ -61,8 +80,10 @@ const Weights = ({ data, updateDate }) => {
       let chData = [];
       if (data?.chartData?.length > 0) {
         data.chartData.forEach((row, index) => {
-          labels.push(row?.date ?? "");
-          chData.push(row?.weight ?? 0);
+          if (row?.weight !== 0) {
+            labels.push(row?.date ?? "");
+            chData.push(row.weight);
+          }
         });
         newState = {
           ...newState,
@@ -71,8 +92,7 @@ const Weights = ({ data, updateDate }) => {
               label: "Calories",
               data: [...chData],
               backgroundColor: "#d66d20",
-              barThickness: 20,
-              borderRadius: 8,
+              borderColor: "#d66d20",
             },
           ],
         };
@@ -81,12 +101,10 @@ const Weights = ({ data, updateDate }) => {
 
       return newState;
     });
-
-    console.log(data);
   }, [data]);
 
   return (
-    <div className="tracker-container">
+    <div className="tracker-container" style={{ maxHeight: "600px" }}>
       <div className="tracker-title">Weight history</div>
       <div className="tracker-current">
         <div className="tracker-current-value ff-orange">
@@ -94,7 +112,12 @@ const Weights = ({ data, updateDate }) => {
         </div>
         <div className="tracker-current-unit ff-orange">kg</div>
       </div>
-      <Bar id="weight-chart" options={options} data={chartData} />
+      <Line
+        id="weight-chart"
+        options={options}
+        data={chartData}
+        style={{ width: "100%", height: "400px" }}
+      />
       {data?.chartData?.length > 0 ? (
         <div className="tracker-paginate">
           <img

@@ -51,7 +51,7 @@ const RegistrationCredentials = ({ user, handleChange, createAccount }) => {
             <Form.Control
               type="email"
               name="email"
-              placeholder="johndoe@gmail.com"
+              placeholder="Enter Email"
               value={user.email}
               onChange={handleChange}
             />
