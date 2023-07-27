@@ -14,8 +14,9 @@ import {
 } from "chart.js";
 import chevLeft from "../resources/Images/chevron-left.svg";
 import chevRight from "../resources/Images/chevron-right.svg";
+import plusCircle from "../resources/Images/circle-plus-solid.svg";
 
-const WaterIntake = ({ data, options, updateDate }) => {
+const WaterIntake = ({ data, options, updateDate, addWater }) => {
   ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -63,7 +64,17 @@ const WaterIntake = ({ data, options, updateDate }) => {
 
   return (
     <div className="tracker-container">
-      <div className="tracker-title">Water intake</div>
+      <div className="tracker-title">
+        <div>Water intake</div>
+        <img
+          src={plusCircle}
+          width={30}
+          alt="+"
+          title="Record water intake"
+          style={{ cursor: "pointer" }}
+          onClick={addWater}
+        />
+      </div>
       <div className="tracker-current">
         <div className="tracker-current-value ff-blue">
           {data?.waterIntake ?? 0.0}
