@@ -1,11 +1,16 @@
 package com.flavourfit.Resources;
 
+import com.flavourfit.Exceptions.RecipeExceptions;
+import com.flavourfit.Recipes.CompleteRecipeDto;
+import com.flavourfit.Recipes.Ingredients.IngredientDto;
+import com.flavourfit.Recipes.RecipeDto;
 import com.flavourfit.User.UserDto;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Properties;
 
 public final class Helpers {
@@ -32,5 +37,27 @@ public final class Helpers {
         return true;
     }
 
+    public static boolean isRecipeValid(CompleteRecipeDto completeRecipeDto) throws RecipeExceptions {
+        RecipeDto recipe = completeRecipeDto.getRecipe();
+        List<IngredientDto> ingredients = completeRecipeDto.getIngredients();
+
+        if (recipe == null) {
+            throw new RecipeExceptions("Invalid recipe");
+        }
+
+        if (recipe.getRecipeName() == null || recipe.getRecipeName().isEmpty()) {
+            throw new RecipeExceptions("Invalid recipe. Does not have a valid name.");
+        }
+
+        if (ingredients != null && !ingredients.isEmpty()) {
+            for (IngredientDto ingredient : ingredients) {
+                if (ingredient.getIngredientName() == null || ingredient.getIngredientName().isEmpty()) {
+                    throw new RecipeExceptions("Invalid recipe. Invalid ingredients in recipe.");
+                }
+            }
+        }
+
+        return true;
+    }
 
 }

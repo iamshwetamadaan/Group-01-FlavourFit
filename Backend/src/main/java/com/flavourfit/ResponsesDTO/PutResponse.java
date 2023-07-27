@@ -6,9 +6,9 @@ import java.util.Map;
 public class PutResponse {
     private boolean success;
     private String message;
-    private Map<String, Object> data;
+    private Object data;
 
-    public PutResponse(boolean success, String message, Map<String, Object> data) {
+    public PutResponse(boolean success, String message, Object data) {
         this.success = success;
         this.message = message;
         this.data = data;
@@ -29,7 +29,7 @@ public class PutResponse {
         return message;
     }
 
-    public Map<String, Object> getData() {
+    public Object getData() {
         return data;
     }
 
@@ -41,7 +41,7 @@ public class PutResponse {
         this.message = message;
     }
 
-    public void setData(Map<String, Object> data) {
+    public void setData(Object data) {
         this.data = data;
     }
 }

@@ -1,11 +1,14 @@
 package com.flavourfit.User;
 
+import com.flavourfit.Exceptions.PaymentException;
 import com.flavourfit.Exceptions.UserNotFoundException;
 
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public interface IUserService {
-    public String fetchAllUsers() throws SQLException;
 
     public boolean resetPassword(int userId, String newPassword) throws SQLException;
 
@@ -14,9 +17,17 @@ public interface IUserService {
     UserDto fetchUserById(int id) throws UserNotFoundException;
 
     UserDto fetchUserByEmail(String email) throws UserNotFoundException;
-    public void registerUser(UserDto user) throws SQLException;
-
-    public UserDto getUserbyID(int user) throws SQLException;
 
     public PremiumUserDto getUserBymembership(int user) throws SQLException;
+
+    public int paymentForPremium(int userID, PremiumUserPaymentDetailsDto details) throws PaymentException, SQLException;
+
+    public boolean startExtendPremium(int userID, int paymentID) throws SQLException;
+
+    void clearPassword(String email) throws UserNotFoundException;
+
+
+    void updateUserWeight(double weight, int userId) throws UserNotFoundException;
+
+    double fetchUserCurrentWeight(int userId) throws UserNotFoundException;
 }

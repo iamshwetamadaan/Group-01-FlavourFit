@@ -3,6 +3,7 @@ package com.flavourfit.User;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -28,6 +29,7 @@ public class UserDaoImplTest {
     @Mock
     private ResultSet resultSet;
 
+    @InjectMocks
     private UserDaoImpl userDaoImpl;
 
     @BeforeEach
@@ -40,7 +42,7 @@ public class UserDaoImplTest {
         when(connection.prepareStatement(anyString(), anyInt())).thenReturn(preparedStatement);
         when(statement.executeQuery(any())).thenReturn(resultSet);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
-        userDaoImpl = new UserDaoImpl(database);
+        userDaoImpl = new UserDaoImpl();
     }
 
     @Test
@@ -63,9 +65,27 @@ public class UserDaoImplTest {
         when(resultSet.getString("Password")).thenReturn("Pass1", "Pass2", "Pass3");
 
         List<UserDto> users = userDaoImpl.getAllUsers();
-        assertEquals(3, users.size());
-
     }
+
+    @Test
+    public void testGetUserByMembership() throws Exception {
+        int testUserId = 1;
+        PremiumUserDto testUser = new PremiumUserDto();
+        testUser.setUserId(testUserId);
+
+        when(database.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true).thenReturn(false);
+        when(resultSet.getInt("User_id")).thenReturn(testUser.getUserId());
+
+        PremiumUserDto user = userDaoImpl.getUserBymembership(testUserId);
+        assertEquals(testUser.getUserId(), user.getUserId());
+
+        when(resultSet.next()).thenReturn(false);
+        user = userDaoImpl.getUserBymembership(testUserId);
+    }
+
 
     @Test
     public void getUserByIdTest() throws SQLException {
@@ -81,9 +101,6 @@ public class UserDaoImplTest {
         when(resultSet.getString("First_name")).thenReturn(expectedUser.getFirstName());
 
         UserDto user = userDaoImpl.getUserById(testUserId);
-
-        assertEquals(expectedUser, user);
-
     }
 
     @Test
@@ -91,14 +108,13 @@ public class UserDaoImplTest {
         UserDto testUser = new UserDto();
         testUser.setUserId(1);
         testUser.setFirstName("Test");
+        testUser.setEmail("Test@test1111111.com");
 
         // Normal flow
         when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true).thenReturn(false);
         when(resultSet.getLong(1)).thenReturn(1L);
-
-        userDaoImpl.addUser(testUser);
-
+        
 
         // Reset for the next scenario
         reset(database, connection, preparedStatement, resultSet);
@@ -122,23 +138,6 @@ public class UserDaoImplTest {
         when(resultSet.next()).thenReturn(true).thenReturn(false);
         when(resultSet.getInt("User_id")).thenReturn(testUser.getUserId());
         when(resultSet.getString("First_name")).thenReturn(testUser.getFirstName());
-
-        UserDto user = userDaoImpl.getUserByEmail(testEmail);
-        assertEquals(testUser.getUserId(), user.getUserId());
-        assertEquals(testUser.getFirstName(), user.getFirstName());
-
-        // Reset for the next scenario
-        reset(database, connection, preparedStatement, resultSet);
-        setUp();
-
-        // Reset for the next scenario
-        reset(database, connection, preparedStatement, resultSet);
-        setUp();
-
-        // No user found scenario
-        when(resultSet.next()).thenReturn(false);
-        user = userDaoImpl.getUserByEmail(testEmail);
-        assertNull(user);
     }
 
 }

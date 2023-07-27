@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { Button, Container, Form, Image } from "react-bootstrap";
 import "./login.scss";
+
+import { Button, Container, Form, Image } from "react-bootstrap";
 import Logo from "../resources/Images/logo.png";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Login = (props) => {
   const [validated, setValidated] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -26,21 +29,7 @@ const Login = (props) => {
         .then((response) => {
           let token = response.data.token;
           sessionStorage.setItem("AuthToken", token);
-          axios
-            .put(
-              "http://localhost:8080/trackers/record-waterIntake",
-              {
-                waterIntake: 200.1,
-              },
-              {
-                headers: {
-                  Authorization: "Bearer " + token,
-                },
-              }
-            )
-            .then((e) => {
-              debugger;
-            });
+          navigate("/home");
         })
         .catch((error) => {});
     }
@@ -83,6 +72,7 @@ const Login = (props) => {
               variant="outline-primary"
               type="button"
               className="login-links"
+              onClick={() => navigate("/register")}
             >
               Create an account?
             </Button>
@@ -91,6 +81,7 @@ const Login = (props) => {
               variant="outline-primary"
               type="button"
               className="login-links"
+              onClick={() => navigate("/guest-login")}
             >
               Guest Sign-in
             </Button>

@@ -3,13 +3,31 @@
   overflow-x: hidden;
 }
 
+// .App {
+//   text-align: center;
+// }
+
+.text-white{
+  color:white
+}
+
+
 .App {
-  text-align: center;
+  min-height: 100vh;
+  background-color: #050725;
+// .App {
+//   min-height: 100vh;
+//   background: #0e1361;
+//   padding-bottom: 30px;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.blue-text-color{
+  color:#0e1361 !important;
 }
 
 @media (prefers-reduced-motion: no-preference) {

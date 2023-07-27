@@ -1,6 +1,8 @@
 package com.flavourfit.User;
 
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.Exceptions.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +21,11 @@ public class UserDaoImpl implements IUserDao {
     private Connection connection;
 
     @Autowired
-    public UserDaoImpl(IDatabaseManager database) {
-        this.database = database;
-        this.connection = database.getConnection();
+    public UserDaoImpl() {
+        this.database = DatabaseManagerImpl.getInstance();
+        if (this.database != null && this.database.getConnection() != null) {
+            this.connection = this.database.getConnection();
+        }
     }
 
 
@@ -91,7 +95,7 @@ public class UserDaoImpl implements IUserDao {
 
             logger.info("Running select query to get premium user by userId");
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT * FROM Users U inner join Premium_Memberships PM on U.User_id =  PM.User_id WHERE U.User_id=? and PM.Is_active = 1  ");
+                    "SELECT * FROM Premium_Memberships WHERE User_id=? ");
             preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -119,7 +123,8 @@ public class UserDaoImpl implements IUserDao {
         this.testConnection();
 
         logger.info("Creating a prepared statement update the record");
-        String query = "Update Users set First_name=?, Last_name=?, Phone=?, Email=?, Age=?" +
+        String query = "Update Users set" +
+                " First_name=?, Last_name=?, Phone=?, Email=?, Age=?" +
                 ",Street_address=?, City=?,State=?, Zip_code=?, Current_weight=?, Target_weight=?" +
                 "where User_id=?";
         PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -157,6 +162,7 @@ public class UserDaoImpl implements IUserDao {
         long insertedUserId;
         while (keys.next()) {
             insertedUserId = keys.getLong(1);
+            user.setUserId((int) insertedUserId);
             logger.info("Added User with userId: {}, to the Users table!", insertedUserId);
         }
     }
@@ -201,37 +207,207 @@ public class UserDaoImpl implements IUserDao {
             throw new SQLException("User object not valid!!");
         }
 
-        if (database != null) {
-            Connection connection = this.database.getConnection();
+        this.testConnection();
 
-            if (connection == null) {
-                logger.error("SQL connection not found!");
-                throw new SQLException("SQL connection not found!");
-            }
+        logger.info("Creating a prepared statement to update record.");
+        String query = "UPDATE Users SET Password = ? where User_id = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        logger.info("Replacing values in prepared statement with actual values to be inserted");
+        preparedStatement.setString(1, newPassword);
+        preparedStatement.setInt(2, userId);
+        logger.info("Execute the update of record to the table");
+        preparedStatement.executeUpdate();
 
-            logger.info("Creating a prepared statement to update record.");
-            String query = "UPDATE Users SET Password = ? where User_id = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            logger.info("Replacing values in prepared statement with actual values to be inserted");
-            preparedStatement.setString(1, newPassword);
-            preparedStatement.setInt(2, userId);
-            logger.info("Execute the update of record to the table");
-            preparedStatement.executeUpdate();
-
-            ResultSet keys = preparedStatement.getGeneratedKeys();
-            long updateUserIdPassword;
-            while (keys.next()) {
-                updateUserIdPassword = keys.getLong(1);
-                logger.info("Updated Password with userId: {}, to the Users table!", updateUserIdPassword);
-            }
-            passwordReset = true;
+        ResultSet keys = preparedStatement.getGeneratedKeys();
+        long updateUserIdPassword;
+        while (keys.next()) {
+            updateUserIdPassword = keys.getLong(1);
+            logger.info("Updated Password with userId: {}, to the Users table!", updateUserIdPassword);
         }
 
-        return passwordReset;
+        return true;
+    }
+
+    @Override
+    public int userToPremiumPayment(int userId, PremiumUserPaymentDetailsDto details) throws SQLException {
+
+        int userPremiumID = 0;
+
+        logger.info("Started userUpgradedToPremium() method");
+
+        if (userId == 0) {
+            logger.error("User object not valid!!");
+            throw new SQLException("User object not valid!!");
+        }
+
+        this.testConnection();
+
+        logger.info("Creating a prepared statement to insert record.");
+        String query = "INSERT INTO Payments (amount, reason, User_id, Premium_membership_id) VALUES (?,?,?,?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        logger.info("Entering values in prepared statement with actual values to be inserted");
+        preparedStatement.setDouble(0, details.getAmount());
+        preparedStatement.setString(1, "Premium Membership Payment");
+        preparedStatement.setInt(2, userId);
+        preparedStatement.setInt(3, 0);
+        logger.info("Execute the update of record to the table");
+        preparedStatement.executeUpdate();
+
+        ResultSet keys = preparedStatement.getGeneratedKeys();
+
+        while (keys.next()) {
+            userPremiumID = keys.getInt(1);
+            logger.info("Entered Customer Membership for userId: {}, to the Registered_Customer table!", userPremiumID);
+        }
+
+        return userPremiumID;
+    }
+
+    @Override
+    public int startExtendPremiumMembership(int userId, Date startDate, Date expiryDate, int paymentID) throws
+            SQLException {
+
+        int premiumMembershipID = 0;
+
+        logger.info("Started startExtendPremiumMembership() method");
+
+        if (userId == 0) {
+            logger.error("User object not valid!!");
+            throw new SQLException("User object not valid!!");
+        }
+
+        this.testConnection();
+
+        logger.info("Creating a prepared statement to update record.");
+        String query = "INSERT INTO Premium_Memberships (Start_date, Expiry_date, Is_active, User_id) VALUES (?,?,?,?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        logger.info("Entering values in prepared statement with actual values to be inserted");
+        preparedStatement.setDate(0, startDate);
+        preparedStatement.setDate(1, expiryDate);
+
+        preparedStatement.setInt(2, 1);
+
+        preparedStatement.setInt(3, userId);
+        logger.info("Execute the update of record to the table");
+        preparedStatement.executeUpdate();
+
+        ResultSet keys = preparedStatement.getGeneratedKeys();
+
+        while (keys.next()) {
+            premiumMembershipID = keys.getInt(1);
+            logger.info("Entered the Initialization/Extension of membership for userId: {}, to the Premium_Memberships table!", premiumMembershipID);
+        }
+
+        return premiumMembershipID;
+    }
+
+    @Override
+    public boolean updateUserPayment(int userId, int paymentID, int premiumMembershipID) throws SQLException {
+
+        boolean paymentUpdated = false;
+
+        logger.info("Started startExtendPremiumMembership() method");
+
+        if (userId == 0) {
+            logger.error("User object not valid!!");
+            throw new SQLException("User object not valid!!");
+        }
+
+        this.testConnection();
+
+        logger.info("Creating a prepared statement to update record.");
+        String query = "UPDATE Payments SET Premium_membership_id = ? where Payment_id = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        logger.info("Entering values in prepared statement with actual values to be inserted");
+        preparedStatement.setInt(0, premiumMembershipID);
+        preparedStatement.setInt(1, paymentID);
+        logger.info("Execute the update of record to the table");
+        preparedStatement.executeUpdate();
+
+        ResultSet keys = preparedStatement.getGeneratedKeys();
+        long recheckPaymentID;
+        while (keys.next()) {
+            recheckPaymentID = keys.getInt(1);
+            logger.info("Updated the ID for premium membership for paymentID: {}, to the Payments table!", recheckPaymentID);
+        }
+        return paymentUpdated;
+    }
+
+    @Override
+    public void clearGuestPassword(String email) throws UserNotFoundException {
+        logger.info("Entered clearGuestPassword() method");
+
+        if (email == null || email.isEmpty()) {
+            logger.error("Invalid email {} while clearing password", email);
+            throw new UserNotFoundException("Invalid email " + email);
+        }
+
+        try {
+            this.testConnection();
+
+            logger.info("Get user for email {}", email);
+            UserDto userDto = this.getUserByEmail(email);
+            String query = "UPDATE Users SET Password = ? where User_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, "");
+            preparedStatement.setInt(2, userDto.getUserId());
+
+            logger.info("Executing query to clear password");
+            preparedStatement.executeUpdate();
+            logger.info("Successfully cleared password for {}", email);
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            throw new UserNotFoundException(e);
+        }
+    }
+
+    @Override
+    public void updateUserWeight(double weight, int userId) throws SQLException {
+        logger.info("Entered updateUserWeight() method");
+
+        if (userId == 0) {
+            logger.error("Invalid user ");
+            throw new UserNotFoundException("Invalid user");
+        }
+
+        this.testConnection();
+
+        String query = "UPDATE Users SET Current_weight=? WHERE User_id=?";
+        logger.info("Creating query to update weight");
+        PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+        preparedStatement.setDouble(1, weight);
+        preparedStatement.setInt(2, userId);
+        preparedStatement.executeUpdate();
+        logger.info("Updated weight of user with id {}", userId);
+    }
+
+    @Override
+    public double getUserCurrentWeight(int userId) throws SQLException {
+        logger.info("Entered getUserCurrentWeight() method");
+
+        if (userId == 0) {
+            logger.error("Invalid user ");
+            throw new UserNotFoundException("Invalid user");
+        }
+
+        this.testConnection();
+
+        String query = "SELECT Current_weight FROM Users WHERE User_id=?";
+        logger.info("Creating query to fetch current weight");
+        PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+        preparedStatement.setInt(1, userId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        double currentWeight = 0.0d;
+        while (resultSet.next()) {
+            currentWeight = resultSet.getDouble("Current_weight");
+        }
+        logger.info("Fetched weight of user with id {}", userId);
+        return currentWeight;
     }
 
     private void replaceStatementPlaceholders(UserDto user, PreparedStatement preparedStatement, int count) throws
-                                                                                                            SQLException {
+            SQLException {
         if (user == null || preparedStatement == null) {
             return;
         }
@@ -294,19 +470,6 @@ public class UserDaoImpl implements IUserDao {
         PremiumUserDto user = new PremiumUserDto();
         if (resultSet != null) {
             user.setUserId(resultSet.getInt("User_id"));
-            user.setFirstName(resultSet.getString("First_name"));
-            user.setLastName(resultSet.getString("Last_name"));
-            user.setPhone(resultSet.getString("Phone"));
-            user.setEmail(resultSet.getString("Email"));
-            user.setAge(resultSet.getInt("Age"));
-            user.setStreetAddress(resultSet.getString("Street_address"));
-            user.setCity(resultSet.getString("City"));
-            user.setState(resultSet.getString("State"));
-            user.setZipCode(resultSet.getString("Zip_code"));
-            user.setCurrentWeight(resultSet.getDouble("Current_weight"));
-            user.setTargetWeight(resultSet.getDouble("Target_Weight"));
-            user.setType(resultSet.getString("Type"));
-            user.setPassword(resultSet.getString("Password"));
             user.setMembership_ID(resultSet.getInt("Premium_membership_id"));
             user.setStart_date(resultSet.getString("Start_date"));
             user.setExpiry_date(resultSet.getString("Expiry_date"));

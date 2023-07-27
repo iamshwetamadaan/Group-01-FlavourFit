@@ -27,29 +27,19 @@ public class UserServiceTest {
     }
 
     @Test
-    public void fetchAllUsersTest() throws SQLException {
-        UserDto user1 = new UserDto(); // populate with your test data
-        UserDto user2 = new UserDto(); // populate with your test data
-        List<UserDto> mockUsers = Arrays.asList(user1, user2);
+    public void testgetUserBymembership() throws Exception {
+        int testUserId = 1;
+        PremiumUserDto testUser = new PremiumUserDto();
+        testUser.setUserId(testUserId);
 
-        when(userDao.getAllUsers()).thenReturn(mockUsers);
+        when(userDao.getUserBymembership(testUserId)).thenReturn(testUser);
 
-        // Happy path
-        String result = null;
-        try {
-            result = userService.fetchAllUsers();
-            String expected = user1.toString() + "\n" + user2.toString() + "\n";
-            assertEquals(expected, result);
-        } catch (SQLException ex) {
-            fail("SQLException was not expected here.");
-        }
+        PremiumUserDto user = userService.getUserBymembership(testUserId);
+        assertEquals(testUser.getUserId(), user.getUserId());
 
-        // Reset the mock and simulate an exception.
-        reset(userDao);
-        when(userDao.getAllUsers()).thenThrow(SQLException.class);
-
-        // Exception path
-        assertThrows(SQLException.class, () -> userService.fetchAllUsers());
+        when(userDao.getUserBymembership(testUserId)).thenReturn(null);
+        user = userService.getUserBymembership(testUserId);
+        assertNull(user);
     }
 
 }

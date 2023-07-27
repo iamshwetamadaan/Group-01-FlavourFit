@@ -1,0 +1,93 @@
+.flavour-fit-trackers {
+  display: flex;
+  flex-direction: column;
+  padding-top: 30px;
+
+  .calorie-water-container {
+    display: flex;
+    gap: 30px;
+
+    .tracker-container {
+      flex: 1 1 0px;
+    }
+  }
+
+  .weights-container {
+    margin-top: 30px;
+    display: flex;
+
+    .tracker-container {
+      flex: 1 1 0px;
+    }
+  }
+
+  .tracker-container {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+  }
+
+  .tracker-title {
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .tracker-current {
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 25px;
+    max-height: 600px;
+
+    &-value {
+      font-size: 36px;
+    }
+
+    &-unit {
+      font-size: 24px;
+    }
+
+    &-bar {
+      margin: 20px 0px 30px;
+      height: 25px;
+      background: #aeaeae;
+      border-radius: 20px;
+
+      &-inner {
+        border-radius: 20px;
+        height: 100%;
+
+        &.ff-bg-green {
+          background: #2ca588;
+        }
+
+        &.ff-bg-blue {
+          background: #5555ff;
+        }
+
+        &.ff-bg-orange {
+          background: #d66d20;
+        }
+      }
+    }
+  }
+
+  .tracker-paginate {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+  }
+
+  #weight-chart {
+    width: 100% !important;
+    height: 300px !important;
+  }
+}
+
+.record-btn-container {
+  margin-top: 20px;
+}
