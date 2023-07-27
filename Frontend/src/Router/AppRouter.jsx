@@ -12,6 +12,7 @@ import UserProfile from "../UserProfile/userProfile";
 import Recipes from "../Recipes/Recipes";
 import RecipeDetails from "../Recipes/RecipeDetails";
 import RecordRecipe from "../Recipes/RecordRecipe";
+import Feeds from "../Feeds/Feeds";
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -20,6 +21,7 @@ const AppRouter = () => (
         <Route path="home" element={<Home />} />
         <Route path="" element={<Navigate to="/home" />} />
         <Route path="trackers" element={<Trackers />} />
+        <Route path="feeds" element={<Feeds />} />
         <Route path="/edit-profile" element={<UserProfile />} />
         <Route path="/recipes" element={<Recipes />} />
         <Route path={`/recipes/:id`} element={<RecipeDetails />} />

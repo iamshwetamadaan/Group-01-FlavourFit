@@ -33,8 +33,7 @@ public class SecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFil
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
                 .authorizeHttpRequests().requestMatchers("/auth/**").permitAll()
-//                .anyRequest().authenticated()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -49,7 +48,7 @@ public class SecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFil
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS","PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

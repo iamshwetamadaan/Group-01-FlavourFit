@@ -44,7 +44,7 @@ function App() {
               <Nav.Link href="/trackers">Trackers</Nav.Link>
             ) : null}
             <Nav.Link href="/recipes">Recipes</Nav.Link>
-            <Nav.Link href="/feed">Feed</Nav.Link>
+            <Nav.Link href="/feeds">Feed</Nav.Link>
           </Nav>
           {user?.type === "registered" ? (
             <Nav>
