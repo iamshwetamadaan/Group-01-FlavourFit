@@ -15,6 +15,7 @@ import com.flavourfit.Trackers.Water.WaterHistoryDto;
 import com.flavourfit.Trackers.Weights.IWeightHistoryService;
 import com.flavourfit.Trackers.Weights.WeightGraphDto;
 import com.flavourfit.Trackers.Weights.WeightHistoryDto;
+import com.flavourfit.User.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,27 +39,31 @@ public class TrackersController {
     private IWeightHistoryService weightHistoryService;
     private IAuthService authService;
 
+    private final IUserService userService;
+
 
     @Autowired
     public TrackersController(
             ICalorieHistoryService calorieHistoryService, IWaterHistoryService waterHistoryService,
             IWeightHistoryService weightHistoryService,
-            IAuthService authService
+            IAuthService authService,
+            IUserService userService
     ) {
         this.calorieHistoryService = calorieHistoryService;
         this.waterHistoryService = waterHistoryService;
         this.weightHistoryService = weightHistoryService;
         this.authService = authService;
+        this.userService = userService;
     }
 
     @PutMapping("/record-calories")
     public ResponseEntity<Object> recordCalories(
-            @RequestBody Map<String, Object> requestBody,
+            @RequestBody Map<String, String> requestBody,
             @RequestHeader("Authorization") String token
     ) {
         logger.info("Entered controlled method recordCalories()");
 
-        double calorieCount = (double) requestBody.get("calorieCount");
+        double calorieCount = Double.parseDouble(requestBody.get("calorieCount"));
         int userId = authService.extractUserIdFromToken(token);
 
         try {
@@ -81,11 +86,11 @@ public class TrackersController {
 
     @PutMapping("/record-waterIntake")
     public ResponseEntity<Object> recordWaterIntake(
-            @RequestBody Map<String, Object> request,
+            @RequestBody Map<String, String> request,
             @RequestHeader("Authorization") String token
     ) {
         logger.info("Entered controller method recordWaterIntake()");
-        double waterIntake = (Double) request.get("waterIntake");
+        double waterIntake = Double.parseDouble(request.get("waterIntake"));
         int userId = authService.extractUserIdFromToken(token);
 
         try {
@@ -105,8 +110,6 @@ public class TrackersController {
             return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to record Water intake"));
         }
     }
-
-
 
 
     @PutMapping("/record-weight")
@@ -249,13 +252,13 @@ public class TrackersController {
         try {
             WaterHistoryDto waterIntake = this.waterHistoryService.fetchWaterIntakeByUserIdCurrent(userId);
             CalorieHistoryDto calories = this.calorieHistoryService.fetchCalorieByUserIdCurrent(userId);
-            WeightHistoryDto weight = this.weightHistoryService.fetchWeightByUserIdCurrent(userId);
+            double weight = this.userService.fetchUserCurrentWeight(userId);
 
             TrackersResponse response = new TrackersResponse(true, "Successfully retrieved water intake and calories", waterIntake, calories, weight);
 
             // Return the combined response
             return ResponseEntity.ok().body(response);
-         }   catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

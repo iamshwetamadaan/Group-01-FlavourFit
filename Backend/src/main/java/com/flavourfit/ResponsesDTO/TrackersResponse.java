@@ -10,8 +10,8 @@ public class TrackersResponse {
         private String message;
         private WaterHistoryDto waterIntake;
         private CalorieHistoryDto calories;
-        private WeightHistoryDto weight;
-        public TrackersResponse(boolean success, String message, WaterHistoryDto waterIntake, CalorieHistoryDto calories, WeightHistoryDto weight) {
+        private Double weight;
+        public TrackersResponse(boolean success, String message, WaterHistoryDto waterIntake, CalorieHistoryDto calories, Double weight) {
             this.success = success;
             this.message = message;
             this.waterIntake = waterIntake;
