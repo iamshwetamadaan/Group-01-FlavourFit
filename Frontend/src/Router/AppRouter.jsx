@@ -22,6 +22,7 @@ const AppRouter = () => (
         <Route path="" element={<Navigate to="/home" />} />
         <Route path="/feed" element={<Feeds/>} />
         <Route path="trackers" element={<Trackers />} />
+        <Route path="feeds" element={<Feeds />} />
         <Route path="/edit-profile" element={<UserProfile />} />
         <Route path="/recipes" element={<Recipes />} />
         <Route path={`/recipes/:id`} element={<RecipeDetails />} />

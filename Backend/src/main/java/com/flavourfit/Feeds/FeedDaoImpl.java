@@ -185,13 +185,16 @@ public class FeedDaoImpl implements IFeedDao {
     }
 
     private FeedDto extractUserFeedsFromResult(ResultSet resultSet) throws SQLException {
-        FeedDto userFeeds = new FeedDto();
-        userFeeds.setFeedId(resultSet.getInt("Feed_id"));
-        userFeeds.setFeedContent(resultSet.getString("Feed_content"));
-        userFeeds.setLikeCount(resultSet.getInt("Like_count"));
-        userFeeds.setUserId(resultSet.getInt("User_id"));
-        userFeeds.setComments(new ArrayList<CommentDto>());
-        return userFeeds;
+        if (resultSet.next()) {
+            FeedDto userFeeds = new FeedDto();
+            userFeeds.setFeedId(resultSet.getInt("Feed_id"));
+            userFeeds.setFeedContent(resultSet.getString("Feed_content"));
+            userFeeds.setLikeCount(resultSet.getInt("Like_count"));
+            userFeeds.setUserId(resultSet.getInt("User_id"));
+            userFeeds.setComments(new ArrayList<CommentDto>());
+            return userFeeds;
+        }
+        return null;
     }
 
     private List<FeedDto> getUserFeedsList(ResultSet resultSet) throws SQLException {
