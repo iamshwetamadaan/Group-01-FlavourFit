@@ -42,7 +42,7 @@ class Feeds extends Component{
                             method: "get",
                           },
                           (response2) => {
-                            var username = response2.data.data["user details"].username
+                            var username = response2.data.data["userDetails"].username
                             feed["userName"]=username;
                           },
                         (error) => {},);
@@ -61,9 +61,8 @@ class Feeds extends Component{
             method: "get",
           },
           (response) => {
-            result = response.data.data["user details"]
            
-            console.log(data)
+            result = response.data.data["userDetails"]
             var dataToSend = {
                 comments : [],
                 feedContent : data,
