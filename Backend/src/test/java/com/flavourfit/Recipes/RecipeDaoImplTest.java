@@ -62,7 +62,7 @@ class RecipeDaoImplTest {
         when(resultSet.getString("types")).thenReturn("Breakfast", "Lunch");
         when(statement.executeQuery("SELECT DISTINCT(types) FROM Recipes;")).thenReturn(resultSet);
 
-        List<String> expected = List.of("Non-Veg", "vegan", "chicken", "Vegetarian", "Veg", "Egg");
+        List<String> expected = List.of("Non-Veg", "vegan", "chicken", "Vegetarian", "Veg", "Egg", "beverage");
         List<String> result = recipeDao.getAllRecipesTypes();
 
         assertEquals(expected, result);
@@ -112,6 +112,11 @@ class RecipeDaoImplTest {
         requestBody.put("keyword", "Lorem");
         requestBody.put("count", 5);
         assertEquals(1, recipeDao.getFilteredRecipesByUser(99, requestBody).size());
+    }
+
+    @Test
+    void updateRecipeTest(){
+
     }
 
 }
