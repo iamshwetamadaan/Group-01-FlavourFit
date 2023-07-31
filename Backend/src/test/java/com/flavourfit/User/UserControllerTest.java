@@ -45,8 +45,31 @@ public class UserControllerTest {
         MockitoAnnotations.openMocks(this);
     }
     @Test
-    public void userPremiumPaymentTest() throws PaymentException {
+    public void userPremiumPaymentTest() throws PaymentException, SQLException {
+        int userId = 1;
+        String token = "valid-token";
+        PremiumUserPaymentDetailsDto request = new PremiumUserPaymentDetailsDto();
+        request.setCardNumber("1111111111111111");
+        request.setExpiryMonth("11");
+        request.setExpiryYear("12");
+        request.setCvv("112");
 
+        when(authService.extractUserIdFromToken(token)).thenReturn(1);
+        when(userService.paymentForPremium(userId, request)).thenReturn(1);
+
+        // Act
+        ResponseEntity<PutResponse> response = userController.getUserPaymentForPremium(token, request);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        PutResponse responseBody = response.getBody();
+        assertNotNull(responseBody);
+        assertTrue(responseBody.isSuccess());
+        assertEquals("Successfully completed user premium membership payment", responseBody.getMessage());
+
+        //verify(authService).extractUserIdFromToken(token);
+        //verify(userService).paymentForPremium(userId, request);
     }
     @Test
     public void testResetPasswordResponse() throws SQLException {

@@ -246,10 +246,10 @@ public class UserDaoImpl implements IUserDao {
         String query = "INSERT INTO Payments (amount, reason, User_id, Premium_membership_id) VALUES (?,?,?,?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         logger.info("Entering values in prepared statement with actual values to be inserted");
-        preparedStatement.setDouble(0, details.getAmount());
-        preparedStatement.setString(1, "Premium Membership Payment");
-        preparedStatement.setInt(2, userId);
-        preparedStatement.setInt(3, 0);
+        preparedStatement.setDouble(1, details.getAmount());
+        preparedStatement.setString(2, "Premium Membership Payment");
+        preparedStatement.setInt(3, userId);
+        preparedStatement.setInt(4, 1);
         logger.info("Execute the update of record to the table");
         preparedStatement.executeUpdate();
 
@@ -282,12 +282,12 @@ public class UserDaoImpl implements IUserDao {
         String query = "INSERT INTO Premium_Memberships (Start_date, Expiry_date, Is_active, User_id) VALUES (?,?,?,?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         logger.info("Entering values in prepared statement with actual values to be inserted");
-        preparedStatement.setDate(0, startDate);
-        preparedStatement.setDate(1, expiryDate);
+        preparedStatement.setDate(1, startDate);
+        preparedStatement.setDate(2, expiryDate);
 
-        preparedStatement.setInt(2, 1);
+        preparedStatement.setInt(3, 1);
 
-        preparedStatement.setInt(3, userId);
+        preparedStatement.setInt(4, userId);
         logger.info("Execute the update of record to the table");
         preparedStatement.executeUpdate();
 
@@ -319,8 +319,8 @@ public class UserDaoImpl implements IUserDao {
         String query = "UPDATE Payments SET Premium_membership_id = ? where Payment_id = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         logger.info("Entering values in prepared statement with actual values to be inserted");
-        preparedStatement.setInt(0, premiumMembershipID);
-        preparedStatement.setInt(1, paymentID);
+        preparedStatement.setInt(1, premiumMembershipID);
+        preparedStatement.setInt(2, paymentID);
         logger.info("Execute the update of record to the table");
         preparedStatement.executeUpdate();
 

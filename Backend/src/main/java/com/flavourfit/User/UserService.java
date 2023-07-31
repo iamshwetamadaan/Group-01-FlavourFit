@@ -109,7 +109,7 @@ UserService implements IUserService {
             int month = Integer.parseInt(expiryMonth);
             int year = Integer.parseInt(expiryYear);
 
-            if (!(month >= 12 && month < 00) || !(year >= 30 && month < 10)) {
+            if (!(month <= 12 && month > 00) || !(year <= 30 && year > 10)) {
                 logger.warn("Invalid MM/YY ranges");
                 throw new PaymentException("Invalid Payment: MM/YY entered is not in valid ranges");
             }
@@ -123,7 +123,6 @@ UserService implements IUserService {
         logger.info("Started startExtendPremium() method");
 
         if (userID != 0 && paymentID != 0) {
-
             //default time zone
             ZoneId defaultZoneId = ZoneId.systemDefault();
 
