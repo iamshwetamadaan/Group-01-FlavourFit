@@ -35,15 +35,13 @@ public class HomePageControllerTest {
         }
 
         @Test
-        public void testFetchEventList_Success() throws SQLException {
+        public void testFetchEventList() {
 
             List<HomepageEventDto> mockEventList = new ArrayList<>();
             mockEventList.add(new HomepageEventDto(1, "Inhale and exhale", "2023-09-01", "2023-09-01", "100", "Sasha Berkley", "Yoga and Pilates event"));
             mockEventList.add(new HomepageEventDto(2, "Fitness freak", "2023-09-07", "2023-09-07", "100", "John Mendow", "HIIT Workout session"));
 
             when(homepageService.fetcheventlist()).thenReturn(mockEventList);
-
-
             ResponseEntity<GetResponse> responseEntity = homepageController.fetcheventlist();
 
             assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
