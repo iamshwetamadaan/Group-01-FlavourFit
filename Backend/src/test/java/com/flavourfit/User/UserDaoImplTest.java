@@ -86,7 +86,6 @@ public class UserDaoImplTest {
         user = userDaoImpl.getUserBymembership(testUserId);
     }
 
-
     @Test
     public void getUserByIdTest() throws SQLException {
         int testUserId = 1;
@@ -114,7 +113,6 @@ public class UserDaoImplTest {
         when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true).thenReturn(false);
         when(resultSet.getLong(1)).thenReturn(1L);
-        
 
         // Reset for the next scenario
         reset(database, connection, preparedStatement, resultSet);
@@ -123,7 +121,6 @@ public class UserDaoImplTest {
         // Null user scenario
         Exception exception = assertThrows(SQLException.class, () -> userDaoImpl.addUser(null));
         assertEquals("User object not valid!!", exception.getMessage());
-
     }
 
     @Test
@@ -134,10 +131,66 @@ public class UserDaoImplTest {
         testUser.setFirstName("Test");
 
         // Normal flow
-        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true).thenReturn(false);
         when(resultSet.getInt("User_id")).thenReturn(testUser.getUserId());
         when(resultSet.getString("First_name")).thenReturn(testUser.getFirstName());
+    }
+
+    @Test
+    public void testResetPassword() throws Exception {
+        /**
+        UserDto testUser = new UserDto();
+        testUser.setUserId(1);
+        testUser.setFirstName("John");
+        testUser.setLastName("Doe");
+        testUser.setEmail("john.doe@gmail.com");
+        testUser.setPassword("pineapples123");
+        String newPassword = "potatoes";
+        testUser.setPassword(newPassword);
+
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true).thenReturn(false);
+        when(resultSet.getLong(1)).thenReturn(1L);
+
+        // Reset for the next scenario
+        reset(database, connection, preparedStatement, resultSet);
+        setUp();
+
+        // Null user scenario
+        Exception exception = assertThrows(SQLException.class, () -> userDaoImpl.resetUserPassword(0, null));
+        assertEquals("User object not valid!!", exception.getMessage());
+         **/
+        /**
+        int userId = 1;
+        String newPassword = "NewValidPassword";
+
+        when(connection.prepareStatement(anyString(), anyInt())).thenReturn(preparedStatement);
+        when(preparedStatement.executeUpdate()).thenReturn(1);
+        when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true);
+        when(resultSet.getLong(1)).thenReturn(1L);
+
+        // Act
+        boolean result = userDaoImpl.resetUserPassword(userId, newPassword);
+
+        // Assert
+        assertTrue(result);
+        verify(connection).prepareStatement(anyString(), anyInt());
+        verify(preparedStatement).setString(1, newPassword);
+        verify(preparedStatement).setInt(2, userId);
+        verify(preparedStatement).executeUpdate();
+        verify(preparedStatement).getGeneratedKeys();
+        verify(resultSet).next();
+        verify(resultSet).getLong(1);
+        **/
+
+        int userId = 0;
+        String newPassword = "NewPassword";
+
+        // Null user scenario
+        Exception exception = assertThrows(SQLException.class, () -> userDaoImpl.resetUserPassword(userId, newPassword));
+        assertEquals("User object not valid!!", exception.getMessage());
     }
 
 }

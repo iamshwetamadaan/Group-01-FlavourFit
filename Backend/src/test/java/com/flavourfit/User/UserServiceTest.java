@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -18,6 +19,8 @@ public class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
     @Mock
     private IUserDao userDao;
 
@@ -41,6 +44,20 @@ public class UserServiceTest {
         user = userService.getUserBymembership(testUserId);
         assertNull(user);
     }
+    @Test
+    public void testResetPassword() throws Exception {
+        int userID = 1;
+        String newPassword = "ValidPassword";
+        String encodedPassword = "EncodedPassword";
 
+        when(passwordEncoder.encode(newPassword)).thenReturn(encodedPassword);
+        when(userDao.resetUserPassword(userID, encodedPassword)).thenReturn(true);
+
+        boolean result = userService.resetPassword(userID, newPassword);
+
+        // Assert
+        assertTrue(result);
+        verify(passwordEncoder).encode(newPassword);
+    }
 }
 

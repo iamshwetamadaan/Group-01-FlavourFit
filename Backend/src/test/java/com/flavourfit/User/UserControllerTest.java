@@ -5,6 +5,7 @@ import com.flavourfit.Authentication.IAuthService;
 import com.flavourfit.Exceptions.PaymentException;
 import com.flavourfit.Exceptions.UserNotFoundException;
 import com.flavourfit.ResponsesDTO.AuthResponse;
+import com.flavourfit.ResponsesDTO.PutResponse;
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,24 +46,29 @@ public class UserControllerTest {
     }
     @Test
     public void userPremiumPaymentTest() throws PaymentException {
-        /**
-        // Pass Case
-        PremiumUserPaymentDetailsDto requestValid = new PremiumUserPaymentDetailsDto();
-        int user_id = 1;
-        requestValid.setCardNumber("9876543210123456");
-        requestValid.setExpiryMonth("02");
-        requestValid.setExpiryYear("23");
-        requestValid.setCvv("667");
-        requestValid.setStartDate();
-        requestValid.setEndDate();
 
-        ResponseEntity responseEntity1 = userController.getUserPaymentForPremium(, requestValid);
-
-        assertEquals(HttpStatus.OK, responseEntity1.getStatusCode());
-        assertEquals((String) requestValid.get("userID"), responseEntity1.getBody());
-         **/
     }
+    @Test
+    public void testResetPasswordResponse() throws SQLException {
+        // Arrange
+        int userId = 1;
+        String newPassword = "NewValidPassword";
+        String token = "token";
+        Map<String, Object> request = new HashMap<>();
+        request.put("newPassword", newPassword);
 
+        when(authService.extractUserIdFromToken(token)).thenReturn(1); // Assuming the token is valid
 
+        // Act
+        ResponseEntity<Object> response = userController.resetPassword(request, token);
 
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        PutResponse responseBody = (PutResponse) response.getBody();
+        assertNotNull(responseBody);
+        assertTrue(responseBody.isSuccess());
+        assertEquals("Successfully updated password", responseBody.getMessage());
+
+    }
 }
