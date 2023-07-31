@@ -1,0 +1,39 @@
+01:05:43.054 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+01:05:43.063 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+01:05:43.066 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+01:05:43.577 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+01:05:43.577 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+01:05:43.593 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+01:05:43.594 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+01:05:43.656 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Started getAllRecipesTypes() method
+01:05:43.657 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Running query to fetch different types from the recipes
+01:05:43.678 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Received data from db and added types to recipeTypes list.
+01:06:58.779 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+01:06:58.782 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+01:06:58.785 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+01:06:59.075 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+01:06:59.075 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+01:06:59.086 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+01:06:59.086 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+01:06:59.138 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Started getAllRecipesTypes() method
+01:06:59.139 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Running query to fetch different types from the recipes
+01:06:59.171 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Received data from db and added types to recipeTypes list.
+01:06:59.182 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Started getAllRecipesTypes() method
+01:06:59.183 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Running query to fetch different types from the recipes
+01:06:59.188 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Received data from db and added types to recipeTypes list.
+01:07:09.402 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+01:07:09.406 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+01:07:09.409 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+01:07:09.655 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+01:07:09.655 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+01:07:09.666 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+01:07:09.666 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+01:07:09.721 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Started getRecipesByUser() method
+01:07:09.726 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Started getRecipesByUser() method
+01:07:09.726 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Creating a statement to get the records the record
+01:07:09.727 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Running query to fetch recipes for given user
+01:07:09.749 [main] INFO  c.flavourfit.Recipes.RecipeDaoImpl - Received data from db and added types to recipeTypes list.
+01:07:27.763 [main] INFO  c.f.Recipes.RecipeController - Started fetchAllRecipeTypes() method
+01:07:27.768 [main] INFO  c.f.Recipes.RecipeController - Successfully collected  recipe types.
+01:07:36.791 [main] INFO  c.f.Recipes.RecipeController - Entered controller method saveRecipe()
+01:07:36.797 [main] INFO  c.f.Recipes.RecipeController - Saved recipe for userId:1
