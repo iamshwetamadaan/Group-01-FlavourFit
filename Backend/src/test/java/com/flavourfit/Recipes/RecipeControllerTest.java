@@ -3,10 +3,12 @@ import com.flavourfit.Authentication.IAuthService;
 import com.flavourfit.Exceptions.RecipeExceptions;
 import com.flavourfit.Recipes.SavedRecipes.ISavedRecipesService;
 import com.flavourfit.ResponsesDTO.PutResponse;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,9 @@ import static org.mockito.Mockito.*;
 
 class RecipeControllerTest {
 
+    private final CompleteRecipeDto originalRecipe;
+    private final CompleteRecipeDto updatedRecipe;
+
     @Mock
     private IRecipeService recipeService;
 
@@ -30,6 +35,13 @@ class RecipeControllerTest {
 
     @InjectMocks
     private RecipeController recipeController;
+
+    RecipeControllerTest(CompleteRecipeDto originalRecipe,
+                         CompleteRecipeDto updatedRecipe) {
+        this.updatedRecipe = updatedRecipe;
+        this.originalRecipe = originalRecipe;
+    }
+
 
     @BeforeEach
     void setUp() {
@@ -85,6 +97,28 @@ class RecipeControllerTest {
 
         // Failed to save recipe case
         assertEquals("Successfully saved recipe", responseBody.getMessage());
+    }
+
+    @Test
+    public void updateExistingRecipeTest(){
+
+        Mockito.when(recipeService.updateRecipe(Mockito.any(CompleteRecipeDto.class)))
+                .thenReturn(updatedRecipe);
+
+        // Call the controller method with the original recipe
+        ResponseEntity<PutResponse> response = recipeController.updateExistingRecipe(originalRecipe);
+
+        //Success case
+        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assert.assertEquals("Updated recipe successfully", response.getBody().getMessage());
+
+        //bad request case
+        Mockito.when(recipeService.updateRecipe(Mockito.any(CompleteRecipeDto.class)))
+                .thenThrow(new RuntimeException("Request not successful"));
+
+        response = recipeController.updateExistingRecipe(originalRecipe);
+        Assert.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        Assert.assertEquals("Failed to update recipe: " , response.getBody().getMessage());
     }
 
 }

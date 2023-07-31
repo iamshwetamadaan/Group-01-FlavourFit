@@ -1,6 +1,8 @@
 package com.flavourfit.Recipes;
 
 import com.flavourfit.Exceptions.RecipeExceptions;
+import com.flavourfit.Recipes.Ingredients.IIngredientsService;
+import com.flavourfit.Recipes.Ingredients.IngredientDto;
 import com.flavourfit.ResponsesDTO.SavedRecipesResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,11 +24,14 @@ class RecipeServiceImplTest {
 
     @InjectMocks
     private RecipeServiceImpl recipeService;
+    @Mock
+    private IIngredientsService ingredientsService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+
 
     @Test
     void fetchAllRecipeTypesTest() throws SQLException {
@@ -78,5 +83,52 @@ class RecipeServiceImplTest {
 
         when(recipeService.getFilteredRecipesByUser(1,requestBody)).thenReturn(recipes);
         assertEquals(1,recipeService.getFilteredRecipesByUser(1,requestBody).size());
+    }
+
+    @Test
+    public void updateRecipeTest(){
+        CompleteRecipeDto completeRecipeDto = new CompleteRecipeDto();
+        RecipeDto recipeDto = new RecipeDto();
+        recipeDto.setRecipeId(1);
+        recipeDto.setRecipeName("name");
+        recipeDto.setRecipeDescription("description");
+        recipeDto.setTypes("types");
+        recipeDto.setEditable(true);
+        completeRecipeDto.setRecipe(recipeDto);
+
+        List<IngredientDto> ingredients = new ArrayList<>();
+        IngredientDto ingredient1 = new IngredientDto();
+        ingredient1.setIngredientName("Ingredient1");
+        ingredient1.setQuantity(100);
+        ingredient1.setQuantityUnit("g");
+
+        IngredientDto ingredient2 = new IngredientDto();
+        ingredient1.setIngredientName("Ingredient2");
+        ingredient1.setQuantity(2);
+        ingredient1.setQuantityUnit("cups");
+
+        ingredients.add(ingredient1);
+        ingredients.add(ingredient2);
+        completeRecipeDto.setIngredients(ingredients);
+
+        try {
+            recipeDto = completeRecipeDto.getRecipe();
+            ingredients = completeRecipeDto.getIngredients();
+            //fail("Expected RecipeExceptions but no exception was thrown.");
+        } catch (RecipeExceptions e) {
+            throw new RecipeExceptions("Recipe not updated");
+        }
+
+        try {
+            when(recipeDao.getRecipeById(recipeDto.getRecipeId())).thenReturn(recipeDto);
+            when(ingredientsService.fetchRecipeIngredients(recipeDto.getRecipeId())).thenReturn(ingredients);
+
+            recipeService.updateRecipe(completeRecipeDto);
+
+            verify(recipeDao).updateRecipe(recipeDto);
+            verify(ingredientsService).updateIngredients(ingredients, recipeDto.getRecipeId());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

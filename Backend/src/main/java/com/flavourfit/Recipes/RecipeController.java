@@ -2,12 +2,9 @@ package com.flavourfit.Recipes;
 
 import com.flavourfit.Authentication.IAuthService;
 import com.flavourfit.Exceptions.RecipeExceptions;
-import com.flavourfit.Exceptions.UserNotFoundException;
 import com.flavourfit.Recipes.SavedRecipes.ISavedRecipesService;
 import com.flavourfit.ResponsesDTO.GetResponse;
 import com.flavourfit.ResponsesDTO.PutResponse;
-import com.flavourfit.User.IUserService;
-import com.flavourfit.User.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

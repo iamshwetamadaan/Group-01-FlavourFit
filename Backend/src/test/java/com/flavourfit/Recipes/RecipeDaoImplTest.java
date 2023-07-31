@@ -1,6 +1,7 @@
 package com.flavourfit.Recipes;
 
 import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.Exceptions.RecipeExceptions;
 import com.flavourfit.ResponsesDTO.SavedRecipesResponse;
 import com.flavourfit.Trackers.Calories.CalorieHistoryDaoImpl;
 import com.flavourfit.Trackers.Calories.CalorieHistoryDto;
@@ -116,7 +117,26 @@ class RecipeDaoImplTest {
 
     @Test
     void updateRecipeTest(){
+        // Test data
+        RecipeDto recipeDto = new RecipeDto();
+        recipeDto.setRecipeId(1); // Set the recipe ID to a valid value
+        recipeDto.setRecipeName("Updated Recipe");
+        recipeDto.setRecipeDescription("Updated description");
+        recipeDto.setTypes("Updated types");
+        recipeDto.setEditable(true); // Set editable to true for this test case
 
+
+        try {
+            // Mock behavior for the test
+            String updateQuery = "UPDATE Recipes SET Recipe_name=?, Recipe_description=?, Types=? WHERE Recipe_id=?";
+            PreparedStatement mockPreparedStatement = mock(PreparedStatement.class);
+            when(connection.prepareStatement(updateQuery)).thenReturn(mockPreparedStatement);
+
+            recipeDao.updateRecipe(recipeDto);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
