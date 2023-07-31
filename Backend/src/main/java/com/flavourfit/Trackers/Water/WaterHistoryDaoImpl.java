@@ -2,6 +2,7 @@ package com.flavourfit.Trackers.Water;
 
 import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.Helpers.DateHelpers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,11 +136,12 @@ public class WaterHistoryDaoImpl implements IWaterHistoryDao {
         this.testConnection();
 
         WaterHistoryDto waterHistoryDto = null;
-        String query = "SELECT * FROM Water_History WHERE User_id=? ORDER BY Update_Date DESC LIMIT 1";
+        String query = "SELECT * FROM Water_History WHERE User_id=? AND Update_Date=? ORDER BY Update_Date DESC LIMIT 1";
 
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         logger.info("Replacing values in prepared statement with actual values for date and user id.");
         preparedStatement.setInt(1, userId);
+        preparedStatement.setString(2, DateHelpers.getCurrentDateString());
 
         logger.info("Execute the query to get water intake curent.");
         ResultSet resultSet = preparedStatement.executeQuery();

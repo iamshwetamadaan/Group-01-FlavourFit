@@ -95,7 +95,7 @@ public class UserDaoImpl implements IUserDao {
 
             logger.info("Running select query to get premium user by userId");
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT * FROM Premium_Memberships WHERE U.User_id=? ");
+                    "SELECT * FROM Premium_Memberships WHERE User_id=? ");
             preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
 

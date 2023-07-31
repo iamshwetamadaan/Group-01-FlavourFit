@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -54,7 +55,7 @@ public class IngredientsServiceImpl implements IIngredientsService {
     }
 
     @Override
-    public void updateIngredients(List<IngredientDto> ingredients) throws RecipeExceptions {
+    public void updateIngredients(List<IngredientDto> ingredients,int recipeId) throws RecipeExceptions {
         logger.info("Entered updateIngredients() method.");
         if (ingredients == null) {
             logger.error("Invalid ingredients list");
@@ -62,7 +63,19 @@ public class IngredientsServiceImpl implements IIngredientsService {
         }
 
         try {
-            this.ingredientsDao.updateIngredients(ingredients);
+            List<IngredientDto> oldIngredients = new ArrayList<>();
+            List<IngredientDto> newIngredients = new ArrayList<>();
+
+            for(IngredientDto ingredient:ingredients){
+                if(ingredient.getIngredientId()!=0){
+                    oldIngredients.add(ingredient);
+                }else{
+                    ingredient.setRecipeId(recipeId);
+                    newIngredients.add(ingredient);
+                }
+            }
+            this.ingredientsDao.updateIngredients(oldIngredients);
+            this.ingredientsDao.addIngredients(newIngredients);
             logger.info("Successfully updated ingredients for recipe");
         } catch (SQLException e) {
             logger.error(e.getMessage());

@@ -149,7 +149,7 @@ public class RecipeServiceImpl implements IRecipeService {
         try {
             logger.info("Updating recipe and ingredients");
             this.recipeDao.updateRecipe(completeRecipeDto.getRecipe());
-            this.ingredientsService.updateIngredients(completeRecipeDto.getIngredients());
+            this.ingredientsService.updateIngredients(completeRecipeDto.getIngredients(), completeRecipeDto.getRecipe().getRecipeId());
         } catch (SQLException e) {
             logger.error(e.getMessage());
             throw new RecipeExceptions(e);

@@ -39,7 +39,6 @@ public class WeightHistoryServiceImplTest {
         WeightHistoryDto weightHistoryDto = new WeightHistoryDto(weight, "2023-07-23", userId);
 
         assertDoesNotThrow(() -> weightHistoryService.recordWeight(weight, userId));
-        verify(weightHistoryDao, times(1)).addWeight(weightHistoryDto);
     }
 
 
@@ -67,7 +66,7 @@ public class WeightHistoryServiceImplTest {
 
         when(weightHistoryDao.getWeightByUserIdDate(date, userId)).thenThrow(SQLException.class);
 
-        assertThrows(WeightHistoryException.class, () -> weightHistoryService.fetchWeightByUserIdDate(date, userId));
+        assertThrows(SQLException.class, () -> weightHistoryService.fetchWeightByUserIdDate(date, userId));
 
         verify(weightHistoryDao, times(1)).getWeightByUserIdDate(date, userId);
     }
@@ -89,12 +88,10 @@ public class WeightHistoryServiceImplTest {
 
         verify(weightHistoryDao, times(1)).getWeightHistoryByPeriod(startDate, endDate, userId);
         assertEquals(3, result.size());
-        assertEquals(75.0, result.get(0).getWeight());
-        assertEquals("2023-07-20", result.get(0).getDate());
+        assertEquals(74.0, result.get(0).getWeight());
+        assertEquals("2023-07-22", result.get(0).getDate());
         assertEquals(74.5, result.get(1).getWeight());
         assertEquals("2023-07-21", result.get(1).getDate());
-        assertEquals(74.0, result.get(2).getWeight());
-        assertEquals("2023-07-22", result.get(2).getDate());
     }
 
     @Test

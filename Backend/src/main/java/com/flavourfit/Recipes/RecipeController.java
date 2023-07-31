@@ -58,9 +58,7 @@ public class RecipeController {
 
         try {
             int userId = authService.extractUserIdFromToken(token);
-//            int userId = 7;
             recipes = this.recipeService.getRecipesByUser(count, userId);
-//            CompleteRecipeDto addedRecipe = this.recipeService.recordRecipe(recipe, userId);
 
             logger.info("Added recipe for userId:{}", userId);
             return ResponseEntity.ok().body(new GetResponse(true,
@@ -77,13 +75,12 @@ public class RecipeController {
 
     @PostMapping("/list")
     public ResponseEntity<GetResponse> getFilteredRecipesByUser(
-            @RequestBody HashMap<String, Object> requestBody
+            @RequestBody HashMap<String, Object> requestBody,@RequestHeader("Authorization") String token
     ) {
         ArrayList<Object> recipes = new ArrayList<Object>();
+        int userId = authService.extractUserIdFromToken(token);
         logger.info("Started getFilteredRecipeByUser() method");
         try {
-//            int userId = authService.extractUserIdFromToken(token);
-            int userId = 7;
             recipes = this.recipeService.getFilteredRecipesByUser(userId, requestBody);
 
             logger.info("Fetched the records for the user: ", userId);
@@ -99,7 +96,7 @@ public class RecipeController {
 
     }
 
-    @PostMapping("/add")
+    @PostMapping("/record")
     public ResponseEntity<PutResponse> recordRecipe(
             @RequestBody CompleteRecipeDto recipe, @RequestHeader("Authorization") String token
     ) {
@@ -119,7 +116,7 @@ public class RecipeController {
 
     @PostMapping("/save-recipe")
     public ResponseEntity<PutResponse> saveRecipe(
-            @RequestBody int recipeId, @RequestHeader("Authorization") String token
+            @RequestParam("recipeId") int recipeId, @RequestHeader("Authorization") String token
     ) {
         logger.info("Entered controller method saveRecipe()");
         int userId = authService.extractUserIdFromToken(token);

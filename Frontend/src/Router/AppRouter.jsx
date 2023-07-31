@@ -9,6 +9,10 @@ import Registration from "../Registration/Registration";
 import GuestLogin from "../GuestLogin/GuestLogin";
 import Trackers from "../Trackers/Trackers";
 import UserProfile from "../UserProfile/userProfile";
+import Recipes from "../Recipes/Recipes";
+import RecipeDetails from "../Recipes/RecipeDetails";
+import RecordRecipe from "../Recipes/RecordRecipe";
+import Feeds from "../Feeds/Feeds";
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -17,12 +21,15 @@ const AppRouter = () => (
         <Route path="home" element={<Home />} />
         <Route path="" element={<Navigate to="/home" />} />
         <Route path="trackers" element={<Trackers />} />
-          <Route path="/edit-profile" element={<UserProfile/>}/>
+        <Route path="feeds" element={<Feeds />} />
+        <Route path="/edit-profile" element={<UserProfile />} />
+        <Route path="/recipes" element={<Recipes />} />
+        <Route path={`/recipes/:id`} element={<RecipeDetails />} />
+        <Route path={`/recipes/record/:id`} element={<RecordRecipe />} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/guest-login" element={<GuestLogin />} />
       <Route path="/register" element={<Registration />} />
-
     </Routes>
   </BrowserRouter>
 );

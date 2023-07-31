@@ -1,0 +1,72 @@
+.ff-recipe-details {
+  .recipe-container {
+    background: #f8f9fa;
+    padding: 20px;
+    margin-top: 30px;
+    border-radius: 8px;
+
+    .recipe-type {
+      color: #141c9d;
+      font-size: 16px;
+      font-weight: 600;
+      text-transform: capitalize;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+
+      img {
+        cursor: pointer;
+      }
+    }
+
+    .recipe-name {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+
+      img {
+        cursor: pointer;
+        margin-right: 5px;
+        margin-top: 5px;
+      }
+    }
+
+    .placeholder-line {
+      display: flex;
+      justify-content: flex-end;
+
+      img {
+        margin-right: 5px;
+        cursor: pointer;
+      }
+    }
+
+    .recipe-ingredients {
+      margin: 20px 0px 30px;
+
+      .ingredients-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .ingredient {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        &-name {
+          margin-right: 30px;
+        }
+      }
+    }
+
+    .recipe-desc-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+  }
+}
