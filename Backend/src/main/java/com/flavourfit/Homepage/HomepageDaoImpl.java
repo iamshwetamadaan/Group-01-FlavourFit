@@ -34,21 +34,13 @@ public class HomepageDaoImpl implements IHomepageDao {
     public List<HomepageEventDto> getEventList() throws
             SQLException {
         logger.info("Started getEventList() method");
-
-
         this.testConnection();
-
         String query = "SELECT * FROM Events";
-
-
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         logger.info("Execute the query to get event list.");
         ResultSet resultSet = preparedStatement.executeQuery();
 
-
         List<HomepageEventDto> eventList = this.extractResultListfromEvents(resultSet);
-
-
         return eventList;
     }
 
