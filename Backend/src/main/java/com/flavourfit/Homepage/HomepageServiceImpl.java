@@ -4,7 +4,6 @@ import com.flavourfit.Exceptions.TrackerException;
 import com.flavourfit.Exceptions.UserNotFoundException;
 import com.flavourfit.Homepage.DTO.FitnessStreakDTO;
 import com.flavourfit.Homepage.DTO.RoutineDTO;
-import com.flavourfit.Trackers.Calories.CalorieGraphDto;
 import com.flavourfit.Trackers.Calories.CalorieHistoryDto;
 import com.flavourfit.Trackers.Calories.CalorieHistoryServiceImpl;
 import com.flavourfit.Trackers.Calories.ICalorieHistoryService;
@@ -104,17 +103,20 @@ HomepageServiceImpl implements IHomepageService {
 
     @Override
     public List<HomepageEventDto> fetcheventlist() {
+        logger.info("Entered service method fetcheventlist()");
         List<HomepageEventDto> eventlist = new ArrayList<>();
         try {
+
             List<HomepageEventDto> eventslist = this.homepageDao.getEventList();
+            logger.info("Fetching event list.");
             HomepageEventDto event = this.geteventList(eventslist);
             eventlist.add(new HomepageEventDto(event.getevent_ID(), event.getEvent_name(),event.getStart_date(),event.getEnd_date(),event.getCapacity(),event.getHostname(),event.getEvent_description()));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return eventlist;
-
     }
+
     private HomepageEventDto geteventList( List<HomepageEventDto> eventlist) {
         for (HomepageEventDto event : eventlist)
                 return event;
