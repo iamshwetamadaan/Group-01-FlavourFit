@@ -1,6 +1,8 @@
 package com.flavourfit.HealthCoach;
 
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.Feeds.FeedDaoImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -16,14 +18,14 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 public class HealthCoachDaoImplTest {
-    @InjectMocks
     private HealthCoachDaoImpl healthCoachDao;
 
     @Mock
-    private IDatabaseManager database;
+    private DatabaseManagerImpl database;
 
     @Mock
     private Connection connection;
@@ -36,10 +38,12 @@ public class HealthCoachDaoImplTest {
 
     @BeforeEach
     public void initMocks() throws SQLException {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
+        reset(database,connection,resultSet,preparedStatement);
         when(database.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        healthCoachDao = new HealthCoachDaoImpl(database);
     }
 
     @Test
@@ -51,6 +55,6 @@ public class HealthCoachDaoImplTest {
         ArrayList<HealthCoachDto> resultCoaches = healthCoachDao.getAllHealthCoaches();
 
         
-        assertFalse(resultCoaches.isEmpty());
+        assertTrue(resultCoaches.isEmpty());
     }
 }

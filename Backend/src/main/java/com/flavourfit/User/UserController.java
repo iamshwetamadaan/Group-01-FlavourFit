@@ -42,7 +42,6 @@ public class UserController {
     ) {
         logger.info("Entered controlled method resetPassword()");
         int userId = authService.extractUserIdFromToken(token);
-        ;
         String newPassword = (String) request.get("newPassword");
         try {
             logger.info("Updated controlled method resetPassword()");

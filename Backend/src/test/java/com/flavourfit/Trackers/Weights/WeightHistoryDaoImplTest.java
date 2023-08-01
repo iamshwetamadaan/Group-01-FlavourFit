@@ -1,6 +1,8 @@
 package com.flavourfit.Trackers.Weights;
 
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.Homepage.HomepageDaoImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,14 +23,10 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
 public class WeightHistoryDaoImplTest {
-
-
-
-        @InjectMocks
         private WeightHistoryDaoImpl weightHistoryDao;
 
         @Mock
-        private IDatabaseManager database;
+        private DatabaseManagerImpl database;
 
         @Mock
         private Connection connection;
@@ -41,10 +39,12 @@ public class WeightHistoryDaoImplTest {
 
         @BeforeEach
         public void initMocks() throws SQLException {
-            MockitoAnnotations.initMocks(this);
+            MockitoAnnotations.openMocks(this);
+            reset(database,connection,resultSet,preparedStatement);
             when(database.getConnection()).thenReturn(connection);
             when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
             when(preparedStatement.executeQuery()).thenReturn(resultSet);
+            weightHistoryDao = new WeightHistoryDaoImpl(database);
         }
 
     @Test

@@ -1,8 +1,6 @@
-package com.flavourfit.HomePage;
+package com.flavourfit.Homepage;
 
 import com.flavourfit.Authentication.IAuthService;
-import com.flavourfit.Homepage.HomepageController;
-import com.flavourfit.Homepage.IHomepageService;
 import com.flavourfit.ResponsesDTO.PutResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

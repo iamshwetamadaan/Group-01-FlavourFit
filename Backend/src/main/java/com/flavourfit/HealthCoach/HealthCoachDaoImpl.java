@@ -22,8 +22,8 @@ public class HealthCoachDaoImpl implements IHealthCoachDao{
     private Connection connection;
 
     @Autowired
-    public HealthCoachDaoImpl() {
-        this.database = DatabaseManagerImpl.getInstance();
+    public HealthCoachDaoImpl(DatabaseManagerImpl database) {
+        this.database = database;
         if (this.database != null && this.database.getConnection() != null) {
             this.connection = this.database.getConnection();
         }

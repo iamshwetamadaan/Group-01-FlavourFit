@@ -19,8 +19,8 @@ public class CommentDaoImpl implements ICommentsDao {
     private Connection connection;
 
     @Autowired
-    public CommentDaoImpl() {
-        this.database = DatabaseManagerImpl.getInstance();
+    public CommentDaoImpl(DatabaseManagerImpl database) {
+        this.database = database;
         if (this.database != null && this.database.getConnection() != null) {
             this.connection = this.database.getConnection();
         }

@@ -1,6 +1,8 @@
 package com.flavourfit.HealthCoach.Appointments;
 
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.Feeds.FeedDaoImpl;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,16 +17,14 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class AppointmentsDaoImplTest {
 
-    @InjectMocks
     private AppointmentsDaoImpl appointmentsDao;
 
     @Mock
-    private IDatabaseManager database;
+    private DatabaseManagerImpl database;
 
     @Mock
     private Connection connection;
@@ -36,8 +36,13 @@ public class AppointmentsDaoImplTest {
     private ResultSet resultSet;
 
     @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
+    public void setUp() throws SQLException {
+        MockitoAnnotations.openMocks(this);
+        reset(database,connection,resultSet,preparedStatement);
+        when(database.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        appointmentsDao = new AppointmentsDaoImpl(database);
     }
 
     @Test

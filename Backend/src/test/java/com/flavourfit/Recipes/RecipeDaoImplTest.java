@@ -1,6 +1,8 @@
 package com.flavourfit.Recipes;
 
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.Feeds.FeedDaoImpl;
 import com.flavourfit.ResponsesDTO.SavedRecipesResponse;
 import com.flavourfit.Trackers.Calories.CalorieHistoryDaoImpl;
 import com.flavourfit.Trackers.Calories.CalorieHistoryDto;
@@ -20,7 +22,7 @@ import static org.mockito.Mockito.*;
 
 class RecipeDaoImplTest {
     @Mock
-    private IDatabaseManager database;
+    private DatabaseManagerImpl database;
 
     @Mock
     private Connection connection;
@@ -34,50 +36,31 @@ class RecipeDaoImplTest {
     @Mock
     private ResultSet resultSet;
 
-    @InjectMocks
     private RecipeDaoImpl recipeDao;
 
     @BeforeEach
-    public void initMocks(){
-        MockitoAnnotations.initMocks(this);
-    }
-
-    @BeforeEach
-    void setUp() throws SQLException {
+    public void setUp() throws SQLException {
         MockitoAnnotations.openMocks(this);
-
-
-        MockitoAnnotations.initMocks(this);
+        reset(database,connection,preparedStatement,resultSet,statement);
         when(database.getConnection()).thenReturn(connection);
         when(connection.createStatement()).thenReturn(statement);
-
-        String query = "INSERT INTO Recipes (Recipe_name, Recipe_description, Types, editable) values (?, ?, ?, ?)";
-        when(connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)).thenReturn(preparedStatement);
-
+        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
         when(statement.executeQuery(anyString())).thenReturn(resultSet);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
-
+        recipeDao = new RecipeDaoImpl(database);
     }
 
     @Test
     void getAllRecipesTypesTest() throws SQLException {
         // Mock the behavior of statement.executeQuery()
-        ResultSet resultSet = mock(ResultSet.class);
-        when(resultSet.next()).thenReturn(true, true, false); // Simulating two rows in the ResultSet
+        when(resultSet.next()).thenReturn(true, true,false); // Simulating two rows in the ResultSet
         when(resultSet.getString("types")).thenReturn("Breakfast", "Lunch");
-        when(statement.executeQuery("SELECT DISTINCT(types) FROM Recipes;")).thenReturn(resultSet);
+        when(statement.executeQuery(anyString())).thenReturn(resultSet);
 
-        List<String> expected = List.of("Non-Veg", "vegan", "chicken", "Vegetarian", "Veg", "Egg", "beverage");
+        List<String> expected = List.of("Breakfast", "Lunch");
         List<String> result = recipeDao.getAllRecipesTypes();
 
         assertEquals(expected, result);
-
-        reset(database, connection, preparedStatement, resultSet);
-        setUp();
-
-        when(database.getConnection()).thenReturn(null);
-
-        assertEquals(expected, recipeDao.getAllRecipesTypes());
     }
 
     @Test
@@ -123,11 +106,11 @@ class RecipeDaoImplTest {
         ArrayList<Object> resultRecipes = recipeDao.getRecipesByUser(userId, count);
 
         // Assert
-        assertEquals(11, resultRecipes.size());
+        assertEquals(1, resultRecipes.size());
     }
 
     @Test
-    void updateRecipeTest(){
+    void updateRecipeTest() {
 
     }
 

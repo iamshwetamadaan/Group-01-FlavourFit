@@ -19,8 +19,8 @@ public class FeedDaoImpl implements IFeedDao {
     private Connection connection;
 
     @Autowired
-    public FeedDaoImpl() {
-        this.database = DatabaseManagerImpl.getInstance();
+    public FeedDaoImpl(DatabaseManagerImpl database) {
+        this.database = database;
         if (this.database != null && this.database.getConnection() != null) {
             this.connection = this.database.getConnection();
         }
@@ -39,7 +39,7 @@ public class FeedDaoImpl implements IFeedDao {
         preparedStatement.setInt(1, feedID);
 
         ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
+        if (resultSet!=null) {
             userFeeds = this.extractUserFeedsFromResult(resultSet);
         }
 
@@ -89,7 +89,7 @@ public class FeedDaoImpl implements IFeedDao {
         this.testConnection();
 
         logger.info("Running select query to get feeds by user");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Feeds limit 10 offset ?");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Feeds limit 100 offset ?");
         preparedStatement.setInt(1, offset);
 //        preparedStatement.setInt(2, offset);
         ResultSet resultSet = preparedStatement.executeQuery();
