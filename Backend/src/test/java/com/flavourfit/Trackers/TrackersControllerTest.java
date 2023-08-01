@@ -185,6 +185,24 @@ public class TrackersControllerTest {
     }
 
     @Test
+    public void fetchWaterIntakeByUserIDDateTest() throws WaterHistoryException, SQLException {
+        int userId = 1;
+        String date = "2023-08-01";
+        String token = "Bearer token";
+
+        WaterHistoryDto waterHistoryDto = new WaterHistoryDto(1500.0, date, userId);
+
+        when(authService.extractUserIdFromToken(anyString())).thenReturn(userId);
+        when(waterHistoryService.fetchWaterIntakeByUserIdDate(date, userId)).thenReturn(waterHistoryDto);
+
+        ResponseEntity<GetResponse> responseEntity = trackersController.fetchWaterIntakebyUserIDDate(date, token);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        GetResponse response = responseEntity.getBody();
+        assertEquals(true, response.isSuccess());
+        assertEquals(waterHistoryDto, response.getData());
+    }
+
+    @Test
     public void fetchCaloriesByUserIDDateTest() throws CalorieHistoryException {
         int userId = 1;
         String date = "2023-08-01";
