@@ -258,3 +258,45 @@
 18:00:58.836 [main] INFO  com.flavourfit.User.UserController - Entered controller method fetcheventlist()
 18:01:07.746 [main] INFO  com.flavourfit.User.UserController - Entered controller method fetcheventlist()
 18:03:52.240 [main] INFO  com.flavourfit.User.UserController - Entered controller method fetcheventlist()
+18:45:59.167 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWaterIntake()
+18:45:59.169 [main] INFO  c.f.Trackers.TrackersController - Updating water intake through waterHistoryService.
+18:45:59.169 [main] INFO  c.f.Trackers.TrackersController - Fetching the total water intake for current date.
+18:45:59.169 [main] INFO  c.f.Trackers.TrackersController - Updated record count. Returning response through api
+18:46:03.334 [main] INFO  c.f.Trackers.TrackersController - Entered controlled method recordCalories()
+18:46:03.336 [main] INFO  c.f.Trackers.TrackersController - Updating calorie count through calorieHistoryService.
+18:46:03.336 [main] INFO  c.f.Trackers.TrackersController - Fetching the total calorie count for current date.
+18:46:03.336 [main] INFO  c.f.Trackers.TrackersController - Updated record count for User #1. Returning response through api
+18:46:03.340 [main] INFO  c.f.Trackers.TrackersController - Entered controlled method recordCalories()
+18:46:03.341 [main] INFO  c.f.Trackers.TrackersController - Updating calorie count through calorieHistoryService.
+18:46:03.341 [main] INFO  c.f.Trackers.TrackersController - Fetching the total calorie count for current date.
+18:46:03.341 [main] ERROR c.f.Trackers.TrackersController - Bad api request during recordCalorieCount()
+18:46:07.496 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWaterIntake()
+18:46:07.503 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWaterIntake()
+18:46:10.943 [main] INFO  c.f.Trackers.TrackersController - Entered controller method fetchWeightHistory()
+18:46:18.886 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWaterIntake()
+18:49:26.309 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+18:49:42.454 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+18:49:50.425 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+18:50:07.678 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+18:51:39.468 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+18:52:32.515 [main] INFO  c.f.F.Comments.CommentServiceImpl - Started method getCommentsByFeeds()
+18:56:35.120 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+18:58:25.168 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+18:58:36.278 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+18:58:45.630 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+18:58:56.707 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+18:59:59.916 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+19:02:49.383 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+19:04:13.946 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+19:04:37.092 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+19:04:49.024 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWaterIntake()
+19:04:49.026 [main] INFO  c.f.Trackers.TrackersController - Updating water intake through waterHistoryService.
+19:04:49.026 [main] INFO  c.f.Trackers.TrackersController - Fetching the total water intake for current date.
+19:04:49.026 [main] INFO  c.f.Trackers.TrackersController - Updated record count. Returning response through api
+19:04:58.632 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWaterIntake()
+19:04:58.633 [main] INFO  c.f.Trackers.TrackersController - Updating water intake through waterHistoryService.
+19:04:58.633 [main] INFO  c.f.Trackers.TrackersController - Fetching the total water intake for current date.
+19:04:58.633 [main] INFO  c.f.Trackers.TrackersController - Updated record count. Returning response through api
+19:06:15.032 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+19:07:41.293 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+19:08:49.927 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
