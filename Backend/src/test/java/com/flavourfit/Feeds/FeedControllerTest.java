@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class FeedControllerTest {
@@ -57,7 +58,31 @@ public class FeedControllerTest {
         assertEquals(expectedFeeds, getResponse.getData());
     }
 
-    public void deleteCommentForFeedid() {
+    @Test
+    public void deleteCommentForFeedId() throws SQLException {
+        // Arrange
+        int feedID = 1;
+        int commentID = 101;
 
+        FeedDto removedCommentFeedDto = new FeedDto();
+        removedCommentFeedDto.setFeedId(feedID);
+        removedCommentFeedDto.setFeedContent("Test feed content after comment removal");
+
+        when(feedService.removeCommentFromFeed(feedID, commentID)).thenReturn(removedCommentFeedDto);
+
+        // Act
+        ResponseEntity<GetResponse> response = feedController.removeCommentsByFeedID(feedID, commentID);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        GetResponse responseBody = response.getBody();
+        assertNotNull(responseBody);
+        //assertTrue(responseBody.getSuccess());
+        assertEquals("Successfully removed comment", responseBody.getMessage());
+        assertEquals(removedCommentFeedDto, responseBody.getData());
+
+        verify(feedService).removeCommentFromFeed(feedID, commentID);
     }
 }
