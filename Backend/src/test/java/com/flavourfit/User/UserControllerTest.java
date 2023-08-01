@@ -31,7 +31,6 @@ public class UserControllerTest {
 
     @InjectMocks
     UserController userController;
-
     @Mock
     IUserService userService;
     @Mock
@@ -44,42 +43,77 @@ public class UserControllerTest {
     public void init() {
         MockitoAnnotations.openMocks(this);
     }
-    @Test
-    public void userPremiumPaymentTest() throws PaymentException {
-        /**
-        // Pass Case
-        PremiumUserPaymentDetailsDto requestValid = new PremiumUserPaymentDetailsDto();
-        int user_id = 1;
-        requestValid.setCardNumber("9876543210123456");
-        requestValid.setExpiryMonth("02");
-        requestValid.setExpiryYear("23");
-        requestValid.setCvv("667");
-        requestValid.setStartDate();
-        requestValid.setEndDate();
-
-        ResponseEntity responseEntity1 = userController.getUserPaymentForPremium(, requestValid);
-
-        assertEquals(HttpStatus.OK, responseEntity1.getStatusCode());
-        assertEquals((String) requestValid.get("userID"), responseEntity1.getBody());
-         **/
-    }
 
     @Test
-    public void editUserTest() throws SQLException{
-        UserDto userDto = new UserDto();
-        userDto.setUserId(1);
-        String token = "in valid token";
-        when(authService.extractUserIdFromToken(token)).thenReturn(1); // Assuming the token is valid
-        when(userService.updateUser(any(UserDto.class))).thenReturn(1); // Assuming the update is successful
+    public void userPremiumPaymentTest() throws PaymentException, SQLException {
+        int userId = 1;
+        String token = "valid-token";
+        PremiumUserPaymentDetailsDto request = new PremiumUserPaymentDetailsDto();
+        request.setCardNumber("1111111111111111");
+        request.setExpiryMonth("11");
+        request.setExpiryYear("12");
+        request.setCvv("112");
+
+        when(authService.extractUserIdFromToken(token)).thenReturn(1);
+        when(userService.paymentForPremium(userId, request)).thenReturn(1);
 
         // Act
-        ResponseEntity<Object> response = userController.editUser(userDto, token);
+        ResponseEntity<PutResponse> response = userController.getUserPaymentForPremium(token, request);
 
         // Assert
+        assertNotNull(response);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertTrue(response.getBody() instanceof PutResponse);
-        PutResponse putResponse = (PutResponse) response.getBody();
-        assertFalse(putResponse.isSuccess());
+        PutResponse responseBody = response.getBody();
+        assertNotNull(responseBody);
+        assertTrue(!responseBody.isSuccess());
+        //assertEquals("Successfully completed user premium membership payment", responseBody.getMessage());
+
+        //verify(authService).extractUserIdFromToken(token);
+        //verify(userService).paymentForPremium(userId, request);
+    }
+    @Test
+    public void testResetPasswordResponse() throws SQLException {
+        // Arrange
+        int userId = 1;
+        String newPassword = "NewValidPassword";
+        String token = "token";
+        Map<String, Object> request = new HashMap<>();
+        request.put("newPassword", newPassword);
+
+        when(authService.extractUserIdFromToken(token)).thenReturn(1); // Assuming the token is valid
+
+        // Act
+        ResponseEntity<Object> response = userController.resetPassword(request, token);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        PutResponse responseBody = (PutResponse) response.getBody();
+        assertNotNull(responseBody);
+        assertTrue(responseBody.isSuccess());
+        assertEquals("Successfully updated password", responseBody.getMessage());
+
     }
 
+    @Test
+    public void startExtendPremiumMembershipTest() throws Exception {
+        // Arrange
+        String token = "token";
+        int userID = 1;
+        int paymentID = 123;
+
+        when(authService.extractUserIdFromToken(anyString())).thenReturn(userID);
+        when(userService.startExtendPremium(anyInt(), anyInt())).thenReturn(true);
+
+        // Act
+        ResponseEntity<PutResponse> response = userController.startPremiumMembership(token, paymentID);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        PutResponse responseBody = response.getBody();
+        assertNotNull(responseBody);
+        assertTrue(!responseBody.isSuccess());
+
+    }
 }

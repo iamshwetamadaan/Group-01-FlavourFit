@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
@@ -109,7 +112,7 @@ UserService implements IUserService {
             int month = Integer.parseInt(expiryMonth);
             int year = Integer.parseInt(expiryYear);
 
-            if (!(month >= 12 && month < 00) || !(year >= 30 && month < 10)) {
+            if (!(month <= 12 && month > 00) || !(year <= 30 && year > 10)) {
                 logger.warn("Invalid MM/YY ranges");
                 throw new PaymentException("Invalid Payment: MM/YY entered is not in valid ranges");
             }
@@ -117,25 +120,17 @@ UserService implements IUserService {
         return this.userDao.userToPremiumPayment(userID, details);
     }
 
-    public boolean startExtendPremium(int userID, int paymentID) throws SQLException {
+    public boolean startExtendPremium(int userID, int paymentID) throws SQLException, ParseException {
         boolean hasStartExtend = false;
 
         logger.info("Started startExtendPremium() method");
 
         if (userID != 0 && paymentID != 0) {
 
-            //default time zone
-            ZoneId defaultZoneId = ZoneId.systemDefault();
+            String startDateString = "2007-06-27";
+            String endDateString = "2017-06-23";
 
-            LocalDate currentDate = LocalDate.now();
-
-            Date startDate = (Date) Date.from(currentDate.atStartOfDay(defaultZoneId).toInstant());
-
-            LocalDate nextYearDate = currentDate.plusYears(1);
-
-            Date expiryDate = (Date) Date.from(nextYearDate.atStartOfDay(defaultZoneId).toInstant());
-
-            int premiumMembershipID = this.userDao.startExtendPremiumMembership(userID, startDate, expiryDate, paymentID);
+            int premiumMembershipID = this.userDao.startExtendPremiumMembership(userID, startDateString, endDateString, paymentID);
 
             if (premiumMembershipID != 0) {
                 logger.info("Successful PremiumMemberShip Table Insert");

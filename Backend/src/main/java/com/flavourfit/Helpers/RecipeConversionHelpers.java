@@ -34,7 +34,7 @@ public class RecipeConversionHelpers {
     public static List<IngredientDto> metricToImperial(List<IngredientDto> ingredientList) {
         List<IngredientDto> convertedIngredients = new ArrayList<>();
 
-        String filePath = "/Helpers/Conversion.json";
+        String filePath = "src/main/java/com/flavourfit/Helpers/Conversion.json";
 
         try {
             // Parse the JSON file
@@ -42,8 +42,8 @@ public class RecipeConversionHelpers {
             Object obj = parser.parse(new FileReader(filePath));
 
             JSONObject jsonObject = (JSONObject) obj;
-            JSONObject conversions = (JSONObject) jsonObject.get("Conversion_metrics");
-            JSONArray conversionArray = (JSONArray) conversions.get("conversions");
+            //JSONObject conversions = (JSONObject) jsonObject.get("Conversion_metrics");
+            JSONArray conversionArray = (JSONArray) jsonObject.get("Conversion_metrics");
 
             for(IngredientDto ingredient : ingredientList) {
 
@@ -64,10 +64,6 @@ public class RecipeConversionHelpers {
                         ingredient.setQuantity((actualQuantity * quantity2) / (quantity1));
                         ingredient.setQuantityUnit(type2);
 
-                    } else if (type2.equals(ingredient.getQuantityUnit())) {
-
-                        ingredient.setQuantity((actualQuantity * quantity1) / (quantity2));
-                        ingredient.setQuantityUnit(type2);
                     }
                 }
                 convertedIngredients.add(ingredient);
@@ -82,7 +78,7 @@ public class RecipeConversionHelpers {
     public static List<IngredientDto> imperialToMetric(List<IngredientDto> ingredientList) {
         List<IngredientDto> convertedIngredients = new ArrayList<>();
 
-        String filePath = "/Helpers/Conversion.json";
+        String filePath = "src/main/java/com/flavourfit/Helpers/Conversion.json";
 
         try {
             // Parse the JSON file
@@ -90,8 +86,8 @@ public class RecipeConversionHelpers {
             Object obj = parser.parse(new FileReader(filePath));
 
             JSONObject jsonObject = (JSONObject) obj;
-            JSONObject conversions = (JSONObject) jsonObject.get("Conversion_metrics");
-            JSONArray conversionArray = (JSONArray) conversions.get("conversions");
+            //JSONObject conversions = (JSONObject) jsonObject.get("Conversion_metrics");
+            JSONArray conversionArray = (JSONArray) jsonObject.get("Conversion_metrics");
 
             for(IngredientDto ingredient : ingredientList) {
 
@@ -107,15 +103,10 @@ public class RecipeConversionHelpers {
 
                     double actualQuantity = ingredient.getQuantity();
 
-                    if (type1.equals(ingredient.getQuantityUnit())) {
-
-                        ingredient.setQuantity((actualQuantity * quantity2) / (quantity1));
-                        ingredient.setQuantityUnit(type2);
-
-                    } else if (type2.equals(ingredient.getQuantityUnit())) {
+                    if (type2.equals(ingredient.getQuantityUnit())) {
 
                         ingredient.setQuantity((actualQuantity * quantity1) / (quantity2));
-                        ingredient.setQuantityUnit(type2);
+                        ingredient.setQuantityUnit(type1);
                     }
                 }
                 convertedIngredients.add(ingredient);

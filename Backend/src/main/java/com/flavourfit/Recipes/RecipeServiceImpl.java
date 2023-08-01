@@ -5,6 +5,7 @@ import com.flavourfit.Helpers.RecipeConversionHelpers;
 import com.flavourfit.Recipes.Ingredients.IIngredientsService;
 import com.flavourfit.Recipes.Ingredients.IngredientDto;
 import com.flavourfit.Recipes.SavedRecipes.ISavedRecipesService;
+import com.flavourfit.Resources.Constants;
 import com.flavourfit.Resources.Helpers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +21,7 @@ public class RecipeServiceImpl implements IRecipeService {
 
     private static Logger logger = LoggerFactory.getLogger(RecipeServiceImpl.class);
 
-    private final String metricSystem = "Metrics";
-    private final String imperialSystem = "Imperial";
+
     private final IRecipeDao recipeDao;
     private final IIngredientsService ingredientsService;
     private final ISavedRecipesService savedRecipesService;
@@ -94,18 +94,23 @@ public class RecipeServiceImpl implements IRecipeService {
         try {
             RecipeDto recipe = this.recipeDao.getRecipeById(recipeId);
             List<IngredientDto> ingredientList = this.recipeDao.getRecipeIngredients(recipeId);
+            logger.info("Start scaleIngredients() method");
 
             List<IngredientDto> scaledIngredientList = RecipeConversionHelpers.scaleIngredients(scale, ingredientList);
 
-            if (system.equals(imperialSystem)) {
+            logger.info("Got the scaled ingredients");
+
+            if (system.equalsIgnoreCase(Constants.imperialSystem)) {
                 convertedIngredientList = RecipeConversionHelpers.metricToImperial(scaledIngredientList);
-            } else if (system.equals(metricSystem)) {
+                logger.info("Got the scaled ingredients converted to imperial");
+            } else if (system.equalsIgnoreCase(Constants.metricSystem)) {
                 convertedIngredientList = RecipeConversionHelpers.imperialToMetric(scaledIngredientList);
+                logger.info("Got the scaled ingredients converted to metric");
             }
 
             completeRecipe.setRecipe(recipe);
             completeRecipe.setIngredients(convertedIngredientList);
-
+            logger.info("Got the complete recipe");
             return completeRecipe;
         } catch (SQLException e) {
             throw new RecipeExceptions(e);

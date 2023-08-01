@@ -5,6 +5,7 @@ import com.flavourfit.Exceptions.UserNotFoundException;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ public interface IUserService {
 
     public int paymentForPremium(int userID, PremiumUserPaymentDetailsDto details) throws PaymentException, SQLException;
 
-    public boolean startExtendPremium(int userID, int paymentID) throws SQLException;
+    public boolean startExtendPremium(int userID, int paymentID) throws SQLException, ParseException;
 
     void clearPassword(String email) throws UserNotFoundException;
 

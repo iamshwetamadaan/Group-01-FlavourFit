@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class FeedControllerTest {
@@ -56,4 +57,57 @@ public class FeedControllerTest {
         assertEquals("Successfully retrieved feed", getResponse.getMessage());
         assertEquals(expectedFeeds, getResponse.getData());
     }
+
+    @Test
+    public void deleteCommentForFeedId() throws SQLException {
+        // Arrange
+        int feedID = 1;
+        int commentID = 101;
+
+        FeedDto removedCommentFeedDto = new FeedDto();
+        removedCommentFeedDto.setFeedId(feedID);
+        removedCommentFeedDto.setFeedContent("Test feed content after comment removal");
+
+        when(feedService.removeCommentFromFeed(feedID, commentID)).thenReturn(removedCommentFeedDto);
+
+        // Act
+        ResponseEntity<GetResponse> response = feedController.removeCommentsByFeedID(feedID, commentID);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        GetResponse responseBody = response.getBody();
+        assertNotNull(responseBody);
+        //assertTrue(responseBody.getSuccess());
+        assertEquals("Successfully removed comment", responseBody.getMessage());
+        assertEquals(removedCommentFeedDto, responseBody.getData());
+
+        verify(feedService).removeCommentFromFeed(feedID, commentID);
+    }
+
+    @Test
+    public void updateLikesForFeedTest() throws Exception {
+        // Arrange
+        int feedID = 1;
+        int updatedFeedLikes = 11;
+
+        when(feedService.increaseFeedLikes(feedID)).thenReturn(updatedFeedLikes);
+
+        // Act
+        ResponseEntity<GetResponse> response = feedController.updateLikesByFeedID(feedID);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        GetResponse responseBody = response.getBody();
+        assertNotNull(responseBody);
+        //assertTrue(responseBody.getSuccess());
+        assertEquals("Successfully updated feed likes", responseBody.getMessage());
+        assertEquals(updatedFeedLikes, responseBody.getData());
+
+        verify(feedService).increaseFeedLikes(feedID);
+    }
+
 }

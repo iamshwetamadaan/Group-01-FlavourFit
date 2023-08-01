@@ -9,7 +9,7 @@ public class FeedDto {
     private int feedId;
     private String feedContent;
     private int likeCount;
-    private List<CommentDto> comments;
+    private List<CommentDto> comments = new ArrayList<>();
     private int userId;
     public int getUserId() {
         return userId;
