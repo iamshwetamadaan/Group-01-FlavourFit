@@ -14934,3 +14934,4 @@ Unconditional classes:
 13:02:19.196 [SpringApplicationShutdownHook] DEBUG o.s.c.s.DefaultLifecycleProcessor - Bean 'springBootLoggingLifecycle' completed its stop procedure
 13:02:19.196 [SpringApplicationShutdownHook] DEBUG o.s.s.c.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
 13:04:41.855 [main] INFO  com.flavourfit.Feeds.FeedController - Entered controller method removeCommentsByFeedID()
+13:59:13.085 [main] INFO  com.flavourfit.Feeds.FeedController - Entered controller method updateLikesByFeedID()

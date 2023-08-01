@@ -85,4 +85,29 @@ public class FeedControllerTest {
 
         verify(feedService).removeCommentFromFeed(feedID, commentID);
     }
+
+    @Test
+    public void updateLikesForFeedTest() throws Exception {
+        // Arrange
+        int feedID = 1;
+        int updatedFeedLikes = 11;
+
+        when(feedService.increaseFeedLikes(feedID)).thenReturn(updatedFeedLikes);
+
+        // Act
+        ResponseEntity<GetResponse> response = feedController.updateLikesByFeedID(feedID);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        GetResponse responseBody = response.getBody();
+        assertNotNull(responseBody);
+        //assertTrue(responseBody.getSuccess());
+        assertEquals("Successfully updated feed likes", responseBody.getMessage());
+        assertEquals(updatedFeedLikes, responseBody.getData());
+
+        verify(feedService).increaseFeedLikes(feedID);
+    }
+
 }
