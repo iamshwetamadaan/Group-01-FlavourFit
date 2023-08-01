@@ -37,3 +37,266 @@
 01:07:27.768 [main] INFO  c.f.Recipes.RecipeController - Successfully collected  recipe types.
 01:07:36.791 [main] INFO  c.f.Recipes.RecipeController - Entered controller method saveRecipe()
 01:07:36.797 [main] INFO  c.f.Recipes.RecipeController - Saved recipe for userId:1
+17:13:38.475 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:13:38.476 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:13:38.477 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:13:38.620 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:13:38.620 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:13:38.627 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:13:38.628 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:13:38.640 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:13:38.642 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:14:31.460 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:14:31.461 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:14:31.462 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:14:31.561 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:14:31.561 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:14:31.568 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:14:31.568 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:14:31.583 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:14:31.585 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:14:31.595 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:14:31.595 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:16:23.006 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:16:23.006 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:16:23.008 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:16:23.103 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:16:23.103 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:16:23.110 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:16:23.110 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:16:23.122 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:16:23.124 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:16:23.133 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:16:23.134 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:17:35.738 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:17:35.739 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:17:35.740 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:17:35.841 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:17:35.841 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:17:35.847 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:17:35.847 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:17:35.861 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:17:35.862 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:17:35.872 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:17:35.872 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:18:02.222 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:18:02.222 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:18:02.223 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:18:02.339 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:18:02.339 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:18:02.347 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:18:02.347 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:18:02.362 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:18:02.364 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:18:02.374 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:18:02.374 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:18:42.862 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:18:42.863 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:18:42.864 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:18:42.972 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:18:42.972 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:18:42.978 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:18:42.978 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:18:42.992 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:18:42.994 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:18:43.005 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:18:43.005 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:21:24.177 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:21:24.178 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:21:24.179 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:21:24.281 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:21:24.281 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:21:24.287 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:21:24.287 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:21:24.300 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:21:24.302 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:21:24.313 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:21:24.313 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:22:03.688 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:22:03.689 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:22:03.690 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:22:03.787 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:22:03.787 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:22:03.793 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:22:03.793 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:22:03.807 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:22:03.808 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:22:03.820 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:22:03.820 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:22:46.215 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:22:46.215 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:22:46.217 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:22:46.318 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:22:46.319 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:22:46.326 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:22:46.327 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:22:46.339 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:22:46.341 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:22:46.351 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:22:46.351 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:23:42.147 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:23:42.148 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:23:42.149 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:23:42.244 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:23:42.244 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:23:42.250 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:23:42.250 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:23:42.263 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:23:42.265 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:23:42.275 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:23:42.275 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:23:50.380 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:23:50.381 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:23:50.382 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:23:50.480 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:23:50.480 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:23:50.487 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:23:50.487 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:23:50.500 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:23:50.501 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:23:50.511 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:23:50.511 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:24:09.389 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:24:09.389 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:24:09.390 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:24:09.482 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:24:09.482 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:24:09.489 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:24:09.489 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:24:09.502 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:24:09.504 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:24:09.513 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:24:09.513 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:27:08.773 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:27:08.774 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:27:08.775 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:27:08.873 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:27:08.873 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:27:08.880 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:27:08.880 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:27:08.891 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:27:08.893 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:27:20.266 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:27:20.267 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:27:20.268 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:27:20.363 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:27:20.363 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:27:20.370 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:27:20.370 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:27:20.382 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:27:20.384 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:35:50.529 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:35:50.530 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:35:50.531 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:35:50.681 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:35:50.681 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:35:50.688 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:35:50.688 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:35:50.700 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:35:50.702 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:41:50.231 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:41:50.232 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:41:50.233 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:41:50.331 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:41:50.331 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:41:50.338 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:41:50.338 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:41:50.349 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:41:50.351 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:45:48.072 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:45:48.073 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:45:48.074 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:45:48.166 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:45:48.166 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:45:48.173 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:45:48.173 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:45:48.184 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:45:48.187 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:46:27.719 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:46:27.720 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:46:27.721 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:46:27.823 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:46:27.823 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:46:27.829 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:46:27.830 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:46:27.842 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:46:27.843 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:46:54.425 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:46:54.426 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:46:54.427 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:46:54.520 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:46:54.520 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:46:54.527 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:46:54.527 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:46:54.539 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:46:54.541 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:47:47.090 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:47:47.091 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:47:47.092 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:47:47.191 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:47:47.191 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:47:47.198 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:47:47.198 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:47:47.210 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:47:47.212 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:52:20.241 [main] INFO  c.f.D.DatabaseManagerImpl - Entered connect() method
+17:52:20.242 [main] INFO  c.f.D.DatabaseManagerImpl - Retrieving database credentials from properties file.
+17:52:20.243 [main] INFO  c.f.D.DatabaseManagerImpl - Creating a database connection using the retrieved credentials.
+17:52:20.351 [main] INFO  c.f.D.DatabaseManagerImpl - Database connection successful
+17:52:20.352 [main] INFO  c.f.D.DatabaseManagerImpl - Setting database to required schema
+17:52:20.360 [main] INFO  c.f.D.DatabaseManagerImpl - Schema set successfully
+17:52:20.360 [main] INFO  c.f.D.DatabaseManagerImpl - Connect() method Ended
+17:52:20.372 [main] INFO  c.f.Homepage.HomepageDaoImpl - Started getEventList() method
+17:52:20.373 [main] INFO  c.f.Homepage.HomepageDaoImpl - Execute the query to get event list.
+17:56:15.937 [main] INFO  c.f.T.C.CalorieHistoryServiceImpl - Entered service method fetcheventlist()
+17:56:15.939 [main] INFO  c.f.T.C.CalorieHistoryServiceImpl - Fetching event list.
+17:56:26.285 [main] INFO  c.f.T.C.CalorieHistoryServiceImpl - Entered service method fetcheventlist()
+17:56:26.286 [main] INFO  c.f.T.C.CalorieHistoryServiceImpl - Fetching event list.
+17:56:36.971 [main] INFO  c.f.T.C.CalorieHistoryServiceImpl - Entered service method fetcheventlist()
+17:56:36.972 [main] INFO  c.f.T.C.CalorieHistoryServiceImpl - Fetching event list.
+17:59:02.771 [main] INFO  com.flavourfit.User.UserController - Entered controller method fetcheventlist()
+18:00:58.836 [main] INFO  com.flavourfit.User.UserController - Entered controller method fetcheventlist()
+18:01:07.746 [main] INFO  com.flavourfit.User.UserController - Entered controller method fetcheventlist()
+18:03:52.240 [main] INFO  com.flavourfit.User.UserController - Entered controller method fetcheventlist()
+18:45:59.167 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWaterIntake()
+18:45:59.169 [main] INFO  c.f.Trackers.TrackersController - Updating water intake through waterHistoryService.
+18:45:59.169 [main] INFO  c.f.Trackers.TrackersController - Fetching the total water intake for current date.
+18:45:59.169 [main] INFO  c.f.Trackers.TrackersController - Updated record count. Returning response through api
+18:46:03.334 [main] INFO  c.f.Trackers.TrackersController - Entered controlled method recordCalories()
+18:46:03.336 [main] INFO  c.f.Trackers.TrackersController - Updating calorie count through calorieHistoryService.
+18:46:03.336 [main] INFO  c.f.Trackers.TrackersController - Fetching the total calorie count for current date.
+18:46:03.336 [main] INFO  c.f.Trackers.TrackersController - Updated record count for User #1. Returning response through api
+18:46:03.340 [main] INFO  c.f.Trackers.TrackersController - Entered controlled method recordCalories()
+18:46:03.341 [main] INFO  c.f.Trackers.TrackersController - Updating calorie count through calorieHistoryService.
+18:46:03.341 [main] INFO  c.f.Trackers.TrackersController - Fetching the total calorie count for current date.
+18:46:03.341 [main] ERROR c.f.Trackers.TrackersController - Bad api request during recordCalorieCount()
+18:46:07.496 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWaterIntake()
+18:46:07.503 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWaterIntake()
+18:46:10.943 [main] INFO  c.f.Trackers.TrackersController - Entered controller method fetchWeightHistory()
+18:46:18.886 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWaterIntake()
+18:49:26.309 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+18:49:42.454 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+18:49:50.425 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+18:50:07.678 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+18:51:39.468 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+18:52:32.515 [main] INFO  c.f.F.Comments.CommentServiceImpl - Started method getCommentsByFeeds()
+18:56:35.120 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+18:58:25.168 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+18:58:36.278 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+18:58:45.630 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+18:58:56.707 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+18:59:59.916 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+19:02:49.383 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+19:04:13.946 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+19:04:37.092 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+19:04:49.024 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWaterIntake()
+19:04:49.026 [main] INFO  c.f.Trackers.TrackersController - Updating water intake through waterHistoryService.
+19:04:49.026 [main] INFO  c.f.Trackers.TrackersController - Fetching the total water intake for current date.
+19:04:49.026 [main] INFO  c.f.Trackers.TrackersController - Updated record count. Returning response through api
+19:04:58.632 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWaterIntake()
+19:04:58.633 [main] INFO  c.f.Trackers.TrackersController - Updating water intake through waterHistoryService.
+19:04:58.633 [main] INFO  c.f.Trackers.TrackersController - Fetching the total water intake for current date.
+19:04:58.633 [main] INFO  c.f.Trackers.TrackersController - Updated record count. Returning response through api
+19:06:15.032 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+19:07:41.293 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()
+19:08:49.927 [main] INFO  c.f.Trackers.TrackersController - Entered controller method recordWeight()

@@ -1,9 +1,11 @@
 package com.flavourfit.Homepage;
 
 import com.flavourfit.Authentication.IAuthService;
+import com.flavourfit.Exceptions.CalorieHistoryException;
 import com.flavourfit.Exceptions.UserNotFoundException;
 import com.flavourfit.ResponsesDTO.GetResponse;
 import com.flavourfit.ResponsesDTO.PutResponse;
+import com.flavourfit.Trackers.Calories.CalorieGraphDto;
 import com.flavourfit.User.IUserService;
 import com.flavourfit.User.UserController;
 import com.flavourfit.User.UserDto;
@@ -12,13 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -73,6 +73,17 @@ public class HomepageController {
         } catch (Exception e) {
             logger.error("Failed to fetch tracker summary : {}", e.getMessage());
             return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to fetch tracker summary" + e.getMessage()));
+        }
+    }
+
+    @GetMapping("/event-list")
+    public ResponseEntity<GetResponse> fetcheventlist() {
+        logger.info("Entered controller method fetcheventlist()");
+        try {
+            List<HomepageEventDto> eventlist = this.homepageService.fetcheventlist();
+            return ResponseEntity.ok().body(new GetResponse(true, "Successfully retrieved  eventlist", eventlist));
+        } catch (CalorieHistoryException e) {
+            return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to retrieved eventlist:" + e.getMessage()));
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.flavourfit.Feeds;
 
+import com.flavourfit.Feeds.Comments.CommentDto;
 import com.flavourfit.Feeds.Comments.CommentServiceImpl;
 import com.flavourfit.Trackers.Calories.CalorieHistoryServiceImpl;
 import com.flavourfit.Trackers.Calories.ICalorieHistoryDao;
@@ -13,7 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,4 +40,6 @@ public class FeedServiceImplTest {
         // Assert
         assertTrue(resultFeeds.isEmpty());
     }
+
+
 }

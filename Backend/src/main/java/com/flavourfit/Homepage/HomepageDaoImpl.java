@@ -35,24 +35,13 @@ public class HomepageDaoImpl implements IHomepageDao {
             SQLException {
 
         logger.info("Started getEventList() method");
-
-
         this.testConnection();
-
-        HomepageEventDto homepageEventDto = null;
-        String query = "SELECT * FROM Weight_History WHERE User_id=? AND Update_Date Between ? AND ? ORDER BY weight_history_id DESC";
-
+        String query = "SELECT * FROM Events";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
-        // logger.info("Replacing values in prepared statement with actual values for date and user id.");
-        // preparedStatement.setInt(1, userId);
-        // preparedStatement.setString(2, startDate);
-        // preparedStatement.setString(3, endDate);
-
         logger.info("Execute the query to get event list.");
         ResultSet resultSet = preparedStatement.executeQuery();
 
-        List<HomepageEventDto> eventList = this.extractResultList(resultSet);
-
+        List<HomepageEventDto> eventList = this.extractResultListfromEvents(resultSet);
         return eventList;
     }
 
@@ -197,7 +186,7 @@ public class HomepageDaoImpl implements IHomepageDao {
 
     }
 
-    private List<HomepageEventDto> extractResultList(ResultSet resultSet) throws SQLException {
+    private List<HomepageEventDto> extractResultListfromEvents(ResultSet resultSet) throws SQLException {
         if (resultSet == null) {
             throw new SQLException("Invalid result set!");
         }
