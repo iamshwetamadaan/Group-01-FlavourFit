@@ -216,7 +216,7 @@ public class FeedControllerTest {
                 .andExpect(jsonPath("$.data").isEmpty());
     }
 
-    private static String asJsonString(final Object obj) {
+    static String asJsonString(final Object obj) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.writeValueAsString(obj);
