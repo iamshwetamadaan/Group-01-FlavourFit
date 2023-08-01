@@ -1,8 +1,6 @@
-package com.flavourfit.HomePage;
+package com.flavourfit.Homepage;
 
 import com.flavourfit.Homepage.DTO.RoutineDTO;
-import com.flavourfit.Homepage.HomepageDaoImpl;
-import com.flavourfit.Homepage.HomepageServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
