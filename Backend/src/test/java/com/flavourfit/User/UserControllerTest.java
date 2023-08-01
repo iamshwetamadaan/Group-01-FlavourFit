@@ -5,6 +5,7 @@ import com.flavourfit.Authentication.IAuthService;
 import com.flavourfit.Exceptions.PaymentException;
 import com.flavourfit.Exceptions.UserNotFoundException;
 import com.flavourfit.ResponsesDTO.AuthResponse;
+import com.flavourfit.ResponsesDTO.PutResponse;
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -63,6 +64,22 @@ public class UserControllerTest {
          **/
     }
 
+    @Test
+    public void editUserTest() throws SQLException{
+        UserDto userDto = new UserDto();
+        userDto.setUserId(1);
+        String token = "in valid token";
+        when(authService.extractUserIdFromToken(token)).thenReturn(1); // Assuming the token is valid
+        when(userService.updateUser(any(UserDto.class))).thenReturn(1); // Assuming the update is successful
 
+        // Act
+        ResponseEntity<Object> response = userController.editUser(userDto, token);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertTrue(response.getBody() instanceof PutResponse);
+        PutResponse putResponse = (PutResponse) response.getBody();
+        assertFalse(putResponse.isSuccess());
+    }
 
 }

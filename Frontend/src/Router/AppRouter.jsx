@@ -20,6 +20,7 @@ const AppRouter = () => (
       <Route path="/" element={<App />}>
         <Route path="home" element={<Home />} />
         <Route path="" element={<Navigate to="/home" />} />
+        <Route path="/feed" element={<Feeds/>} />
         <Route path="trackers" element={<Trackers />} />
         <Route path="feeds" element={<Feeds />} />
         <Route path="/edit-profile" element={<UserProfile />} />

@@ -42,7 +42,16 @@ public class UserServiceTest {
         assertNull(user);
     }
 
+    @Test
+    public void updateUserTest() throws SQLException{
+        UserDto userDto = new UserDto();
 
+        when(userDao.updateUser(userDto)).thenReturn(1); // Assuming the update is successful
+
+        int result = userService.updateUser(userDto);
+
+        assertEquals(1, result);
+    }
 
 }
 

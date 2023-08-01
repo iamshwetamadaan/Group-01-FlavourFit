@@ -21,7 +21,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/recipes")
-public class RecipeController {
+public class
+RecipeController {
     private static Logger logger = LoggerFactory.getLogger(RecipeController.class);
     private IRecipeService recipeService;
     private IAuthService authService;
