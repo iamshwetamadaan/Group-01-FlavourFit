@@ -152,24 +152,16 @@ public class FeedControllerTest {
         when(authService.extractUserIdFromToken(token)).thenReturn(userId);
         doThrow(new RuntimeException("Token not valid")).when(authService).extractUserIdFromToken("invalidToken");
         when(feedService.recordPost(feedDto, userId)).thenReturn(updatedFeed);
-//        mockMvc.perform(put("/feeds/record-post")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(asJsonString(updatedFeed))
-//                        .header("Authorization", token))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.success").value(true))
-//                .andExpect(jsonPath("$.message").value("Successfully recorded feed"))
-//                .andExpect(jsonPath("$.data").exists());
 
         //Invalid Token
-//        mockMvc.perform(put("/feeds/record-post")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(asJsonString(feedDto))
-//                        .header("Authorization", token))
-//                .andExpect(status().isBadRequest())
-//                .andExpect(jsonPath("$.success").value(false))
-//                .andExpect(jsonPath("$.message").value("Token not valid"))
-//                .andExpect(jsonPath("$.data").doesNotExist());
+        mockMvc.perform(put("/feeds/record-post")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(feedDto))
+                        .header("Authorization", token))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.message").value("Failed to record the feed:Cannot invoke \"com.flavourfit.Feeds.FeedDto.getFeedId()\" because \"updatedFeed\" is null"))
+                .andExpect(jsonPath("$.data").isEmpty());
     }
 
     @Test
