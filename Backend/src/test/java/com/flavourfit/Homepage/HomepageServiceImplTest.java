@@ -49,4 +49,21 @@ public class HomepageServiceImplTest {
         assertEquals(2, result.size()); // Assuming routines is a List<RoutineDTO>
         assertEquals(mockQuote, result.get("quoteOfTheDay"));
     }
+
+    @Test
+    public void testFetchEventList() throws SQLException {
+
+        List<HomepageEventDto> mockEventList = new ArrayList<>();
+        mockEventList.add(new HomepageEventDto(1, "Inhale and exhale", "2023-09-01", "2023-09-01", "100", "Sasha Berkley", "Yoga and Pilates event"));
+        mockEventList.add(new HomepageEventDto(2, "Fitness freak", "2023-09-07", "2023-09-07", "100", "John Mendow", "HIIT Workout session"));
+
+        when(homepageDao.getEventList()).thenReturn(mockEventList);
+        List<HomepageEventDto> eventList = homepageService.fetcheventlist();
+
+        assertEquals(1, eventList.size()); // Check if two events are returned as expected
+        assertEquals("Inhale and exhale", eventList.get(0).getEvent_name());
+        
+
+    }
+
 }

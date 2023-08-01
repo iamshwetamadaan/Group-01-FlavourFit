@@ -73,4 +73,30 @@ public class HomepageDaoImplTest {
             assertNotNull(routines);
     }
 
+    @Test
+    public void testGetEventList() throws SQLException {
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        // Create mock data for the ResultSet
+        when(resultSet.next()).thenReturn(true).thenReturn(true).thenReturn(false);
+        when(resultSet.getInt("Event_id")).thenReturn(1).thenReturn(2);
+        when(resultSet.getString("Event_name")).thenReturn("Halifax : Free Fitness for Mind and Soul in 3 weeks course").thenReturn("Wellness 1 Day Training in Halifax");
+        when(resultSet.getString("Start_date")).thenReturn("2023-09-01").thenReturn("2023-09-07");
+        when(resultSet.getString("End_date")).thenReturn("2023-09-01").thenReturn("2023-09-07");
+        when(resultSet.getString("Capacity")).thenReturn("100").thenReturn("100");
+        when(resultSet.getString("Host_Name")).thenReturn("Sasha Berkley").thenReturn("John Mendow");
+        when(resultSet.getString("Event_description")).thenReturn("Yoga and Pillates event").thenReturn("HIIT Workout session");
+
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+
+        List<HomepageEventDto> eventList = homepageDao.getEventList();
+
+        // Assertions
+        // assertEquals(2, eventList.size()); // Check if two events are returned as expected
+        assertEquals("Halifax : Free Fitness for Mind and Soul in 3 weeks course", eventList.get(0).getEvent_name());
+        assertEquals("Wellness 1 Day Training in Halifax", eventList.get(1).getEvent_name());
+        // Add more assertions for other properties if needed
+    }
+
+
 }
