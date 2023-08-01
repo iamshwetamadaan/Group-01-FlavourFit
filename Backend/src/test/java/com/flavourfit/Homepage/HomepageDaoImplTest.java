@@ -1,10 +1,7 @@
-package com.flavourfit.HomePage;
+package com.flavourfit.Homepage;
 
-import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
-import com.flavourfit.Feeds.FeedDaoImpl;
 import com.flavourfit.Homepage.DTO.RoutineDTO;
-import com.flavourfit.Homepage.HomepageDaoImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,16 +15,18 @@ import java.sql.SQLException;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 public class HomepageDaoImplTest {
 
+    @InjectMocks
     private HomepageDaoImpl homepageDao;
 
     @Mock
-    private DatabaseManagerImpl database;
+    private IDatabaseManager database;
 
     @Mock
     private Connection connection;
@@ -39,13 +38,8 @@ public class HomepageDaoImplTest {
     private ResultSet resultSet;
 
     @BeforeEach
-    public void setUp() throws SQLException {
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
-        reset(database,connection,resultSet,preparedStatement);
-        when(database.getConnection()).thenReturn(connection);
-        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
-        when(preparedStatement.executeQuery()).thenReturn(resultSet);
-        homepageDao = new HomepageDaoImpl(database);
     }
 
     @Test
