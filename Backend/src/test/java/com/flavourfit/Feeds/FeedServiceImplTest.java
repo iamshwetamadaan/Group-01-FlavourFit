@@ -91,19 +91,23 @@ public class FeedServiceImplTest {
     @Test
     public void updateLikesForFeedTest() throws Exception {
         // Arrange
-        int feedId = 1;
-        int initialLikes = 10;
-        int expectedUpdatedLikes = initialLikes + 1;
+        //int feedId = 1;
+        //int initialLikes = 10;
+        //int expectedUpdatedLikes = initialLikes + 1;
 
-        when(feedDao.updateFeedLikes(feedId)).thenReturn(expectedUpdatedLikes);
+        FeedDto feed = new FeedDto();
+        feed.setFeedId(1);
+        feed.setLikeCount(10);
+
+        when(feedDao.updateFeedLikes(feed.getFeedId())).thenReturn(feed.getLikeCount()+1);
 
         // Act
-        int result = feedService.increaseFeedLikes(feedId);
+        int result = feedService.increaseFeedLikes(feed.getFeedId());
 
         // Assert
-        assertEquals(expectedUpdatedLikes, result);
+        assertEquals(feed.getLikeCount()+1, result);
 
-        verify(feedDao).updateFeedLikes(feedId);
+        verify(feedDao).updateFeedLikes(feed.getFeedId());
     }
 
     @Test
@@ -127,14 +131,14 @@ public class FeedServiceImplTest {
         comments.add(comment2);
 
         when(feedDao.getFeedsById(feedId)).thenReturn(feedDto);
-        when(commentService.removeCommentFromFeed(feedId, commentId)).thenReturn(true);
         when(commentService.getCommentsByFeeds(feedId)).thenReturn(comments);
+        when(commentService.removeCommentFromFeed(feedId, commentId)).thenReturn(true);
 
         // Act
         FeedDto result = feedService.removeCommentFromFeed(feedId, commentId);
 
         // Assert
-        assertNull(result);
+        assertNotNull(result);
         //assertEquals(feedId, result.getFeedId());
         //assertEquals("Test feed content", result.getFeedContent());
         //assertEquals(comments, result.getComments());

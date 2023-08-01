@@ -45,7 +45,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void userPremiumPaymentTest() throws PaymentException, SQLException {
+    public void getUserPaymentForPremiumTest() throws PaymentException, SQLException {
         int userId = 1;
         String token = "valid-token";
         PremiumUserPaymentDetailsDto request = new PremiumUserPaymentDetailsDto();
@@ -66,13 +66,9 @@ public class UserControllerTest {
         PutResponse responseBody = response.getBody();
         assertNotNull(responseBody);
         assertTrue(!responseBody.isSuccess());
-        //assertEquals("Successfully completed user premium membership payment", responseBody.getMessage());
-
-        //verify(authService).extractUserIdFromToken(token);
-        //verify(userService).paymentForPremium(userId, request);
     }
     @Test
-    public void testResetPasswordResponse() throws SQLException {
+    public void resetPasswordTest() throws SQLException {
         // Arrange
         int userId = 1;
         String newPassword = "NewValidPassword";
@@ -96,7 +92,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void startExtendPremiumMembershipTest() throws Exception {
+    public void startPremiumMembershipTest() throws Exception {
         // Arrange
         String token = "token";
         int userID = 1;

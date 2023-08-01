@@ -40,7 +40,7 @@ public class UserDaoImplTest {
         reset(database,connection,preparedStatement,resultSet,statement);
         when(database.getConnection()).thenReturn(connection);
         when(connection.createStatement()).thenReturn(statement);
-        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        when(connection.prepareStatement(anyString(),anyInt())).thenReturn(preparedStatement);
         when(statement.executeQuery(anyString())).thenReturn(resultSet);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
         userDao = new UserDaoImpl(database);
@@ -148,59 +148,65 @@ public class UserDaoImplTest {
     }
 
     @Test
-    public void testResetPassword() throws Exception {
-        /**
-        UserDto testUser = new UserDto();
-        testUser.setUserId(1);
-        testUser.setFirstName("John");
-        testUser.setLastName("Doe");
-        testUser.setEmail("john.doe@gmail.com");
-        testUser.setPassword("pineapples123");
-        String newPassword = "potatoes";
-        testUser.setPassword(newPassword);
+    public void testResetUserPassword() throws Exception {
+        UserDto user = new UserDto();
+        user.setUserId(1);
+        user.setPassword("newPassword");
 
-        when(preparedStatement.executeQuery()).thenReturn(resultSet);
-        when(resultSet.next()).thenReturn(true).thenReturn(false);
-        when(resultSet.getLong(1)).thenReturn(1L);
-
-        // Reset for the next scenario
-        reset(database, connection, preparedStatement, resultSet);
-        setUp();
-
-        // Null user scenario
-        Exception exception = assertThrows(SQLException.class, () -> userDaoImpl.resetUserPassword(0, null));
-        assertEquals("User object not valid!!", exception.getMessage());
-         **/
-        /**
-        int userId = 1;
-        String newPassword = "NewValidPassword";
-
-        when(connection.prepareStatement(anyString(), anyInt())).thenReturn(preparedStatement);
-        when(preparedStatement.executeUpdate()).thenReturn(1);
-        when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
-        when(resultSet.next()).thenReturn(true);
-        when(resultSet.getLong(1)).thenReturn(1L);
-
-        // Act
-        boolean result = userDaoImpl.resetUserPassword(userId, newPassword);
-
-        // Assert
+        when(preparedStatement.executeUpdate()).thenReturn(user.getUserId());
+        boolean result = userDao.resetUserPassword(user.getUserId(), user.getPassword());
         assertTrue(result);
-        verify(connection).prepareStatement(anyString(), anyInt());
-        verify(preparedStatement).setString(1, newPassword);
-        verify(preparedStatement).setInt(2, userId);
-        verify(preparedStatement).executeUpdate();
-        verify(preparedStatement).getGeneratedKeys();
-        verify(resultSet).next();
-        verify(resultSet).getLong(1);
-        **/
 
-        int userId = 0;
-        String newPassword = "NewPassword";
+        //Invalid ID Case
+        user.setUserId(0);
+        assertThrows(SQLException.class,()->{userDao.resetUserPassword(user.getUserId(), user.getPassword());});
+    }
 
-        // Null user scenario
-        //Exception exception = assertThrows(SQLException.class, () -> userDaoImpl.resetUserPassword(userId, newPassword));
-        //assertEquals("User object not valid!!", exception.getMessage());
+    @Test
+    public void testUpdateUserPayment() throws Exception {
+        int userId = 1;
+        int paymentID = 2;
+        int premiumMembershipID = 3;
 
+        when(preparedStatement.executeUpdate()).thenReturn(paymentID);
+        boolean result = userDao.updateUserPayment(userId, paymentID, premiumMembershipID);
+        assertTrue(result);
+
+        //Invalid ID Case
+        userId = 0;
+        int finalUserId = userId;
+        assertThrows(SQLException.class,()->{userDao.updateUserPayment(finalUserId, paymentID,premiumMembershipID);});
+
+    }
+
+    @Test
+    public void testStartExtendPremiumMembership() throws Exception {
+        int userId = 1;
+        String startDate = "2007-06-27";
+        String endDate = "2008-06-27";
+        int paymentID = 2;
+        int premiumMembershipID = 3;
+
+        when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true).thenReturn(false);
+        when(resultSet.getInt(1)).thenReturn(premiumMembershipID);
+
+        int result = userDao.startExtendPremiumMembership(userId,startDate,endDate,paymentID);
+        assertEquals(result,premiumMembershipID);
+    }
+
+    @Test
+    public void testUserToPremiumPayment() throws Exception {
+        int userId = 1;
+        PremiumUserPaymentDetailsDto details = new PremiumUserPaymentDetailsDto();
+        details.setAmount(3000.0);
+        int paymentID = 2;
+
+        when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true).thenReturn(false);
+        when(resultSet.getInt(1)).thenReturn(paymentID);
+
+        int result = userDao.userToPremiumPayment(userId, details);
+        assertEquals(result,paymentID);
     }
 }
