@@ -130,7 +130,7 @@ public class FeedController {
             userId = authService.extractUserIdFromToken(token);
         } catch (Exception e) {
             logger.error("Failed to record comment: ", e.getMessage());
-            return ResponseEntity.badRequest().body(new PutResponse(false, "Token not valid" + e.getMessage()));
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Token not valid"));
         }
 
         try {
@@ -140,7 +140,7 @@ public class FeedController {
             return ResponseEntity.ok().body(new PutResponse(true, "Successfully recorded comment", updatedComments));
         } catch (Exception e) {
             logger.error("Failed to record the comment");
-            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to record the comment:" + e.getMessage()));
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to record the comment:"));
         }
     }
 
@@ -155,7 +155,7 @@ public class FeedController {
             userId = authService.extractUserIdFromToken(token);
         } catch (Exception e) {
             logger.error("Failed to record comment: ", e.getMessage());
-            return ResponseEntity.badRequest().body(new PutResponse(false, "Token not valid" + e.getMessage()));
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Token not valid"));
         }
 
         try {
@@ -164,7 +164,7 @@ public class FeedController {
             return ResponseEntity.ok().body(new PutResponse(true, "Successfully posted recipe", newFeed));
         } catch (Exception e) {
             logger.error("Failed to post recipe: {}", e.getMessage());
-            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to post recipe: " + e.getMessage()));
+            return ResponseEntity.badRequest().body(new PutResponse(false, "Failed to post recipe: "));
         }
     }
 
