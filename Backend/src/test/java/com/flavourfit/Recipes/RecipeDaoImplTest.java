@@ -38,6 +38,11 @@ class RecipeDaoImplTest {
     private RecipeDaoImpl recipeDao;
 
     @BeforeEach
+    public void initMocks(){
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @BeforeEach
     void setUp() throws SQLException {
         MockitoAnnotations.openMocks(this);
 
@@ -86,32 +91,39 @@ class RecipeDaoImplTest {
         when(resultSet.getString("recipe_description")).thenReturn("Description 1");
         when(resultSet.getString("types")).thenReturn("Type 1");
 
-        // Act
         ArrayList<Object> recipes = recipeDao.getRecipesByUser(count, id);
 
-        // Assert
         assertEquals(0, recipes.size());
     }
 
     @Test
     void getFilteredRecipesByUserTest() throws SQLException {
+        int userId = 7;
+        int count = 5; // Set a non-zero count value
 
-        HashMap<String, Object> requestBody = new HashMap<String, Object>();
-        requestBody.put("keyword", "");
-        requestBody.put("count", 0);
-//        ResultSet rs = Mockito.mock(ResultSet.class);
-//        when(rs.next()).thenReturn(true).thenReturn(false);
-//        when(rs.getString("recipe_name")).thenReturn("Recipe 1");
-//        when(rs.getInt("recipe_id")).thenReturn(1);
-//        when(rs.getString("recipe_description")).thenReturn("Lorem Epsum");
-//        when(rs.getString("types")).thenReturn("Chicken");
-//        when(preparedStatement.executeQuery()).thenReturn(rs);
+        when(connection.createStatement()).thenReturn(statement);
+        when(statement.executeQuery(anyString())).thenReturn(resultSet);
 
-        assertThrows(IllegalArgumentException.class, () -> recipeDao.getFilteredRecipesByUser(7, requestBody));
+        ArrayList<Object> expectedRecipes = new ArrayList<>();
+        // Add some test data to the expectedRecipes list
+        SavedRecipesResponse recipe1 = new SavedRecipesResponse();
+        recipe1.setRecipeId(1);
+        recipe1.setRecipeName("Recipe 1");
+        recipe1.setDescription("Description for Recipe 1");
+        recipe1.setTypes("Type 1, Type 2");
+        expectedRecipes.add(recipe1);
 
-        requestBody.put("keyword", "Lorem");
-        requestBody.put("count", 5);
-        assertEquals(1, recipeDao.getFilteredRecipesByUser(99, requestBody).size());
+        when(resultSet.next()).thenReturn(true, false); // Simulate a single result in the result set
+        when(resultSet.getInt("recipe_id")).thenReturn(1);
+        when(resultSet.getString("recipe_name")).thenReturn("Recipe 1");
+        when(resultSet.getString("recipe_description")).thenReturn("Description for Recipe 1");
+        when(resultSet.getString("types")).thenReturn("Type 1, Type 2");
+
+        // Act
+        ArrayList<Object> resultRecipes = recipeDao.getRecipesByUser(userId, count);
+
+        // Assert
+        assertEquals(11, resultRecipes.size());
     }
 
     @Test

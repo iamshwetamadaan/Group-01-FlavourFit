@@ -67,6 +67,7 @@ public class UserDaoImpl implements IUserDao {
         logger.info("Started getUserById() method");
         UserDto user = null;
 
+
         this.testConnection();
 
         logger.info("Running select query to get user by userId");

@@ -2,6 +2,7 @@ package com.flavourfit.Recipes;
 import com.flavourfit.Authentication.IAuthService;
 import com.flavourfit.Exceptions.RecipeExceptions;
 import com.flavourfit.Recipes.SavedRecipes.ISavedRecipesService;
+import com.flavourfit.ResponsesDTO.GetResponse;
 import com.flavourfit.ResponsesDTO.PutResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -85,6 +88,51 @@ class RecipeControllerTest {
 
         // Failed to save recipe case
         assertEquals("Successfully saved recipe", responseBody.getMessage());
+    }
+
+    @Test
+    public void getFilteredRecipesByUserTest() throws SQLException{
+        HashMap<String, Object> requestBody = new HashMap<>();
+
+        String token = "valid_token";
+        int userId = 7;
+        when(authService.extractUserIdFromToken(token)).thenReturn(userId); // Assuming the token is valid
+
+        ArrayList<Object> expectedRecipes = new ArrayList<>();
+        // Add some test data to the expectedRecipes list
+
+        when(recipeService.getFilteredRecipesByUser(userId, requestBody)).thenReturn(expectedRecipes);
+
+        // Act
+        ResponseEntity<GetResponse> response = recipeController.getFilteredRecipesByUser(requestBody, token);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(response.getBody() instanceof GetResponse);
+        GetResponse getResponse = response.getBody();
+        assertTrue(getResponse.isSuccess());
+    }
+
+    @Test
+    public void getRecipesByUserTest() throws SQLException{
+        int count = 5;
+        String token = "valid_token";
+        int userId = 1;
+
+        ArrayList<Object> expectedRecipes = new ArrayList<>();
+
+        when(authService.extractUserIdFromToken(token)).thenReturn(userId);
+        when(recipeService.getRecipesByUser(count, userId)).thenReturn(expectedRecipes);
+
+        ResponseEntity<GetResponse> response = recipeController.getRecipesByUser(count, token);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(response.getBody() instanceof GetResponse);
+        GetResponse getResponse = response.getBody();
+        assertTrue(getResponse.isSuccess());
+        assertEquals("Successfully ", getResponse.getMessage());
+        assertEquals(expectedRecipes, getResponse.getData());
     }
 
 }

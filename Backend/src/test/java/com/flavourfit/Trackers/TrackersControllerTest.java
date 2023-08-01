@@ -26,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import java.sql.SQLException;
 import java.util.*;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
@@ -92,7 +93,23 @@ public class TrackersControllerTest {
         ResponseEntity<Object> responseEntity = trackersController.recordWaterIntake(requestBody, "Bearer token");
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
+    @Test
+    public void recordWeightTest() throws WeightHistoryException, SQLException {
+        double weight = 150.0;
+        int userId = 1;
+        String date = DateHelpers.getCurrentDateString();
 
+        WeightHistoryDto weightHistoryDto = new WeightHistoryDto(weight, date, userId);
+
+        when(authService.extractUserIdFromToken("Bearer token")).thenReturn(userId);
+        when(weightHistoryService.fetchWeightByUserIdDate(date, userId)).thenReturn(weightHistoryDto);
+
+        Map<String, Object> requestBody = new HashMap<>();
+        // requestBody.put("Weight", weight); // Remove this line to simulate 'Weight' key not present
+
+        ResponseEntity<Object> responseEntity = trackersController.recordWeight(requestBody, "Bearer token");
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
 
     @Test
     public void fetchCalorieHistoryTest() throws CalorieHistoryException {
