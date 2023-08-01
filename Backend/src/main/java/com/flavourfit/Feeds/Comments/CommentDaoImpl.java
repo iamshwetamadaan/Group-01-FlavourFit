@@ -74,14 +74,14 @@ public class CommentDaoImpl implements ICommentsDao {
         logger.info("Replacing values in prepared statement with actual values to be inserted");
         preparedStatement.setInt(1, commentId);
         preparedStatement.setInt(2, feedId);
-        logger.info("Execute the update of record to the table");
+        logger.info("Execute the deletion of record to the table");
         int commentToBeDeleted = preparedStatement.executeUpdate();
 
         if (commentToBeDeleted > 0) {
             logger.info("Comment deleted successfully.");
             commentDeleted = true;
         } else {
-            logger.error("Comment with the given ID not found to be deleted.");
+            logger.error("Comment with the given comment ID not found to be deleted.");
         }
 
         logger.info("Returning boolean value to show whether feed's list of comments updated or not as response");
