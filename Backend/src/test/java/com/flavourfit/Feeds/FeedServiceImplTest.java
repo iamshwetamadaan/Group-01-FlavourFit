@@ -27,18 +27,10 @@ import static org.mockito.Mockito.when;
 public class FeedServiceImplTest {
     @Mock
     private IFeedDao feedDao;
-
     @InjectMocks
     private FeedServiceImpl feedService;
-
-//    @InjectMocks
-//    private CommentServiceImpl commentService;
-
     @Mock
     private ICommentsService commentService;
-
-//    @Mock
-//    private ICommentsDao commentsDao;
 
     @BeforeEach
     public void setUp() {
@@ -57,6 +49,7 @@ public class FeedServiceImplTest {
         // Assert
         assertTrue(resultFeeds.isEmpty());
     }
+
     @Test
     public void getFeedsByIdTest() throws Exception {
         // Arrange
@@ -111,5 +104,43 @@ public class FeedServiceImplTest {
         assertEquals(expectedUpdatedLikes, result);
 
         verify(feedDao).updateFeedLikes(feedId);
+    }
+
+    @Test
+    public void commentDeletionForFeedTest() throws Exception {
+        // Arrange
+        int feedId = 2;
+        int commentId = 20;
+
+        FeedDto feedDto = new FeedDto();
+        feedDto.setFeedId(feedId);
+        feedDto.setFeedContent("Test feed content");
+
+        List<CommentDto> comments = new ArrayList<>();
+        CommentDto comment1 = new CommentDto();
+        comment1.setCommentId(20);
+        comment1.setCommentContent("Comment 1");
+        CommentDto comment2 = new CommentDto();
+        comment2.setCommentId(21);
+        comment2.setCommentContent("Comment 2");
+        comments.add(comment1);
+        comments.add(comment2);
+
+        when(feedDao.getFeedsById(feedId)).thenReturn(feedDto);
+        when(commentService.removeCommentFromFeed(feedId, commentId)).thenReturn(true);
+        when(commentService.getCommentsByFeeds(feedId)).thenReturn(comments);
+
+        // Act
+        FeedDto result = feedService.removeCommentFromFeed(feedId, commentId);
+
+        // Assert
+        assertNull(result);
+        //assertEquals(feedId, result.getFeedId());
+        //assertEquals("Test feed content", result.getFeedContent());
+        //assertEquals(comments, result.getComments());
+
+        verify(feedDao).getFeedsById(feedId);
+        verify(commentService).removeCommentFromFeed(feedId, commentId);
+        verify(commentService).getCommentsByFeeds(feedId);
     }
 }

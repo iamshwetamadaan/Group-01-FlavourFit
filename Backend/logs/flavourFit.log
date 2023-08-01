@@ -14935,3 +14935,16 @@ Unconditional classes:
 13:02:19.196 [SpringApplicationShutdownHook] DEBUG o.s.s.c.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
 13:04:41.855 [main] INFO  com.flavourfit.Feeds.FeedController - Entered controller method removeCommentsByFeedID()
 13:59:13.085 [main] INFO  com.flavourfit.Feeds.FeedController - Entered controller method updateLikesByFeedID()
+14:10:14.908 [main] INFO  c.flavourfit.Feeds.FeedServiceImpl - Started method removeCommentFromFeed()
+14:10:14.911 [main] WARN  c.flavourfit.Feeds.FeedServiceImpl - Invalid commentId parameter
+14:10:59.851 [main] INFO  c.flavourfit.Feeds.FeedServiceImpl - Started method removeCommentFromFeed()
+14:10:59.853 [main] WARN  c.flavourfit.Feeds.FeedServiceImpl - Invalid commentId parameter
+14:11:53.080 [main] INFO  c.flavourfit.Feeds.FeedServiceImpl - Started method removeCommentFromFeed()
+14:11:53.082 [main] WARN  c.flavourfit.Feeds.FeedServiceImpl - Invalid commentId parameter
+14:11:55.901 [main] INFO  c.flavourfit.Feeds.FeedServiceImpl - Started method removeCommentFromFeed()
+14:11:55.902 [main] WARN  c.flavourfit.Feeds.FeedServiceImpl - Invalid commentId parameter
+14:12:20.262 [main] INFO  c.flavourfit.Feeds.FeedServiceImpl - Started method removeCommentFromFeed()
+14:13:48.768 [main] INFO  c.flavourfit.Feeds.FeedServiceImpl - Started method removeCommentFromFeed()
+14:13:48.769 [main] WARN  c.flavourfit.Feeds.FeedServiceImpl - Invalid commentId parameter
+14:14:03.881 [main] INFO  c.flavourfit.Feeds.FeedServiceImpl - Started method removeCommentFromFeed()
+14:14:03.882 [main] WARN  c.flavourfit.Feeds.FeedServiceImpl - Invalid commentId parameter

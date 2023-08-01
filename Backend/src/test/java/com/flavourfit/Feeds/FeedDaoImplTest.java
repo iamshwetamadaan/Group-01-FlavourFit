@@ -110,4 +110,5 @@ public class FeedDaoImplTest {
         // Assert
         assertEquals(feedId, result);
     }
+
 }
