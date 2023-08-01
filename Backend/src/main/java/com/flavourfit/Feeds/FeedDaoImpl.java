@@ -29,19 +29,21 @@ public class FeedDaoImpl implements IFeedDao {
     @Override
     public FeedDto getFeedsById(int feedID) throws SQLException {
         logger.info("Started getFeedsById() method");
-        FeedDto userFeeds = null;
 
         this.testConnection();
 
         logger.info("Running select query to get feeds by feedId");
 
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Feeds WHERE Feed_id=? order by feed_id desc");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Feeds WHERE Feed_id=?");
         preparedStatement.setInt(1, feedID);
 
         ResultSet resultSet = preparedStatement.executeQuery();
+/**
         if (resultSet.next()) {
-            userFeeds = this.extractUserFeedsFromResult(resultSet);
+            userFeeds = ;
         }
+ **/
+        FeedDto userFeeds = this.extractUserFeedsFromResult(resultSet);
 
         logger.info("Returning received user feeds as response");
         return userFeeds;
@@ -184,9 +186,9 @@ public class FeedDaoImpl implements IFeedDao {
         preparedStatement.setArray(3, (Array) feed.getComments());
     }
 
-    private FeedDto extractUserFeedsFromResult(ResultSet resultSet) throws SQLException {
+    public FeedDto extractUserFeedsFromResult(ResultSet resultSet) throws SQLException {
+        FeedDto userFeeds = new FeedDto();
         if (resultSet.next()) {
-            FeedDto userFeeds = new FeedDto();
             userFeeds.setFeedId(resultSet.getInt("Feed_id"));
             userFeeds.setFeedContent(resultSet.getString("Feed_content"));
             userFeeds.setLikeCount(resultSet.getInt("Like_count"));

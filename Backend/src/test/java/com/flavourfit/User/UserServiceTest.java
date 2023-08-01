@@ -7,8 +7,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Arrays;
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,6 +63,48 @@ public class UserServiceTest {
         // Assert
         assertTrue(result);
         verify(passwordEncoder).encode(newPassword);
+    }
+
+    @Test
+    public void testPaymentForPremium() throws Exception {
+        // Arrange
+        int userID = 1;
+        PremiumUserPaymentDetailsDto details = new PremiumUserPaymentDetailsDto();
+        details.setCardNumber("1234567812345678");
+        details.setCvv("123");
+        details.setExpiryMonth("12");
+        details.setExpiryYear("30");
+
+        when(userDao.userToPremiumPayment(userID, details)).thenReturn(1234);
+
+        // Act
+        int paymentID = userService.paymentForPremium(userID, details);
+
+        // Assert
+        assertEquals(1234, paymentID);
+
+        verify(userDao).userToPremiumPayment(userID, details);
+    }
+
+    @Test
+    public void testStartExtendPremium() throws Exception { //needs to be fixed
+        // Arrange
+        int userID = 1;
+        int paymentID = 123;
+
+        String startDate = "2007-06-27";
+        String expiryDate = "2017-06-23";
+
+        when(userDao.startExtendPremiumMembership(userID, startDate, expiryDate, paymentID)).thenReturn(567);
+        when(userDao.updateUserPayment(userID, paymentID, 567)).thenReturn(true);
+
+        // Act
+        boolean result = userService.startExtendPremium(userID, paymentID);
+
+        // Assert
+        assertTrue(result);
+        verify(userDao).startExtendPremiumMembership(userID, startDate, expiryDate, paymentID);
+        verify(userDao).updateUserPayment(userID, paymentID, 567);
     }
 }
 

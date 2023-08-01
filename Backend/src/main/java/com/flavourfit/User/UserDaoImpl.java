@@ -264,7 +264,7 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public int startExtendPremiumMembership(int userId, Date startDate, Date expiryDate, int paymentID) throws
+    public int startExtendPremiumMembership(int userId, String startDate, String expiryDate, int paymentID) throws
             SQLException {
 
         int premiumMembershipID = 0;
@@ -282,11 +282,9 @@ public class UserDaoImpl implements IUserDao {
         String query = "INSERT INTO Premium_Memberships (Start_date, Expiry_date, Is_active, User_id) VALUES (?,?,?,?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         logger.info("Entering values in prepared statement with actual values to be inserted");
-        preparedStatement.setDate(1, startDate);
-        preparedStatement.setDate(2, expiryDate);
-
+        preparedStatement.setString(1, startDate);
+        preparedStatement.setString(2, expiryDate);
         preparedStatement.setInt(3, 1);
-
         preparedStatement.setInt(4, userId);
         logger.info("Execute the update of record to the table");
         preparedStatement.executeUpdate();
@@ -322,14 +320,22 @@ public class UserDaoImpl implements IUserDao {
         preparedStatement.setInt(1, premiumMembershipID);
         preparedStatement.setInt(2, paymentID);
         logger.info("Execute the update of record to the table");
-        preparedStatement.executeUpdate();
+        int rowsAffected = preparedStatement.executeUpdate();
 
+        if (rowsAffected > 0){
+            paymentUpdated = true;
+            logger.info("Updated the ID for premium membership for paymentID: {}, to the Payments table!", paymentID);
+        } else {
+            paymentUpdated = false;
+        }
+/**
         ResultSet keys = preparedStatement.getGeneratedKeys();
-        long recheckPaymentID;
+        long recheckPaymentID =paymentID;
         while (keys.next()) {
             recheckPaymentID = keys.getInt(1);
             logger.info("Updated the ID for premium membership for paymentID: {}, to the Payments table!", recheckPaymentID);
         }
+ **/
         return paymentUpdated;
     }
 

@@ -64,10 +64,6 @@ public class RecipeConversionHelpers {
                         ingredient.setQuantity((actualQuantity * quantity2) / (quantity1));
                         ingredient.setQuantityUnit(type2);
 
-                    } else if (type2.equals(ingredient.getQuantityUnit())) {
-
-                        ingredient.setQuantity((actualQuantity * quantity1) / (quantity2));
-                        ingredient.setQuantityUnit(type2);
                     }
                 }
                 convertedIngredients.add(ingredient);
@@ -107,15 +103,10 @@ public class RecipeConversionHelpers {
 
                     double actualQuantity = ingredient.getQuantity();
 
-                    if (type1.equals(ingredient.getQuantityUnit())) {
-
-                        ingredient.setQuantity((actualQuantity * quantity2) / (quantity1));
-                        ingredient.setQuantityUnit(type2);
-
-                    } else if (type2.equals(ingredient.getQuantityUnit())) {
+                    if (type2.equals(ingredient.getQuantityUnit())) {
 
                         ingredient.setQuantity((actualQuantity * quantity1) / (quantity2));
-                        ingredient.setQuantityUnit(type2);
+                        ingredient.setQuantityUnit(type1);
                     }
                 }
                 convertedIngredients.add(ingredient);

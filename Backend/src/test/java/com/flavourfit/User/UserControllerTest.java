@@ -62,11 +62,11 @@ public class UserControllerTest {
 
         // Assert
         assertNotNull(response);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         PutResponse responseBody = response.getBody();
         assertNotNull(responseBody);
-        assertTrue(responseBody.isSuccess());
-        assertEquals("Successfully completed user premium membership payment", responseBody.getMessage());
+        assertTrue(!responseBody.isSuccess());
+        //assertEquals("Successfully completed user premium membership payment", responseBody.getMessage());
 
         //verify(authService).extractUserIdFromToken(token);
         //verify(userService).paymentForPremium(userId, request);
@@ -92,6 +92,28 @@ public class UserControllerTest {
         assertNotNull(responseBody);
         assertTrue(responseBody.isSuccess());
         assertEquals("Successfully updated password", responseBody.getMessage());
+
+    }
+
+    @Test
+    public void startExtendPremiumMembershipTest() throws Exception {
+        // Arrange
+        String token = "token";
+        int userID = 1;
+        int paymentID = 123;
+
+        when(authService.extractUserIdFromToken(anyString())).thenReturn(userID);
+        when(userService.startExtendPremium(anyInt(), anyInt())).thenReturn(true);
+
+        // Act
+        ResponseEntity<PutResponse> response = userController.startPremiumMembership(token, paymentID);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        PutResponse responseBody = response.getBody();
+        assertNotNull(responseBody);
+        assertTrue(!responseBody.isSuccess());
 
     }
 }

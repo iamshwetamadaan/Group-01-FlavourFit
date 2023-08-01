@@ -44,6 +44,7 @@ public class FeedServiceImpl implements IFeedService {
         FeedDto feed = feedDao.getFeedsById(feedId);
         List<CommentDto> commentsForFeed = commentsService.getCommentsByFeeds(feedId);
         feed.setComments(commentsForFeed);
+        logger.info(feed.getFeedContent());
         return feed;
     }
 

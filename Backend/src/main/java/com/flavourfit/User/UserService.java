@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
@@ -117,24 +120,17 @@ UserService implements IUserService {
         return this.userDao.userToPremiumPayment(userID, details);
     }
 
-    public boolean startExtendPremium(int userID, int paymentID) throws SQLException {
+    public boolean startExtendPremium(int userID, int paymentID) throws SQLException, ParseException {
         boolean hasStartExtend = false;
 
         logger.info("Started startExtendPremium() method");
 
         if (userID != 0 && paymentID != 0) {
-            //default time zone
-            ZoneId defaultZoneId = ZoneId.systemDefault();
 
-            LocalDate currentDate = LocalDate.now();
+            String startDateString = "2007-06-27";
+            String endDateString = "2017-06-23";
 
-            Date startDate = (Date) Date.from(currentDate.atStartOfDay(defaultZoneId).toInstant());
-
-            LocalDate nextYearDate = currentDate.plusYears(1);
-
-            Date expiryDate = (Date) Date.from(nextYearDate.atStartOfDay(defaultZoneId).toInstant());
-
-            int premiumMembershipID = this.userDao.startExtendPremiumMembership(userID, startDate, expiryDate, paymentID);
+            int premiumMembershipID = this.userDao.startExtendPremiumMembership(userID, startDateString, endDateString, paymentID);
 
             if (premiumMembershipID != 0) {
                 logger.info("Successful PremiumMemberShip Table Insert");

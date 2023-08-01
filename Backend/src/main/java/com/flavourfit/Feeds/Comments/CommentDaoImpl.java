@@ -43,11 +43,11 @@ public class CommentDaoImpl implements ICommentsDao {
     public List<CommentDto> getCommentsByFeedId(int feedId) throws SQLException {
         logger.info("Started getCommentsByFeedId() method");
 
-        List<CommentDto> commentsForFeedID = new ArrayList<CommentDto>();
+        List<CommentDto> commentsForFeedID = new ArrayList<>();
 
         this.testConnection();
 
-        logger.info("Running select query to get user by userId");
+        logger.info("Running select query to get comments for feedId");
 
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Comments WHERE Feed_id=? ORDER BY Comment_id DESC");
         preparedStatement.setInt(1, feedId);
@@ -55,8 +55,9 @@ public class CommentDaoImpl implements ICommentsDao {
 
         while (resultSet.next()) {
             commentsForFeedID.add(this.extractCommentsFromResult(resultSet));
+            logger.info("Returning feed's list of comments as response");
         }
-        logger.info("Returning feed's list of comments as response");
+
         return commentsForFeedID;
     }
 
@@ -158,7 +159,7 @@ public class CommentDaoImpl implements ICommentsDao {
 
     private CommentDto extractCommentsFromResult(ResultSet resultSet) throws SQLException {
         CommentDto comments = new CommentDto();
-        if (resultSet != null) {
+        if (resultSet.next()) {
             comments.setCommentId(resultSet.getInt("Comment_id"));
             comments.setCommentContent(resultSet.getString("Comment_content"));
             comments.setUserId(resultSet.getInt("User_id"));
