@@ -56,4 +56,8 @@ public class FeedControllerTest {
         assertEquals("Successfully retrieved feed", getResponse.getMessage());
         assertEquals(expectedFeeds, getResponse.getData());
     }
+
+    public void deleteCommentForFeedid() {
+
+    }
 }

@@ -86,8 +86,9 @@ public class UserServiceTest {
         verify(userDao).userToPremiumPayment(userID, details);
     }
 
+    //needs to be fixed
     @Test
-    public void testStartExtendPremium() throws Exception { //needs to be fixed
+    public void testStartExtendPremium() throws Exception {
         // Arrange
         int userID = 1;
         int paymentID = 123;

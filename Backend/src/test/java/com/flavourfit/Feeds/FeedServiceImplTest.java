@@ -2,12 +2,16 @@ package com.flavourfit.Feeds;
 
 import com.flavourfit.Feeds.Comments.CommentDto;
 import com.flavourfit.Feeds.Comments.CommentServiceImpl;
+import com.flavourfit.Feeds.Comments.ICommentsDao;
+import com.flavourfit.Feeds.Comments.ICommentsService;
 import com.flavourfit.Trackers.Calories.CalorieHistoryServiceImpl;
 import com.flavourfit.Trackers.Calories.ICalorieHistoryDao;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.sql.SQLException;
@@ -27,8 +31,19 @@ public class FeedServiceImplTest {
     @InjectMocks
     private FeedServiceImpl feedService;
 
-    @InjectMocks
-    private CommentServiceImpl commentService;
+//    @InjectMocks
+//    private CommentServiceImpl commentService;
+
+    @Mock
+    private ICommentsService commentService;
+
+//    @Mock
+//    private ICommentsDao commentsDao;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     public void getFeedsByUserTest() throws SQLException {
@@ -45,7 +60,7 @@ public class FeedServiceImplTest {
     @Test
     public void getFeedsByIdTest() throws Exception {
         // Arrange
-        int feedId = 1;
+        int feedId = 9;
         FeedDto feed = new FeedDto();
         feed.setFeedId(feedId);
         feed.setFeedContent("Test feed content");
@@ -64,7 +79,8 @@ public class FeedServiceImplTest {
         feed.setComments(comments);
 
         when(feedDao.getFeedsById(feedId)).thenReturn(feed);
-        when(commentService.getCommentsByFeeds(feedId)).thenReturn(comments);
+        //when(commentsDao.getCommentsByFeedId(feedId)).thenReturn(comments);
+        when(commentService.getCommentsByFeeds(feedId)).thenReturn(feed.getComments());
 
         // Act
         FeedDto result = feedService.getFeedsByID(feedId);

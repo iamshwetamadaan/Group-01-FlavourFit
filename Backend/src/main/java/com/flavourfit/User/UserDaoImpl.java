@@ -217,8 +217,16 @@ public class UserDaoImpl implements IUserDao {
         preparedStatement.setString(1, newPassword);
         preparedStatement.setInt(2, userId);
         logger.info("Execute the update of record to the table");
-        preparedStatement.executeUpdate();
+        int rows = preparedStatement.executeUpdate();
 
+        if (rows > 0){
+            logger.info("Updated Password with userId: {}, to the Users table!", userId);
+            return true;
+        } else {
+            logger.warn("Incorrect user id; not found");
+            return false;
+        }
+/**
         ResultSet keys = preparedStatement.getGeneratedKeys();
         long updateUserIdPassword;
         while (keys.next()) {
@@ -227,6 +235,7 @@ public class UserDaoImpl implements IUserDao {
         }
 
         return true;
+ **/
     }
 
     @Override

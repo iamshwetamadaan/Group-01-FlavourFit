@@ -31,7 +31,6 @@ public class UserControllerTest {
 
     @InjectMocks
     UserController userController;
-
     @Mock
     IUserService userService;
     @Mock
