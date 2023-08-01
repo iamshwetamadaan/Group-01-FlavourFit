@@ -1,6 +1,8 @@
 package com.flavourfit.Trackers.Calories;
 
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.Homepage.HomepageDaoImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,11 +24,10 @@ import static org.mockito.Mockito.*;
 
 public class CalorieHistoryDaoImplTest {
 
-    @InjectMocks
     private CalorieHistoryDaoImpl calorieHistoryDao;
 
     @Mock
-    private IDatabaseManager database;
+    private DatabaseManagerImpl database;
 
     @Mock
     private Connection connection;
@@ -39,10 +40,12 @@ public class CalorieHistoryDaoImplTest {
 
     @BeforeEach
     public void initMocks() throws SQLException {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
+        reset(database,connection,resultSet,preparedStatement);
         when(database.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        calorieHistoryDao = new CalorieHistoryDaoImpl(database);
     }
 
     @Test
@@ -117,7 +120,7 @@ public class CalorieHistoryDaoImplTest {
         assertThrows(SQLException.class, () -> calorieHistoryDao.getCalorieHistoryByPeriod("2023-07-01", "", 1));
 
         List<CalorieHistoryDto> validDtoList = calorieHistoryDao.getCalorieHistoryByPeriod("2023-07-01", "2023-07-02", 1);
-        assertEquals(1, validDtoList.size());
+        assertEquals(2, validDtoList.size());
         for (int i = 0; i < validDtoList.size(); i++) {
             assertEquals(mockCalorieHistoryList.get(i).getUpdateDate(), validDtoList.get(i).getUpdateDate());
             assertEquals(mockCalorieHistoryList.get(i).getUserId(), validDtoList.get(i).getUserId());

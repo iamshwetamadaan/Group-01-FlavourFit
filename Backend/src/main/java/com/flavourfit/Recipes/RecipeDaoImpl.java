@@ -22,8 +22,8 @@ public class RecipeDaoImpl implements IRecipeDao {
     private Connection connection;
 
     @Autowired
-    public RecipeDaoImpl() {
-        this.database = DatabaseManagerImpl.getInstance();
+    public RecipeDaoImpl(DatabaseManagerImpl database) {
+        this.database = database;
         if (this.database != null && this.database.getConnection() != null) {
             this.connection = this.database.getConnection();
         }

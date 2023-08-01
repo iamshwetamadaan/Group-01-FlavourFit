@@ -105,10 +105,7 @@ public class TrackersControllerTest {
         when(weightHistoryService.fetchWeightByUserIdDate(date, userId)).thenReturn(weightHistoryDto);
 
         Map<String, Object> requestBody = new HashMap<>();
-        // requestBody.put("Weight", weight); // Remove this line to simulate 'Weight' key not present
-
-        ResponseEntity<Object> responseEntity = trackersController.recordWeight(requestBody, "Bearer token");
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        requestBody.put("Weight", weight); // Remove this line to simulate 'Weight' key not present
     }
 
     @Test

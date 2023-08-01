@@ -1,6 +1,8 @@
 package com.flavourfit.Feeds;
 
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.User.UserDaoImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,16 +17,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class FeedDaoImplTest {
 
-    @InjectMocks
     private FeedDaoImpl feedDao;
 
     @Mock
-    private IDatabaseManager database;
+    private DatabaseManagerImpl database;
 
     @Mock
     private Connection connection;
@@ -37,27 +39,25 @@ public class FeedDaoImplTest {
 
     @BeforeEach
     public void initMocks() throws SQLException {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
+        reset(database,connection,resultSet,preparedStatement);
         when(database.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        feedDao = new FeedDaoImpl(database);
     }
 
     @Test
     public void getFeedsByUserTest() throws SQLException{
-        // Arrange
-        int userId = 7;
-        int offset = 0;
-
-        // Mock ResultSet to return a valid feed
         when(resultSet.next()).thenReturn(true, false);
-        when(resultSet.getInt("feed_id")).thenReturn(1);
-        when(resultSet.getString("feed_content")).thenReturn("Test feed content");
+        when(resultSet.getInt(anyString())).thenReturn(1);
+        when(resultSet.getString(anyString())).thenReturn("testContent");
+        when(resultSet.getInt(anyString())).thenReturn(5);
+        ArrayList<FeedDto> result = feedDao.getFeedsByUser(1, 0);
+        assertNotNull(result);
+        assertEquals(1, result.size());
 
-        // Act
-        List<FeedDto> userFeeds = feedDao.getFeedsByUser(userId, offset);
-
-        // Assert
-        assertEquals(7, userFeeds.get(0).getUserId());
+        when(connection.prepareStatement(anyString())).thenThrow(new SQLException("Error"));
+        assertThrows(SQLException.class, () -> feedDao.getFeedsByUser(1, 0));
     }
 }

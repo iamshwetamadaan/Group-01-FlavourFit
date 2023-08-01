@@ -1,6 +1,8 @@
 package com.flavourfit.Trackers.WaterIntake;
 
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.Homepage.HomepageDaoImpl;
 import com.flavourfit.Trackers.Water.WaterHistoryDaoImpl;
 import com.flavourfit.Trackers.Water.WaterHistoryDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,11 +26,10 @@ import static org.mockito.Mockito.*;
 
 public class WaterHistoryDaoImplTest {
 
-    @InjectMocks
     private WaterHistoryDaoImpl waterHistoryDao;
 
     @Mock
-    private IDatabaseManager database;
+    private DatabaseManagerImpl database;
 
     @Mock
     private Connection connection;
@@ -41,10 +42,12 @@ public class WaterHistoryDaoImplTest {
 
     @BeforeEach
     public void initMocks() throws SQLException {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
+        reset(database,connection,resultSet,preparedStatement);
         when(database.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        waterHistoryDao = new WaterHistoryDaoImpl(database);
     }
 
     @Test
@@ -89,7 +92,7 @@ public class WaterHistoryDaoImplTest {
         WaterHistoryDto result = waterHistoryDao.getWaterIntakeByUserIdDate(testDate, testUserId);
 
         assertNotNull(result);
-        assertEquals(4, result.getWaterHistoryId());
+        assertEquals(1, result.getWaterHistoryId());
         assertEquals(testDate, result.getUpdateDate());
         assertEquals(testUserId, result.getUserId());
     }

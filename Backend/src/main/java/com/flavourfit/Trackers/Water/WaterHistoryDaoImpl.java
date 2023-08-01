@@ -25,8 +25,8 @@ public class WaterHistoryDaoImpl implements IWaterHistoryDao {
     private Connection connection;
 
     @Autowired
-    public WaterHistoryDaoImpl() {
-        this.database = DatabaseManagerImpl.getInstance();
+    public WaterHistoryDaoImpl(DatabaseManagerImpl database) {
+        this.database = database;
         if (this.database != null && this.database.getConnection() != null) {
             this.connection = this.database.getConnection();
         }

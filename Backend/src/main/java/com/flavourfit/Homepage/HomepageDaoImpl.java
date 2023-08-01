@@ -23,8 +23,8 @@ public class HomepageDaoImpl implements IHomepageDao {
     private Connection connection;
 
     @Autowired
-    public HomepageDaoImpl() {
-        this.database = DatabaseManagerImpl.getInstance();
+    public HomepageDaoImpl(DatabaseManagerImpl database) {
+        this.database = database;
         if (this.database != null && this.database.getConnection() != null) {
             this.connection = this.database.getConnection();
         }

@@ -21,8 +21,8 @@ public class AppointmentsDaoImpl implements IAppointmentsDao{
     private Connection connection;
 
     @Autowired
-    public AppointmentsDaoImpl() {
-        this.database = DatabaseManagerImpl.getInstance();
+    public AppointmentsDaoImpl(DatabaseManagerImpl database) {
+        this.database = database;
         if (this.database != null && this.database.getConnection() != null) {
             this.connection = this.database.getConnection();
         }

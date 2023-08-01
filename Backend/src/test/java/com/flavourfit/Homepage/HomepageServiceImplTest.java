@@ -1,6 +1,5 @@
 package com.flavourfit.HomePage;
 
-import com.flavourfit.Homepage.DTO.HomepageDto;
 import com.flavourfit.Homepage.DTO.RoutineDTO;
 import com.flavourfit.Homepage.HomepageDaoImpl;
 import com.flavourfit.Homepage.HomepageServiceImpl;

@@ -21,8 +21,8 @@ public class UserDaoImpl implements IUserDao {
     private Connection connection;
 
     @Autowired
-    public UserDaoImpl() {
-        this.database = DatabaseManagerImpl.getInstance();
+    public UserDaoImpl(DatabaseManagerImpl database) {
+        this.database = database;
         if (this.database != null && this.database.getConnection() != null) {
             this.connection = this.database.getConnection();
         }
