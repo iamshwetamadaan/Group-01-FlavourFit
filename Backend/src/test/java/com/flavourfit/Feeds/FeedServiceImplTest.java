@@ -2,6 +2,7 @@ package com.flavourfit.Feeds;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flavourfit.Authentication.IAuthService;
+import com.flavourfit.Exceptions.FeedsException;
 import com.flavourfit.Feeds.Comments.CommentDto;
 import com.flavourfit.Feeds.Comments.CommentServiceImpl;
 import com.flavourfit.Feeds.Comments.ICommentsService;
@@ -9,18 +10,17 @@ import com.flavourfit.Helpers.FeedHelper;
 import com.flavourfit.Recipes.CompleteRecipeDto;
 import com.flavourfit.Recipes.IRecipeService;
 import com.flavourfit.Recipes.RecipeDto;
-import com.mysql.cj.xdevapi.JsonString;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -37,21 +37,10 @@ public class FeedServiceImplTest {
 
     @InjectMocks
     private FeedServiceImpl feedService;
-    @Mock
-    private IAuthService authService;
-
-    @Mock
-    private IRecipeService recipeService;
-
-    private MockMvc mockMvc;
 
     @InjectMocks
     private CommentServiceImpl commentService;
 
-    @Before
-    public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(feedService).build();
-    }
 
     @Test
     public void getFeedsByUserTest() throws SQLException {
@@ -66,104 +55,62 @@ public class FeedServiceImplTest {
     }
 
     @Test
-    public void recordPostTest() throws Exception {
-        int userId = 0;
-        String token = "dummyToken";
+    public void recordPostTest() throws FeedsException {
         FeedDto feedDto = new FeedDto();
-        feedDto.setFeedId(0); // Simulate adding a new feed
+        feedDto.setFeedId(0);
+        feedDto.setFeedContent("Test post content");
+        CommentDto commentDto = new CommentDto();
+        commentDto.setCommentContent("Wow!");
+        int userId = 123;
+        commentService.recordComment(commentDto, userId);
+        FeedDto result = feedService.recordPost(feedDto, userId);
+        // Asserting a new post feed
+        assertNotNull(result);
+        assertEquals(userId, result.getUserId());
 
-        // Configure mockito to return invalid userId
-        when(authService.extractUserIdFromToken(token)).thenReturn(userId);
-        mockMvc.perform(put("/feeds/record-post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(feedDto))
-                        .header("Authorization", token))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Invalid userId for feed"))
-                .andExpect(jsonPath("$.data").doesNotExist());
+        //Asserting existing post feed
+        feedDto.setFeedId(456);
+        feedDto.setFeedContent("Updated post content");
+        userId = 789;
+        result = feedService.recordPost(feedDto, userId);
+        assertNotNull(result);
+        assertEquals(userId, result.getUserId());
 
+        //Asserting invalid user id
+        feedDto.setFeedId(0);
+        feedDto.setFeedContent("Test post content");
+        int invalidUserId = 0;
+
+        assertThrows(FeedsException.class, () -> feedService.recordPost(feedDto, invalidUserId));
 
         //Success case
-        // Mocking behavior of the feedDao.addPost method to return a valid feedId
-        userId=1; //setting user for successful authentication
-        int feedId = 123;
-        when(authService.extractUserIdFromToken(token)).thenReturn(userId);
-        when(feedService.recordPost(feedDto, userId)).thenReturn(feedDto);
-        when(feedDao.addPost(feedDto)).thenReturn(feedId);
+        //Asserting valid recipeID and userID
+        int recipeId = 789;
+        userId = 123;
 
-        mockMvc.perform(put("/feeds/record-post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(feedDto))
-                        .header("Authorization", token))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.message").value("Successfully recorded feed"))
-                .andExpect(jsonPath("$.data").exists());
+        result = feedService.postRecipe(recipeId, userId);
+
+        assertNotNull(result);
+        assertEquals(userId, result.getUserId());
 
     }
 
     @Test
-    public void postRecipeTest() throws Exception {
-        int userId = 0;
-        int recipeId = 123;
-        String token = "dummyToken";
-        CompleteRecipeDto recipe = new CompleteRecipeDto();
-        recipe.setRecipe(new RecipeDto());
-        recipe.setIngredients(new ArrayList<>(4));
+    public void postRecipeTest() throws FeedsException {
+        RecipeDto recipeDto = new RecipeDto();
+        recipeDto.setRecipeId(676);
+        recipeDto.setRecipeName("Make burger");
+        FeedDto result = feedService.postRecipe(676, 667);
 
-        // Configure mockito to return valid userId and recipe
-        when(authService.extractUserIdFromToken(token)).thenReturn(userId);
-        //Invalid user id
+        // Assertion
+        assertNotNull(result);
+        assertEquals(667, result.getUserId());
 
-        mockMvc.perform(put("/feeds/post-recipe")
-                        .param("recipeId", String.valueOf(recipeId))
-                        .header("Authorization", token))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Invalid user"))
-                .andExpect(jsonPath("$.data").doesNotExist());
-
-        //
-        userId=1;
-        when(authService.extractUserIdFromToken(token)).thenReturn(userId);
-        when(recipeService.fetchRecipeByRecipeId(recipeId)).thenReturn(recipe);
-
-        FeedDto feedDto = FeedHelper.convertRecipeToFeed(recipe.getRecipe(), recipe.getIngredients());
-
-        // Mock the behavior of the feedService.recordPost method to return a valid FeedDto
-        when(feedService.recordPost(feedDto, userId)).thenReturn(feedDto);
+        assertThrows(FeedsException.class, () -> feedService.postRecipe(0, 124));
 
 
-        //Invalid Recipe
-        mockMvc.perform(put("/feeds/post-recipe")
-                        .param("recipeId", String.valueOf(recipeId))
-                        .header("Authorization", token))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Invalid recipe"))
-                .andExpect(jsonPath("$.data").doesNotExist());
+        assertThrows(RuntimeException.class, () -> feedService.postRecipe(789, 0));
 
-
-
-        //Success
-        userId =1;
-        when(authService.extractUserIdFromToken(token)).thenReturn(userId);
-        mockMvc.perform(put("/feeds/post-recipe")
-                        .param("recipeId", String.valueOf(recipeId))
-                        .header("Authorization", token))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.message").value("Successfully posted recipe"))
-                .andExpect(jsonPath("$.data").exists());
     }
 
-    static String asJsonString(final Object obj) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
