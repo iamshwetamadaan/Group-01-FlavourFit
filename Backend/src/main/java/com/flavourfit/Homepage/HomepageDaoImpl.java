@@ -33,6 +33,7 @@ public class HomepageDaoImpl implements IHomepageDao {
     @Override
     public List<HomepageEventDto> getEventList() throws
             SQLException {
+
         logger.info("Started getEventList() method");
 
 
@@ -67,7 +68,7 @@ public class HomepageDaoImpl implements IHomepageDao {
         logger.info("Execute the query to get event list.");
         ResultSet resultSet = preparedStatement.executeQuery();
 
-        List<RoutineDTO> routines = this.extractResultListRoutines(resultSet);
+        List<RoutineDTO> routines = extractResultListRoutines(resultSet);
 
         return routines;
 

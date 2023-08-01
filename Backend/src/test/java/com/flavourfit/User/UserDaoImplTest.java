@@ -140,4 +140,20 @@ public class UserDaoImplTest {
         when(resultSet.getString("First_name")).thenReturn(testUser.getFirstName());
     }
 
+    @Test
+    public void updateUserTest() throws SQLException{
+        UserDto userDto = new UserDto();
+
+
+        when(connection.prepareStatement(anyString(), eq(Statement.RETURN_GENERATED_KEYS)))
+                .thenReturn(preparedStatement);
+        when(preparedStatement.executeUpdate()).thenReturn(1); // Assuming the update is successful
+
+        // Act
+        int result = userDaoImpl.updateUser(userDto);
+
+        // Assert
+        assertEquals(0, result);
+    }
+
 }
