@@ -78,4 +78,22 @@ public class FeedServiceImplTest {
         verify(feedDao).getFeedsById(feedId);
         verify(commentService).getCommentsByFeeds(feedId);
     }
+
+    @Test
+    public void updateLikesForFeedTest() throws Exception {
+        // Arrange
+        int feedId = 1;
+        int initialLikes = 10;
+        int expectedUpdatedLikes = initialLikes + 1;
+
+        when(feedDao.updateFeedLikes(feedId)).thenReturn(expectedUpdatedLikes);
+
+        // Act
+        int result = feedService.increaseFeedLikes(feedId);
+
+        // Assert
+        assertEquals(expectedUpdatedLikes, result);
+
+        verify(feedDao).updateFeedLikes(feedId);
+    }
 }

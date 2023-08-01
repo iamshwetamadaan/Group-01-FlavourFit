@@ -51,7 +51,6 @@ public class FeedDaoImpl implements IFeedDao {
 
     @Override
     public int updateFeedLikes(int feedId) throws SQLException {
-        int likesUpdated = 0;
         logger.info("Started updateFeedLikes() method");
 
         this.testConnection();
@@ -61,8 +60,7 @@ public class FeedDaoImpl implements IFeedDao {
         preparedStatement1.setInt(1, feedId);
         ResultSet resultSet = preparedStatement1.executeQuery();
 
-        likesUpdated = this.extractUserFeedsFromResult(resultSet).getLikeCount();
-        likesUpdated = +1;
+        int likesUpdated = this.extractUserFeedsFromResult(resultSet).getLikeCount() + 1;
 
         logger.info("Creating a prepared statement to update record.");
         String query = "UPDATE Feeds SET like_count = ? where Feed_id = ?";
@@ -73,14 +71,9 @@ public class FeedDaoImpl implements IFeedDao {
         logger.info("Execute the update of record to the table");
         preparedStatement2.executeUpdate();
 
-        ResultSet keys = preparedStatement2.getGeneratedKeys();
-        long updatedLikesFeedID;
-        while (keys.next()) {
-            updatedLikesFeedID = keys.getLong(1);
-            logger.info("Updated likes with feedId: {}, to the Feeds table!", updatedLikesFeedID);
-        }
+        logger.info("Updated likes with feedId: {}, to the Feeds table!", feedId, likesUpdated);
 
-        return likesUpdated;
+        return feedId;
     }
 
     @Override

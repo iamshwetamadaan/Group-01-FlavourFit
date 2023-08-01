@@ -62,7 +62,7 @@ public class FeedDaoImplTest {
     }
 
     @Test
-    public void testGetFeedsById_ValidFeedId_ShouldReturnFeedDto() throws SQLException {
+    public void testGetFeedsById() throws SQLException {
         // Arrange
         int feedId = 1;
         PreparedStatement preparedStatement = mock(PreparedStatement.class);
@@ -91,5 +91,23 @@ public class FeedDaoImplTest {
         verify(preparedStatement).executeQuery();
         verify(resultSet).next();
         verify(feedDao).extractUserFeedsFromResult(resultSet);
+    }
+
+    @Test
+    public void testForLikesUpdate() throws Exception{
+        // Arrange
+        int feedId = 1;
+        int initialLikes = 10;
+        int expectedUpdatedLikes = initialLikes + 1;
+
+        FeedDto feed = new FeedDto();
+        feed.setFeedId(feedId);
+        feed.setLikeCount(initialLikes);
+
+        // Act
+        int result = feedDao.updateFeedLikes(feedId);
+
+        // Assert
+        assertEquals(feedId, result);
     }
 }
