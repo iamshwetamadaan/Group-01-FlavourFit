@@ -44,6 +44,7 @@ public class UserControllerTest {
     public void init() {
         MockitoAnnotations.openMocks(this);
     }
+
     @Test
     public void userPremiumPaymentTest() throws PaymentException, SQLException {
         int userId = 1;
