@@ -31,7 +31,6 @@ public class UserControllerTest {
 
     @InjectMocks
     UserController userController;
-
     @Mock
     IUserService userService;
     @Mock
@@ -44,42 +43,68 @@ public class UserControllerTest {
     public void init() {
         MockitoAnnotations.openMocks(this);
     }
-    @Test
-    public void userPremiumPaymentTest() throws PaymentException {
-        /**
-        // Pass Case
-        PremiumUserPaymentDetailsDto requestValid = new PremiumUserPaymentDetailsDto();
-        int user_id = 1;
-        requestValid.setCardNumber("9876543210123456");
-        requestValid.setExpiryMonth("02");
-        requestValid.setExpiryYear("23");
-        requestValid.setCvv("667");
-        requestValid.setStartDate();
-        requestValid.setEndDate();
-
-        ResponseEntity responseEntity1 = userController.getUserPaymentForPremium(, requestValid);
-
-        assertEquals(HttpStatus.OK, responseEntity1.getStatusCode());
-        assertEquals((String) requestValid.get("userID"), responseEntity1.getBody());
-         **/
-    }
 
     @Test
-    public void editUserTest() throws SQLException{
-        UserDto userDto = new UserDto();
-        userDto.setUserId(1);
-        String token = "in valid token";
-        when(authService.extractUserIdFromToken(token)).thenReturn(1); // Assuming the token is valid
-        when(userService.updateUser(any(UserDto.class))).thenReturn(1); // Assuming the update is successful
+    public void getUserPaymentForPremiumTest() throws PaymentException, SQLException {
 
-        // Act
-        ResponseEntity<Object> response = userController.editUser(userDto, token);
+        int userId = 1;
+        String token = "valid-token";
+        PremiumUserPaymentDetailsDto request = new PremiumUserPaymentDetailsDto();
+        request.setCardNumber("1111111111111111");
+        request.setExpiryMonth("11");
+        request.setExpiryYear("12");
+        request.setCvv("112");
 
-        // Assert
+        when(authService.extractUserIdFromToken(token)).thenReturn(1);
+        when(userService.paymentForPremium(userId, request)).thenReturn(1);
+
+        ResponseEntity<PutResponse> response = userController.getUserPaymentForPremium(token, request);
+
+        assertNotNull(response);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertTrue(response.getBody() instanceof PutResponse);
-        PutResponse putResponse = (PutResponse) response.getBody();
-        assertFalse(putResponse.isSuccess());
+        PutResponse responseBody = response.getBody();
+        assertNotNull(responseBody);
+        assertTrue(!responseBody.isSuccess());
+    }
+    @Test
+    public void resetPasswordTest() throws SQLException {
+
+        int userId = 1;
+        String newPassword = "NewValidPassword";
+        String token = "token";
+        Map<String, Object> request = new HashMap<>();
+        request.put("newPassword", newPassword);
+
+        when(authService.extractUserIdFromToken(token)).thenReturn(1); // Assuming the token is valid
+
+        ResponseEntity<Object> response = userController.resetPassword(request, token);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        PutResponse responseBody = (PutResponse) response.getBody();
+        assertNotNull(responseBody);
+        assertTrue(responseBody.isSuccess());
+        assertEquals("Successfully updated password", responseBody.getMessage());
+
     }
 
+    @Test
+    public void startPremiumMembershipTest() throws Exception {
+
+        String token = "token";
+        int userID = 1;
+        int paymentID = 123;
+
+        when(authService.extractUserIdFromToken(anyString())).thenReturn(userID);
+        when(userService.startExtendPremium(anyInt(), anyInt())).thenReturn(true);
+
+        ResponseEntity<PutResponse> response = userController.startPremiumMembership(token, paymentID);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        PutResponse responseBody = response.getBody();
+        assertNotNull(responseBody);
+        assertTrue(!responseBody.isSuccess());
+
+    }
 }

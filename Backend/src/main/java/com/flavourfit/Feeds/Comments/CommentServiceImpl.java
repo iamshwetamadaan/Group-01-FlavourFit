@@ -22,7 +22,8 @@ public class CommentServiceImpl implements ICommentsService {
     @Override
     public List<CommentDto> getCommentsByFeeds(int feedId) throws SQLException {
         logger.info("Started method getCommentsByFeeds()");
-        return commentsDao.getCommentsByFeedId(feedId);
+        List<CommentDto> comments = this.commentsDao.getCommentsByFeedId(feedId);
+        return comments;
     }
 
     @Override

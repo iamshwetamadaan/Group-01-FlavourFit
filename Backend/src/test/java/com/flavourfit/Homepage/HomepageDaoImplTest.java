@@ -2,8 +2,10 @@ package com.flavourfit.Homepage;
 
 import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.Homepage.DTO.RoutineDTO;
+import com.flavourfit.Recipes.RecipeDaoImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -37,7 +39,7 @@ public class HomepageDaoImplTest {
     @BeforeEach
     public void setUp() throws SQLException {
         MockitoAnnotations.openMocks(this);
-        reset(database,connection,resultSet,preparedStatement);
+        reset(database,connection,preparedStatement,resultSet);
         when(database.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);

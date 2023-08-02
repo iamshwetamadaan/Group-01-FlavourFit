@@ -217,8 +217,16 @@ public class UserDaoImpl implements IUserDao {
         preparedStatement.setString(1, newPassword);
         preparedStatement.setInt(2, userId);
         logger.info("Execute the update of record to the table");
-        preparedStatement.executeUpdate();
+        int rows = preparedStatement.executeUpdate();
 
+        if (rows > 0){
+            logger.info("Updated Password with userId: {}, to the Users table!", userId);
+            return true;
+        } else {
+            logger.warn("Incorrect user id; not found");
+            return false;
+        }
+/**
         ResultSet keys = preparedStatement.getGeneratedKeys();
         long updateUserIdPassword;
         while (keys.next()) {
@@ -227,6 +235,7 @@ public class UserDaoImpl implements IUserDao {
         }
 
         return true;
+ **/
     }
 
     @Override
@@ -247,10 +256,10 @@ public class UserDaoImpl implements IUserDao {
         String query = "INSERT INTO Payments (amount, reason, User_id, Premium_membership_id) VALUES (?,?,?,?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         logger.info("Entering values in prepared statement with actual values to be inserted");
-        preparedStatement.setDouble(0, details.getAmount());
-        preparedStatement.setString(1, "Premium Membership Payment");
-        preparedStatement.setInt(2, userId);
-        preparedStatement.setInt(3, 0);
+        preparedStatement.setDouble(1, details.getAmount());
+        preparedStatement.setString(2, "Premium Membership Payment");
+        preparedStatement.setInt(3, userId);
+        preparedStatement.setInt(4, 1);
         logger.info("Execute the update of record to the table");
         preparedStatement.executeUpdate();
 
@@ -265,7 +274,7 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public int startExtendPremiumMembership(int userId, Date startDate, Date expiryDate, int paymentID) throws
+    public int startExtendPremiumMembership(int userId, String startDate, String expiryDate, int paymentID) throws
             SQLException {
 
         int premiumMembershipID = 0;
@@ -283,12 +292,10 @@ public class UserDaoImpl implements IUserDao {
         String query = "INSERT INTO Premium_Memberships (Start_date, Expiry_date, Is_active, User_id) VALUES (?,?,?,?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         logger.info("Entering values in prepared statement with actual values to be inserted");
-        preparedStatement.setDate(0, startDate);
-        preparedStatement.setDate(1, expiryDate);
-
-        preparedStatement.setInt(2, 1);
-
-        preparedStatement.setInt(3, userId);
+        preparedStatement.setString(1, startDate);
+        preparedStatement.setString(2, expiryDate);
+        preparedStatement.setInt(3, 1);
+        preparedStatement.setInt(4, userId);
         logger.info("Execute the update of record to the table");
         preparedStatement.executeUpdate();
 
@@ -320,17 +327,25 @@ public class UserDaoImpl implements IUserDao {
         String query = "UPDATE Payments SET Premium_membership_id = ? where Payment_id = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         logger.info("Entering values in prepared statement with actual values to be inserted");
-        preparedStatement.setInt(0, premiumMembershipID);
-        preparedStatement.setInt(1, paymentID);
+        preparedStatement.setInt(1, premiumMembershipID);
+        preparedStatement.setInt(2, paymentID);
         logger.info("Execute the update of record to the table");
-        preparedStatement.executeUpdate();
+        int rowsAffected = preparedStatement.executeUpdate();
 
+        if (rowsAffected > 0){
+            paymentUpdated = true;
+            logger.info("Updated the ID for premium membership for paymentID: {}, to the Payments table!", paymentID);
+        } else {
+            paymentUpdated = false;
+        }
+/**
         ResultSet keys = preparedStatement.getGeneratedKeys();
-        long recheckPaymentID;
+        long recheckPaymentID =paymentID;
         while (keys.next()) {
             recheckPaymentID = keys.getInt(1);
             logger.info("Updated the ID for premium membership for paymentID: {}, to the Payments table!", recheckPaymentID);
         }
+ **/
         return paymentUpdated;
     }
 
