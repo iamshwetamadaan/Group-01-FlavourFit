@@ -137,20 +137,17 @@ class RecipeControllerTest {
 
     @Test
     public void convertRecipeTest() throws Exception{
-        // Arrange
+
         int recipeId = 1;
         double scale = 2.0;
         String system = "metric";
 
         CompleteRecipeDto convertedRecipe = new CompleteRecipeDto();
 
-
         when(recipeService.convertRecipe(recipeId, scale, system)).thenReturn(convertedRecipe);
 
-        // Act
         ResponseEntity<PutResponse> response = recipeController.covertRecipe(recipeId, scale, system);
 
-        // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(true, response.getBody().isSuccess());
         assertEquals("Successfully converted recipe", response.getBody().getMessage());

@@ -49,7 +49,6 @@ public class RecipeServiceImpl implements IRecipeService {
     }
 
     @Override
-
     public ArrayList<Object> getFilteredRecipesByUser(int id, HashMap<String, Object> requestBody) throws SQLException {
         logger.info("Started method getFilteredRecipesByUser");
         return recipeDao.getFilteredRecipesByUser(id, requestBody);

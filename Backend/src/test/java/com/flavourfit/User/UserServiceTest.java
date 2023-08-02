@@ -60,14 +60,13 @@ public class UserServiceTest {
 
         boolean result = userService.resetPassword(userID, newPassword);
 
-        // Assert
         assertTrue(result);
         verify(passwordEncoder).encode(newPassword);
     }
 
     @Test
     public void testPaymentForPremium() throws Exception {
-        // Arrange
+
         int userID = 1;
         PremiumUserPaymentDetailsDto details = new PremiumUserPaymentDetailsDto();
         details.setCardNumber("1234567812345678");
@@ -77,19 +76,17 @@ public class UserServiceTest {
 
         when(userDao.userToPremiumPayment(userID, details)).thenReturn(1234);
 
-        // Act
         int paymentID = userService.paymentForPremium(userID, details);
 
-        // Assert
         assertEquals(1234, paymentID);
 
         verify(userDao).userToPremiumPayment(userID, details);
     }
 
-    //needs to be fixed
+
     @Test
     public void testStartExtendPremium() throws Exception {
-        // Arrange
+
         int userID = 1;
         int paymentID = 123;
 
@@ -99,10 +96,8 @@ public class UserServiceTest {
         when(userDao.startExtendPremiumMembership(userID, startDate, expiryDate, paymentID)).thenReturn(567);
         when(userDao.updateUserPayment(userID, paymentID, 567)).thenReturn(true);
 
-        // Act
         boolean result = userService.startExtendPremium(userID, paymentID);
 
-        // Assert
         assertTrue(result);
         verify(userDao).startExtendPremiumMembership(userID, startDate, expiryDate, paymentID);
         verify(userDao).updateUserPayment(userID, paymentID, 567);

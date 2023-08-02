@@ -46,6 +46,7 @@ public class UserControllerTest {
 
     @Test
     public void getUserPaymentForPremiumTest() throws PaymentException, SQLException {
+
         int userId = 1;
         String token = "valid-token";
         PremiumUserPaymentDetailsDto request = new PremiumUserPaymentDetailsDto();
@@ -57,10 +58,8 @@ public class UserControllerTest {
         when(authService.extractUserIdFromToken(token)).thenReturn(1);
         when(userService.paymentForPremium(userId, request)).thenReturn(1);
 
-        // Act
         ResponseEntity<PutResponse> response = userController.getUserPaymentForPremium(token, request);
 
-        // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         PutResponse responseBody = response.getBody();
@@ -69,7 +68,7 @@ public class UserControllerTest {
     }
     @Test
     public void resetPasswordTest() throws SQLException {
-        // Arrange
+
         int userId = 1;
         String newPassword = "NewValidPassword";
         String token = "token";
@@ -78,10 +77,8 @@ public class UserControllerTest {
 
         when(authService.extractUserIdFromToken(token)).thenReturn(1); // Assuming the token is valid
 
-        // Act
         ResponseEntity<Object> response = userController.resetPassword(request, token);
 
-        // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         PutResponse responseBody = (PutResponse) response.getBody();
@@ -93,7 +90,7 @@ public class UserControllerTest {
 
     @Test
     public void startPremiumMembershipTest() throws Exception {
-        // Arrange
+
         String token = "token";
         int userID = 1;
         int paymentID = 123;
@@ -101,10 +98,8 @@ public class UserControllerTest {
         when(authService.extractUserIdFromToken(anyString())).thenReturn(userID);
         when(userService.startExtendPremium(anyInt(), anyInt())).thenReturn(true);
 
-        // Act
         ResponseEntity<PutResponse> response = userController.startPremiumMembership(token, paymentID);
 
-        // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         PutResponse responseBody = response.getBody();
