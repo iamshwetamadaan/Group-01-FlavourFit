@@ -256,12 +256,4 @@ public class WaterHistoryDaoImpl implements IWaterHistoryDao {
 
         return waterHistoryList;
     }
-
-
-
-
-
-
-
-
 }

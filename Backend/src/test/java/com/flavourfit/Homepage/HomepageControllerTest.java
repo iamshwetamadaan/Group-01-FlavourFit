@@ -1,6 +1,7 @@
 package com.flavourfit.Homepage;
 
 import com.flavourfit.Authentication.IAuthService;
+import com.flavourfit.ResponsesDTO.GetResponse;
 import com.flavourfit.ResponsesDTO.PutResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,8 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -50,4 +55,23 @@ public class HomepageControllerTest {
         assertEquals("Successfully obtained the routines", response.getBody().getMessage());
         assertEquals(mockExerciseData, response.getBody().getData());
     }
+
+    @Test
+    public void testFetchEventList() {
+
+        List<HomepageEventDto> mockEventList = new ArrayList<>();
+        mockEventList.add(new HomepageEventDto(1, "Inhale and exhale", "2023-09-01", "2023-09-01", "100", "Sasha Berkley", "Yoga and Pilates event"));
+        mockEventList.add(new HomepageEventDto(2, "Fitness freak", "2023-09-07", "2023-09-07", "100", "John Mendow", "HIIT Workout session"));
+
+        when(homePageService.fetcheventlist()).thenReturn(mockEventList);
+        ResponseEntity<GetResponse> responseEntity = homepageController.fetcheventlist();
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        GetResponse response = responseEntity.getBody();
+        assertNotNull(response);
+        assertTrue(response.isSuccess());
+
+        assertEquals(mockEventList, response.getData());
+    }
+
 }

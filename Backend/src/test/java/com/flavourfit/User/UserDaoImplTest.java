@@ -63,7 +63,7 @@ public class UserDaoImplTest {
 
         when(resultSet.next()).thenReturn(true, false);
         when(resultSet.getInt("User_id")).thenReturn(user.getUserId()); // You can add more mock return values based on the user fields
-        when(resultSet.getString("Email")).thenReturn(user.getEmail());
+        when(resultSet.getString("Emailt")).thenReturn(user.getEmail());
         when(resultSet.getString("First_name")).thenReturn(user.getFirstName());
         when(resultSet.getString("Last_name")).thenReturn(user.getLastName());
 

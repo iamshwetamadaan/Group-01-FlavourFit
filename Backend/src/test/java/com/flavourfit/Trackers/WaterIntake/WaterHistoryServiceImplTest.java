@@ -1,5 +1,6 @@
 package com.flavourfit.Trackers.WaterIntake;
 
+import com.flavourfit.Helpers.DateHelpers;
 import com.flavourfit.Trackers.Water.IWaterHistoryDao;
 import com.flavourfit.Trackers.Water.WaterGraphDto;
 import com.flavourfit.Trackers.Water.WaterHistoryDto;
@@ -40,10 +41,19 @@ public class WaterHistoryServiceImplTest {
 
     }
 
-
     @Test
-    public void fetchCalorieByUserIdDateTest() {
+    public void fetchCalorieByUserIdDateTest() throws SQLException {
+        int userId = 1;
+        String date = "2023-07-01";
 
+        WaterHistoryDto mockWaterHistory = new WaterHistoryDto(1, 1500, date, userId);
+        when(waterHistoryDao.getWaterIntakeByUserIdDate(date, userId)).thenReturn(mockWaterHistory);
+
+        WaterHistoryDto result = waterHistoryService.fetchWaterIntakeByUserIdDate(date, userId);
+
+        verify(waterHistoryDao, times(1)).getWaterIntakeByUserIdDate(date, userId);
+        assertEquals(1500, result.getWaterIntake());
+        assertEquals(userId, result.getUserId());
     }
     @Test
     public void fetchWaterHistoryByPeriodTest() throws SQLException {
@@ -66,6 +76,21 @@ public class WaterHistoryServiceImplTest {
 
     }
 
+
+    @Test
+    public void fetchWaterIntakeByUserIdCurrentTest() throws SQLException {
+        int userId = 1;
+        double waterIntake = 1500;
+        String currentDate = "2023-08-01";
+
+        // Mock the response from the DAO
+        WaterHistoryDto expectedWaterHistoryDto = new WaterHistoryDto(1, waterIntake, currentDate, userId);
+        when(waterHistoryDao.getWaterIntakeByUserIdCurrent(userId)).thenReturn(expectedWaterHistoryDto);
+        WaterHistoryDto result = waterHistoryService.fetchWaterIntakeByUserIdCurrent(userId);
+
+        verify(waterHistoryDao, times(1)).getWaterIntakeByUserIdCurrent(userId);
+        assertEquals(expectedWaterHistoryDto, result);
+    }
 
 
 }
