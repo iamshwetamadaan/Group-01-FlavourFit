@@ -1,6 +1,14 @@
 package com.flavourfit.Homepage;
 
+import com.flavourfit.Exceptions.TrackerException;
+import com.flavourfit.Exceptions.UserNotFoundException;
+import com.flavourfit.Homepage.DTO.FitnessStreakDTO;
 import com.flavourfit.Homepage.DTO.RoutineDTO;
+import com.flavourfit.Trackers.Calories.CalorieHistoryDto;
+import com.flavourfit.Trackers.Calories.ICalorieHistoryService;
+import com.flavourfit.Trackers.Water.IWaterHistoryService;
+import com.flavourfit.Trackers.Water.WaterHistoryDto;
+import com.flavourfit.User.IUserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -11,6 +19,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,6 +30,15 @@ public class HomepageServiceImplTest {
 
     @InjectMocks
     private HomepageServiceImpl homepageService;
+
+    @Mock
+    private IWaterHistoryService waterHistoryService;
+
+    @Mock
+    private ICalorieHistoryService calorieHistoryService;
+
+    @Mock
+    private IUserService userService;
 
     @BeforeEach
     public void setUp() {
@@ -62,8 +80,32 @@ public class HomepageServiceImplTest {
 
         assertEquals(1, eventList.size()); // Check if two events are returned as expected
         assertEquals("Inhale and exhale", eventList.get(0).getEvent_name());
-        
+    }
 
+    @Test
+    void fetchTrackerSummaryTest() throws Exception {
+        int userId = 1;
+
+        WaterHistoryDto waterHistory = new WaterHistoryDto(100.0,"2023-08-01",userId);
+        CalorieHistoryDto calorieHistory = new CalorieHistoryDto(200.0,"2023-08-01",userId);
+        FitnessStreakDTO fitnessStreak = new FitnessStreakDTO();
+        fitnessStreak.setStreak(5);
+        fitnessStreak.setAvgCalorie(150.0);
+        fitnessStreak.setAvgWaterIntake(75.0);
+
+        when(waterHistoryService.fetchWaterIntakeByUserIdCurrent(userId)).thenReturn(waterHistory);
+        when(calorieHistoryService.fetchCalorieByUserIdCurrent(userId)).thenReturn(calorieHistory);
+        when(userService.fetchUserCurrentWeight(userId)).thenReturn(60.0);
+        when(homepageDao.getFitnessStreak(userId)).thenReturn(fitnessStreak);
+
+        Map<String, Object> trackerSummary = homepageService.fetchTrackerSummary(userId);
+
+        assertEquals(200.0, trackerSummary.get("calorieCount"));
+        assertEquals(100.0, trackerSummary.get("waterIntake"));
+        assertEquals(60.0, trackerSummary.get("currentWeight"));
+        assertEquals(5, trackerSummary.get("fitnessStreak"));
+        assertEquals(150.0, trackerSummary.get("averageStreakCalories"));
+        assertEquals(75.0, trackerSummary.get("averageStreakWater"));
     }
 
 }

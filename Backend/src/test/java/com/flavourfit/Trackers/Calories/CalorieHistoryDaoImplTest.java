@@ -50,30 +50,48 @@ public class CalorieHistoryDaoImplTest {
 
     @Test
     public void addCalorieCountTest() throws SQLException {
-        CalorieHistoryDto calorieHistoryDto = new CalorieHistoryDto(1, 0, "2023-07-01", 1);
+        CalorieHistoryDto calorieHistoryDto = new CalorieHistoryDto(1, 500.0, "2023-08-01", 1234);
+        calorieHistoryDao.addCalorieCount(calorieHistoryDto);
 
-        assertThrows(SQLException.class, () -> calorieHistoryDao.addCalorieCount(null));
+        try {
+            calorieHistoryDao.addCalorieCount(null);
+            fail("Expected SQLException not thrown");
+        } catch (SQLException e) {
+            assertEquals("CalorieHistoryDto object not valid!!", e.getMessage());
+        }
 
-        assertDoesNotThrow(() -> calorieHistoryDao.addCalorieCount(new CalorieHistoryDto(1, 0, "2023-07-01", 1)));
+        CalorieHistoryDto invalidCalorieCount = new CalorieHistoryDto(1, 0.0, "2023-08-01", 1234);
+        calorieHistoryDao.addCalorieCount(invalidCalorieCount);
 
-        assertThrows(SQLException.class, () -> calorieHistoryDao.addCalorieCount(new CalorieHistoryDto(1, 1500, "", 1)));
-
-        CalorieHistoryDto validDto = new CalorieHistoryDto(1, 1500, "2023-07-01", 1);
-        calorieHistoryDao.addCalorieCount(validDto);
+        CalorieHistoryDto invalidDate = new CalorieHistoryDto(1, 500.0, "", 1234);
+        try {
+            calorieHistoryDao.addCalorieCount(invalidDate);
+            fail("Expected SQLException not thrown");
+        } catch (SQLException e) {
+            assertEquals("Date not valid!!", e.getMessage());
+        }
     }
 
     @Test
     public void updateCalorieHistoryTest() throws SQLException {
-        CalorieHistoryDto calorieHistoryDto = new CalorieHistoryDto(1, 1500, "2023-07-01", 1);
+        CalorieHistoryDto calorieHistoryDto = new CalorieHistoryDto(1, 500.0, "2023-08-01", 1234);
+        calorieHistoryDao.updateCalorieHistory(calorieHistoryDto);
 
-        assertThrows(SQLException.class, () -> calorieHistoryDao.updateCalorieHistory(null));
+        try {
+            calorieHistoryDao.updateCalorieHistory(null);
+            fail("Expected SQLException not thrown");
+        } catch (SQLException e) {
+            assertEquals("Invalid data while updating calorie history!!", e.getMessage());
+        }
 
-        assertDoesNotThrow(() -> calorieHistoryDao.updateCalorieHistory(new CalorieHistoryDto(1, 0, "2023-07-01", 1)));
+        CalorieHistoryDto invalidDate = new CalorieHistoryDto(1, 500.0, "", 1234);
+        try {
+            calorieHistoryDao.updateCalorieHistory(invalidDate);
+            fail("Expected SQLException not thrown");
+        } catch (SQLException e) {
+            assertEquals("Invalid update date while updating calorie history!!", e.getMessage());
+        }
 
-        assertThrows(SQLException.class, () -> calorieHistoryDao.updateCalorieHistory(new CalorieHistoryDto(1, 1500, "", 1)));
-
-        CalorieHistoryDto validDto = new CalorieHistoryDto(1, 1500, "2023-07-01", 1);
-        calorieHistoryDao.updateCalorieHistory(validDto);
     }
 
     @Test

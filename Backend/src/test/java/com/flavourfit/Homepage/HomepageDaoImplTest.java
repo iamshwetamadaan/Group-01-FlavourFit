@@ -1,18 +1,14 @@
 package com.flavourfit.Homepage;
 
 import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
+import com.flavourfit.Homepage.DTO.FitnessStreakDTO;
 import com.flavourfit.Homepage.DTO.RoutineDTO;
-import com.flavourfit.Recipes.RecipeDaoImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyString;
@@ -34,6 +30,9 @@ public class HomepageDaoImplTest {
     private PreparedStatement preparedStatement;
 
     @Mock
+    CallableStatement callableStatement;
+
+    @Mock
     private ResultSet resultSet;
 
     @BeforeEach
@@ -43,6 +42,7 @@ public class HomepageDaoImplTest {
         when(database.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        when(connection.prepareCall(anyString())).thenReturn(callableStatement);
         homepageDao = new HomepageDaoImpl(database);
     }
 
@@ -98,6 +98,21 @@ public class HomepageDaoImplTest {
         assertEquals("Halifax : Free Fitness for Mind and Soul in 3 weeks course", eventList.get(0).getEvent_name());
         assertEquals("Wellness 1 Day Training in Halifax", eventList.get(1).getEvent_name());
         // Add more assertions for other properties if needed
+    }
+
+    @Test
+    void getFitnessStreakTest() throws Exception {
+        // Happy path
+        when(resultSet.next()).thenReturn(true).thenReturn(false);
+        when(resultSet.getDouble(1)).thenReturn(100.0).thenReturn(50.0);
+        when(resultSet.getInt(2)).thenReturn(5).thenReturn(3);
+
+        int userId = 1;
+        FitnessStreakDTO fitnessStreak = homepageDao.getFitnessStreak(userId);
+
+        assertEquals(20.0, fitnessStreak.getAvgCalorie());
+        assertEquals(0.0 , fitnessStreak.getAvgWaterIntake());
+        assertEquals(5, fitnessStreak.getStreak());
     }
 
 

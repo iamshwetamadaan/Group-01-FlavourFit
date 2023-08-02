@@ -12,12 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -72,6 +71,32 @@ public class HomepageControllerTest {
         assertTrue(response.isSuccess());
 
         assertEquals(mockEventList, response.getData());
+    }
+
+    @Test
+    void testFetchTrackerSummary() {
+        String token = "validToken";
+        int userId = 1;
+        Map<String, Object> trackerSummary = Collections.singletonMap("key", "value");
+
+        when(authService.extractUserIdFromToken(token)).thenReturn(userId);
+        when(homePageService.fetchTrackerSummary(userId)).thenReturn(trackerSummary);
+
+        ResponseEntity<GetResponse> response = homepageController.fetchTrackerSummary(token);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(response.getBody().isSuccess());
+        assertEquals("Successfully fetched trackerSummary", response.getBody().getMessage());
+        assertEquals(trackerSummary, response.getBody().getData());
+
+        when(authService.extractUserIdFromToken(token)).thenReturn(userId);
+        when(homePageService.fetchTrackerSummary(userId)).thenThrow(new RuntimeException("Failed to fetch"));
+
+        response = homepageController.fetchTrackerSummary(token);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertFalse(response.getBody().isSuccess());
+        assertTrue(response.getBody().getMessage().startsWith("Failed to fetch tracker summary"));
     }
 
 }

@@ -6,6 +6,7 @@ import com.flavourfit.Exceptions.PaymentException;
 import com.flavourfit.Exceptions.UserNotFoundException;
 import com.flavourfit.ResponsesDTO.AuthResponse;
 import com.flavourfit.ResponsesDTO.PutResponse;
+import com.flavourfit.Trackers.Weights.IWeightHistoryService;
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,9 @@ public class UserControllerTest {
     @InjectMocks
     private AuthController authController;
 
+    @Mock
+    IWeightHistoryService weightHistoryService;
+
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
@@ -66,6 +70,7 @@ public class UserControllerTest {
         assertNotNull(responseBody);
         assertTrue(!responseBody.isSuccess());
     }
+
     @Test
     public void resetPasswordTest() throws SQLException {
 
@@ -89,6 +94,54 @@ public class UserControllerTest {
     }
 
     @Test
+    void getUserByIDTest() {
+        String token = "validToken";
+        int userId = 1;
+        UserDto userDto = new UserDto();
+        userDto.setUserId(userId);
+
+        // Mocking the authService to return a fixed userId when a valid token is provided
+        when(authService.extractUserIdFromToken(token)).thenReturn(userId);
+
+        when(userService.fetchUserById(userId)).thenReturn(userDto);
+
+        ResponseEntity<PutResponse> result;
+        PutResponse response;
+
+        when(userService.fetchUserById(userId)).thenReturn(null);
+        result = userController.getUserByID(token);
+        response = result.getBody();
+        assertEquals(false, response.isSuccess());
+        assertEquals("Failed to load user details", response.getMessage());
+    }
+
+    @Test
+    void updateUserWeightTest() {
+        String token = "validToken";
+        int userId = 1;
+        double weight = 70.5;
+        Map<String, Double> body = new HashMap<>();
+        body.put("weight", weight);
+
+        when(authService.extractUserIdFromToken(token)).thenReturn(userId);
+        ResponseEntity<PutResponse> result = userController.updateUserWeight(body, token);
+        PutResponse response = result.getBody();
+        assertEquals(true, response.isSuccess());
+        assertEquals("Updated weight of user successfully", response.getMessage());
+
+        body.remove("weight");
+        result = userController.updateUserWeight(body, token);
+        response = result.getBody();
+        assertEquals(false, response.isSuccess());
+        assertEquals("Weight not sent in body", response.getMessage());
+
+        when(authService.extractUserIdFromToken(token)).thenThrow(new RuntimeException("Weight not sent in body"));
+        result = userController.updateUserWeight(body, token);
+        response = result.getBody();
+        assertEquals(false, response.isSuccess());
+        assertEquals("Weight not sent in body", response.getMessage());
+    }
+
     public void startPremiumMembershipTest() throws Exception {
 
         String token = "token";
