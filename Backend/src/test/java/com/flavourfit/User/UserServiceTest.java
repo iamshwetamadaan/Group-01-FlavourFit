@@ -66,7 +66,6 @@ public class UserServiceTest {
     }
 
     @Test
-<<<<<<< HEAD
     void fetchUserByIdTest() throws Exception {
         int userId = 42;
         UserDto expectedUser = new UserDto(); // Populate with expected data
@@ -123,7 +122,6 @@ public class UserServiceTest {
         assertThrows(RuntimeException.class, () -> userService.fetchUserCurrentWeight(userId), "Must throw RuntimeException for SQLException");
     }
 
-=======
     public void testPaymentForPremium() throws Exception {
 
         int userID = 1;
@@ -161,6 +159,5 @@ public class UserServiceTest {
         verify(userDao).startExtendPremiumMembership(userID, startDate, expiryDate, paymentID);
         verify(userDao).updateUserPayment(userID, paymentID, 567);
     }
->>>>>>> develop
 }
 

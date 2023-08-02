@@ -157,4 +157,31 @@ class RecipeDaoImplTest {
         assertNotNull(ingredientList);
     }
 
+    @Test
+    public void testAddRecipe() throws SQLException {
+        // Happy path
+        RecipeDto happyPathRecipe = new RecipeDto();
+        happyPathRecipe.setRecipeName("Pasta");
+        happyPathRecipe.setRecipeDescription("Delicious pasta");
+        happyPathRecipe.setTypes("Italian");
+        happyPathRecipe.setEditable(true);
+
+        ResultSet generatedKeys = mock(ResultSet.class);
+        when(connection.prepareStatement(anyString(), eq(Statement.RETURN_GENERATED_KEYS))).thenReturn(preparedStatement);
+        when(preparedStatement.getGeneratedKeys()).thenReturn(generatedKeys);
+
+        when(generatedKeys.next()).thenReturn(true,false);
+        when(generatedKeys.getLong(1)).thenReturn(1L);
+
+        RecipeDto addedRecipe = recipeDao.addRecipe(happyPathRecipe, 1);
+        assertEquals(1, addedRecipe.getRecipeId());
+
+        try {
+            recipeDao.addRecipe(null, 1);
+            fail("Expected SQLException");
+        } catch (SQLException e) {
+            assertEquals("Invalid recipe", e.getMessage());
+        }
+    }
+
 }
