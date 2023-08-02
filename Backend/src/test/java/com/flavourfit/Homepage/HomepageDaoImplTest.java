@@ -3,10 +3,8 @@ package com.flavourfit.Homepage;
 import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.Homepage.DTO.FitnessStreakDTO;
 import com.flavourfit.Homepage.DTO.RoutineDTO;
-import com.flavourfit.Recipes.RecipeDaoImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
