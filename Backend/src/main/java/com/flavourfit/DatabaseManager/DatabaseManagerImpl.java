@@ -23,6 +23,7 @@ public class DatabaseManagerImpl implements IDatabaseManager {
     private static DatabaseManagerImpl instance = null;
 
     private DatabaseManagerImpl() {
+        logger.warn("========= Constructor called");
         try {
             this.connect();
         } catch (DatabaseException e) {

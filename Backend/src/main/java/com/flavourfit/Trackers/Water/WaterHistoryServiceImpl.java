@@ -32,6 +32,10 @@ public class WaterHistoryServiceImpl implements IWaterHistoryService {
      * @param userId      -- int id of the user
      * @throws SQLException
      */
+
+
+
+
     @Override
     public void recordWaterIntake(double waterintake, int userId) throws SQLException {
         logger.info("Started recordWaterIntake() method!");

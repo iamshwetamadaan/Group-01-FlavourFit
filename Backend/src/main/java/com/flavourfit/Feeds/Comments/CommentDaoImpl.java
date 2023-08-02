@@ -19,8 +19,8 @@ public class CommentDaoImpl implements ICommentsDao {
     private Connection connection;
 
     @Autowired
-    public CommentDaoImpl() {
-        this.database = DatabaseManagerImpl.getInstance();
+    public CommentDaoImpl(DatabaseManagerImpl database) {
+        this.database = database;
         if (this.database != null && this.database.getConnection() != null) {
             this.connection = this.database.getConnection();
         }
@@ -43,11 +43,11 @@ public class CommentDaoImpl implements ICommentsDao {
     public List<CommentDto> getCommentsByFeedId(int feedId) throws SQLException {
         logger.info("Started getCommentsByFeedId() method");
 
-        List<CommentDto> commentsForFeedID = new ArrayList<CommentDto>();
+        List<CommentDto> commentsForFeedID = new ArrayList<>();
 
         this.testConnection();
 
-        logger.info("Running select query to get user by userId");
+        logger.info("Running select query to get comments for feedId");
 
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from Comments WHERE Feed_id=? ORDER BY Comment_id DESC");
         preparedStatement.setInt(1, feedId);
@@ -55,8 +55,9 @@ public class CommentDaoImpl implements ICommentsDao {
 
         while (resultSet.next()) {
             commentsForFeedID.add(this.extractCommentsFromResult(resultSet));
+            logger.info("Returning feed's list of comments as response");
         }
-        logger.info("Returning feed's list of comments as response");
+
         return commentsForFeedID;
     }
 
@@ -73,14 +74,14 @@ public class CommentDaoImpl implements ICommentsDao {
         logger.info("Replacing values in prepared statement with actual values to be inserted");
         preparedStatement.setInt(1, commentId);
         preparedStatement.setInt(2, feedId);
-        logger.info("Execute the update of record to the table");
+        logger.info("Execute the deletion of record to the table");
         int commentToBeDeleted = preparedStatement.executeUpdate();
 
         if (commentToBeDeleted > 0) {
             logger.info("Comment deleted successfully.");
             commentDeleted = true;
         } else {
-            logger.error("Comment with the given ID not found to be deleted.");
+            logger.error("Comment with the given comment ID not found to be deleted.");
         }
 
         logger.info("Returning boolean value to show whether feed's list of comments updated or not as response");
@@ -158,7 +159,7 @@ public class CommentDaoImpl implements ICommentsDao {
 
     private CommentDto extractCommentsFromResult(ResultSet resultSet) throws SQLException {
         CommentDto comments = new CommentDto();
-        if (resultSet != null) {
+        if (resultSet.next()) {
             comments.setCommentId(resultSet.getInt("Comment_id"));
             comments.setCommentContent(resultSet.getString("Comment_content"));
             comments.setUserId(resultSet.getInt("User_id"));

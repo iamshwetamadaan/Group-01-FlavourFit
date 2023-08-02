@@ -16,9 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class
@@ -46,18 +44,7 @@ HomepageServiceImpl implements IHomepageService {
     }
 
 
-    @Override
-    public List<HomepageEventDto> getEventList() {
 
-
-        try {
-            List<HomepageEventDto> eventlist = this.homepageDao.getEventList();
-
-            return eventlist;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Override
     public HashMap<String, Object> getExerciseByUser(int userID) throws SQLException {
@@ -112,5 +99,27 @@ HomepageServiceImpl implements IHomepageService {
         }
 
         return trackerSummary;
+    }
+
+    @Override
+    public List<HomepageEventDto> fetcheventlist() {
+        logger.info("Entered service method fetcheventlist()");
+        List<HomepageEventDto> eventlist = new ArrayList<>();
+        try {
+
+            List<HomepageEventDto> eventslist = this.homepageDao.getEventList();
+            logger.info("Fetching event list.");
+            HomepageEventDto event = this.geteventList(eventslist);
+            eventlist.add(new HomepageEventDto(event.getevent_ID(), event.getEvent_name(),event.getStart_date(),event.getEnd_date(),event.getCapacity(),event.getHostname(),event.getEvent_description()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return eventlist;
+    }
+
+    private HomepageEventDto geteventList( List<HomepageEventDto> eventlist) {
+        for (HomepageEventDto event : eventlist)
+                return event;
+        return null;
     }
 }

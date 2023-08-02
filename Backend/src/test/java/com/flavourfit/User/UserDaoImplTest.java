@@ -1,13 +1,14 @@
 package com.flavourfit.User;
 
-import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
+import com.flavourfit.Exceptions.UserNotFoundException;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import java.sql.*;
@@ -15,56 +16,67 @@ import java.util.List;
 
 public class UserDaoImplTest {
     @Mock
-    private IDatabaseManager database;
+    private DatabaseManagerImpl database;
 
     @Mock
     private Connection connection;
 
     @Mock
-    private Statement statement;
+    private PreparedStatement preparedStatement;
 
     @Mock
-    private PreparedStatement preparedStatement;
+    Statement statement;
 
     @Mock
     private ResultSet resultSet;
 
-    @InjectMocks
-    private UserDaoImpl userDaoImpl;
+    private UserDaoImpl userDao;
+
+    @Before
+    public void initMocks() throws SQLException {
+        MockitoAnnotations.openMocks(this);
+        reset(database, connection, resultSet, preparedStatement);
+        when(database.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        when(connection.createStatement()).thenReturn(statement);
+        when(connection.prepareStatement(anyString(), anyInt())).thenReturn(preparedStatement);
+        when(statement.executeQuery(anyString())).thenReturn(resultSet);
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        userDao = new UserDaoImpl(database);
+    }
 
     @BeforeEach
-    public void setUp() throws SQLException {
-        MockitoAnnotations.openMocks(this);
-        reset(database, connection, preparedStatement, statement);
-        when(database.getConnection()).thenReturn(connection);
-        when(connection.createStatement()).thenReturn(statement);
-        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
-        when(connection.prepareStatement(anyString(), anyInt())).thenReturn(preparedStatement);
-        when(statement.executeQuery(any())).thenReturn(resultSet);
-        when(preparedStatement.executeQuery()).thenReturn(resultSet);
-        userDaoImpl = new UserDaoImpl();
+    public void resetMocks() throws SQLException {
+        reset(resultSet);
     }
 
     @Test
-    public void getAllUsersTest() throws SQLException {
-        // Normal flow
-        when(resultSet.next()).thenReturn(true, true, true, false);
-        when(resultSet.getInt("User_id")).thenReturn(1, 2, 3);
-        when(resultSet.getString("First_name")).thenReturn("User1", "User2", "User3");
-        when(resultSet.getString("Last_name")).thenReturn("Last1", "Last2", "Last3");
-        when(resultSet.getString("Phone")).thenReturn("Phone1", "Phone2", "Phone3");
-        when(resultSet.getString("Email")).thenReturn("Email1", "Email2", "Email3");
-        when(resultSet.getInt("Age")).thenReturn(25, 30, 35);
-        when(resultSet.getString("Street_address")).thenReturn("Address1", "Address2", "Address3");
-        when(resultSet.getString("City")).thenReturn("City1", "City2", "City3");
-        when(resultSet.getString("State")).thenReturn("State1", "State2", "State3");
-        when(resultSet.getString("Zip_code")).thenReturn("Zip1", "Zip2", "Zip3");
-        when(resultSet.getDouble("Current_weight")).thenReturn(70.0, 80.0, 90.0);
-        when(resultSet.getDouble("Target_Weight")).thenReturn(65.0, 75.0, 85.0);
-        when(resultSet.getString("Type")).thenReturn("Type1", "Type2", "Type3");
-        when(resultSet.getString("Password")).thenReturn("Pass1", "Pass2", "Pass3");
+    public void testGetAllUsers() throws SQLException {
+        UserDto user = new UserDto();
+        user.setUserId(1);
+        user.setEmail("test@test.com");
+        user.setFirstName("Fname");
+        user.setLastName("Lname");
 
-        List<UserDto> users = userDaoImpl.getAllUsers();
+        when(statement.executeQuery("SELECT * from Users;")).thenReturn(resultSet);
+
+        when(resultSet.next()).thenReturn(true, false);
+        when(resultSet.getInt("User_id")).thenReturn(user.getUserId()); // You can add more mock return values based on the user fields
+        when(resultSet.getString("Email")).thenReturn(user.getEmail());
+        when(resultSet.getString("First_name")).thenReturn(user.getFirstName());
+        when(resultSet.getString("Last_name")).thenReturn(user.getLastName());
+
+        // Test the happy path
+        List<UserDto> users = userDao.getAllUsers();
+        assertEquals(1, users.size());
+        assertEquals(user.getUserId(), users.get(0).getUserId());
+        assertEquals(user.getEmail(), users.get(0).getEmail());
+        assertEquals(user.getFirstName(), users.get(0).getFirstName());
+        assertEquals(user.getLastName(), users.get(0).getLastName());
+        assertEquals(user.getFullName(), users.get(0).getFullName());
+
+        when(connection.createStatement()).thenThrow(new SQLException("Failed to create statement"));
+        assertThrows(SQLException.class, () -> userDao.getAllUsers());
     }
 
     @Test
@@ -73,71 +85,180 @@ public class UserDaoImplTest {
         PremiumUserDto testUser = new PremiumUserDto();
         testUser.setUserId(testUserId);
 
-        when(database.getConnection()).thenReturn(connection);
-        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
-        when(preparedStatement.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true).thenReturn(false);
         when(resultSet.getInt("User_id")).thenReturn(testUser.getUserId());
 
-        PremiumUserDto user = userDaoImpl.getUserBymembership(testUserId);
+        PremiumUserDto user = userDao.getUserBymembership(testUserId);
         assertEquals(testUser.getUserId(), user.getUserId());
 
         when(resultSet.next()).thenReturn(false);
-        user = userDaoImpl.getUserBymembership(testUserId);
+        user = userDao.getUserBymembership(testUserId);
     }
-
 
     @Test
     public void getUserByIdTest() throws SQLException {
-        int testUserId = 1;
-        UserDto expectedUser = new UserDto();
-        expectedUser.setUserId(testUserId);
-        expectedUser.setFirstName("User1");
+        UserDto user = new UserDto();
+        user.setUserId(1);
+        user.setEmail("test@test.com");
+        user.setFirstName("fname");
+        user.setLastName("lname");
 
-        // Normal flow
-        when(resultSet.next()).thenReturn(true).thenReturn(
-                false); // This will ensure the while loop in getUserById() runs once and then exits
-        when(resultSet.getInt("User_id")).thenReturn(expectedUser.getUserId());
-        when(resultSet.getString("First_name")).thenReturn(expectedUser.getFirstName());
 
-        UserDto user = userDaoImpl.getUserById(testUserId);
+        when(resultSet.next()).thenReturn(true, false); // Simulate a single row in the result
+        when(resultSet.getInt("User_id")).thenReturn(user.getUserId());
+        when(resultSet.getString("Email")).thenReturn(user.getEmail());
+        when(resultSet.getString("First_name")).thenReturn(user.getFirstName());
+        when(resultSet.getString("Last_name")).thenReturn(user.getLastName());
+        UserDto result = userDao.getUserById(user.getUserId());
+
+        assertNotNull(result);
+        assertEquals(user.getUserId(), result.getUserId());
+        assertEquals(user.getEmail(), result.getEmail());
+        assertEquals(user.getFirstName(), result.getFirstName());
+        assertEquals(user.getLastName(), result.getLastName());
     }
 
     @Test
-    public void addUserTest() throws Exception {
-        UserDto testUser = new UserDto();
-        testUser.setUserId(1);
-        testUser.setFirstName("Test");
-        testUser.setEmail("Test@test1111111.com");
+    public void addUserTest() throws SQLException {
+        UserDto user = new UserDto();
+        user.setUserId(1);
+        user.setEmail("test@test.com");
+        user.setFirstName("fname");
+        user.setLastName("lname");
+        user.setPassword("password");
 
-        // Normal flow
-        when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
-        when(resultSet.next()).thenReturn(true).thenReturn(false);
-        when(resultSet.getLong(1)).thenReturn(1L);
-        
+        ResultSet keys = mock(ResultSet.class);
+        when(connection.prepareStatement(anyString(), eq(Statement.RETURN_GENERATED_KEYS))).thenReturn(preparedStatement);
+        when(preparedStatement.getGeneratedKeys()).thenReturn(keys);
+        when(keys.next()).thenReturn(true, false);
+        when(keys.getLong(1)).thenReturn(1L); // Simulate a generated user ID
 
-        // Reset for the next scenario
-        reset(database, connection, preparedStatement, resultSet);
-        setUp();
+        userDao.addUser(user);
+        assertEquals(1, user.getUserId()); // Check if the user ID was set correctly
 
-        // Null user scenario
-        Exception exception = assertThrows(SQLException.class, () -> userDaoImpl.addUser(null));
-        assertEquals("User object not valid!!", exception.getMessage());
-
+        assertThrows(SQLException.class, () -> {
+            userDao.addUser(null);
+        });
     }
 
     @Test
     public void testGetUserByEmail() throws Exception {
-        String testEmail = "test@test.com";
-        UserDto testUser = new UserDto();
-        testUser.setUserId(1);
-        testUser.setFirstName("Test");
+        String email = "test@example.com";
 
-        // Normal flow
-        when(preparedStatement.executeQuery()).thenReturn(resultSet);
-        when(resultSet.next()).thenReturn(true).thenReturn(false);
-        when(resultSet.getInt("User_id")).thenReturn(testUser.getUserId());
-        when(resultSet.getString("First_name")).thenReturn(testUser.getFirstName());
+        when(resultSet.next()).thenReturn(true, false);
+        when(resultSet.getString("Email")).thenReturn(email);
+
+        UserDto result = userDao.getUserByEmail(email);
+
+        assertNotNull(result);
+        assertEquals(email, result.getEmail());
+
+        when(resultSet.next()).thenReturn(false);
+
+        result = userDao.getUserByEmail(email);
+
+        assertNull(result);
     }
 
+    @Test
+    public void testResetUserPassword() throws Exception {
+        UserDto user = new UserDto();
+        user.setUserId(1);
+        user.setPassword("newPassword");
+
+        when(preparedStatement.executeUpdate()).thenReturn(user.getUserId());
+        boolean result = userDao.resetUserPassword(user.getUserId(), user.getPassword());
+        assertTrue(result);
+
+        //Invalid ID Case
+        user.setUserId(0);
+        assertThrows(SQLException.class, () -> {
+            userDao.resetUserPassword(user.getUserId(), user.getPassword());
+        });
+    }
+
+    @Test
+    public void testUpdateUserPayment() throws Exception {
+        int userId = 1;
+        int paymentID = 2;
+        int premiumMembershipID = 3;
+
+        when(preparedStatement.executeUpdate()).thenReturn(paymentID);
+        boolean result = userDao.updateUserPayment(userId, paymentID, premiumMembershipID);
+        assertTrue(result);
+
+        //Invalid ID Case
+        userId = 0;
+        int finalUserId = userId;
+        assertThrows(SQLException.class, () -> {
+            userDao.updateUserPayment(finalUserId, paymentID, premiumMembershipID);
+        });
+
+    }
+
+    @Test
+    public void testStartExtendPremiumMembership() throws Exception {
+        int userId = 1;
+        String startDate = "2007-06-27";
+        String endDate = "2008-06-27";
+        int paymentID = 2;
+        int premiumMembershipID = 3;
+
+        when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true).thenReturn(false);
+        when(resultSet.getInt(1)).thenReturn(premiumMembershipID);
+
+        int result = userDao.startExtendPremiumMembership(userId, startDate, endDate, paymentID);
+        assertEquals(result, premiumMembershipID);
+    }
+
+    @Test
+    public void testUserToPremiumPayment() throws Exception {
+        int userId = 1;
+        PremiumUserPaymentDetailsDto details = new PremiumUserPaymentDetailsDto();
+        details.setAmount(3000.0);
+        int paymentID = 2;
+
+        when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true).thenReturn(false);
+        when(resultSet.getInt(1)).thenReturn(paymentID);
+
+        int result = userDao.userToPremiumPayment(userId, details);
+        assertEquals(result, paymentID);
+    }
+
+    @Test
+    public void updateUserWeightTest() throws SQLException {
+        double weight = 75.0;
+        int userId = 1;
+
+        userDao.updateUserWeight(weight, userId);
+
+        verify(preparedStatement).setDouble(1, weight);
+        verify(preparedStatement).setInt(2, userId);
+        verify(preparedStatement).executeUpdate();
+
+        assertThrows(UserNotFoundException.class, () -> {
+            userDao.updateUserWeight(weight, 0);
+        });
+    }
+
+    @Test
+    public void getUserCurrentWeightTest() throws SQLException {
+        int userId = 1;
+        double currentWeight = 75.0;
+
+        when(resultSet.next()).thenReturn(true, false);
+        when(resultSet.getDouble("Current_weight")).thenReturn(currentWeight);
+
+        double result = userDao.getUserCurrentWeight(userId);
+
+        assertEquals(currentWeight, result, 0);
+        verify(preparedStatement).setInt(1, userId);
+
+        // Sad path: invalid user ID
+        assertThrows(UserNotFoundException.class, () -> {
+            userDao.getUserCurrentWeight(0);
+        });
+    }
 }

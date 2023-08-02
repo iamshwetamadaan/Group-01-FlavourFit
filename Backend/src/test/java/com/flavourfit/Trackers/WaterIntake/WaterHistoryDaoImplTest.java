@@ -1,11 +1,10 @@
 package com.flavourfit.Trackers.WaterIntake;
 
-import com.flavourfit.DatabaseManager.IDatabaseManager;
+import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.Trackers.Water.WaterHistoryDaoImpl;
 import com.flavourfit.Trackers.Water.WaterHistoryDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -24,11 +23,10 @@ import static org.mockito.Mockito.*;
 
 public class WaterHistoryDaoImplTest {
 
-    @InjectMocks
     private WaterHistoryDaoImpl waterHistoryDao;
 
     @Mock
-    private IDatabaseManager database;
+    private DatabaseManagerImpl database;
 
     @Mock
     private Connection connection;
@@ -41,34 +39,49 @@ public class WaterHistoryDaoImplTest {
 
     @BeforeEach
     public void initMocks() throws SQLException {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
+        reset(database,connection,resultSet,preparedStatement);
         when(database.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        waterHistoryDao = new WaterHistoryDaoImpl(database);
     }
 
     @Test
     public void addWaterIntakeTest() throws SQLException {
-        WaterHistoryDto waterHistoryDto = new WaterHistoryDto(1, 0, "2023-07-01", 1);
+        WaterHistoryDto waterHistoryDto = new WaterHistoryDto(1, 500.0, "2023-08-01", 1234);
+        waterHistoryDao.addWaterIntake(waterHistoryDto);
 
-        assertThrows(SQLException.class, () -> waterHistoryDao.addWaterIntake(null));
+        try {
+            waterHistoryDao.addWaterIntake(null);
+            fail("Expected SQLException not thrown");
+        } catch (SQLException e) {
+            assertEquals("WaterHistoryDto object not valid!!", e.getMessage());
+        }
 
-        assertDoesNotThrow(() -> waterHistoryDao.addWaterIntake(new WaterHistoryDto(1, 0, "2023-07-01", 1)));
+        WaterHistoryDto invalidWaterIntake = new WaterHistoryDto(1, 0.0, "2023-08-01", 1234);
+        waterHistoryDao.addWaterIntake(invalidWaterIntake);
 
-        assertThrows(SQLException.class, () -> waterHistoryDao.addWaterIntake(new WaterHistoryDto(1, 1500, "", 1)));
-
-        WaterHistoryDto validDto = new WaterHistoryDto(1, 1500, "2023-07-01", 1);
-        waterHistoryDao.addWaterIntake(validDto);
+        WaterHistoryDto invalidDate = new WaterHistoryDto(1, 500.0, "", 1234);
+        try {
+            waterHistoryDao.addWaterIntake(invalidDate);
+            fail("Expected SQLException not thrown");
+        } catch (SQLException e) {
+            assertEquals("Invalid date input while fetching water history!!", e.getMessage());
+        }
     }
 
     @Test
     public void updateWaterHistoryTest() throws SQLException {
-        WaterHistoryDto waterHistoryDto = new WaterHistoryDto(1, 1500, "2023-07-23", 1);
-        assertThrows(SQLException.class, () -> waterHistoryDao.updateWaterHistory(null));
-
-        when(preparedStatement.executeUpdate()).thenReturn(1);
-
+        WaterHistoryDto waterHistoryDto = new WaterHistoryDto(1, 500.0, "2023-08-01", 1234);
         waterHistoryDao.updateWaterHistory(waterHistoryDto);
+
+        try {
+            waterHistoryDao.updateWaterHistory(null);
+            fail("Expected SQLException not thrown");
+        } catch (SQLException e) {
+            assertEquals("Invalid data while updating water history!!", e.getMessage());
+        }
 
     }
 
@@ -89,7 +102,7 @@ public class WaterHistoryDaoImplTest {
         WaterHistoryDto result = waterHistoryDao.getWaterIntakeByUserIdDate(testDate, testUserId);
 
         assertNotNull(result);
-        assertEquals(4, result.getWaterHistoryId());
+        assertEquals(1, result.getWaterHistoryId());
         assertEquals(testDate, result.getUpdateDate());
         assertEquals(testUserId, result.getUserId());
     }

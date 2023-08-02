@@ -23,8 +23,8 @@ public class HomepageDaoImpl implements IHomepageDao {
     private Connection connection;
 
     @Autowired
-    public HomepageDaoImpl() {
-        this.database = DatabaseManagerImpl.getInstance();
+    public HomepageDaoImpl(DatabaseManagerImpl database) {
+        this.database = database;
         if (this.database != null && this.database.getConnection() != null) {
             this.connection = this.database.getConnection();
         }
@@ -33,25 +33,15 @@ public class HomepageDaoImpl implements IHomepageDao {
     @Override
     public List<HomepageEventDto> getEventList() throws
             SQLException {
+
         logger.info("Started getEventList() method");
-
-
         this.testConnection();
-
-        HomepageEventDto homepageEventDto = null;
-        String query = "SELECT * FROM Weight_History WHERE User_id=? AND Update_Date Between ? AND ? ORDER BY weight_history_id DESC";
-
+        String query = "SELECT * FROM Events";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
-        // logger.info("Replacing values in prepared statement with actual values for date and user id.");
-        // preparedStatement.setInt(1, userId);
-        // preparedStatement.setString(2, startDate);
-        // preparedStatement.setString(3, endDate);
-
         logger.info("Execute the query to get event list.");
         ResultSet resultSet = preparedStatement.executeQuery();
 
-        List<HomepageEventDto> eventList = this.extractResultList(resultSet);
-
+        List<HomepageEventDto> eventList = this.extractResultListfromEvents(resultSet);
         return eventList;
     }
 
@@ -67,7 +57,7 @@ public class HomepageDaoImpl implements IHomepageDao {
         logger.info("Execute the query to get event list.");
         ResultSet resultSet = preparedStatement.executeQuery();
 
-        List<RoutineDTO> routines = this.extractResultListRoutines(resultSet);
+        List<RoutineDTO> routines = extractResultListRoutines(resultSet);
 
         return routines;
 
@@ -196,7 +186,7 @@ public class HomepageDaoImpl implements IHomepageDao {
 
     }
 
-    private List<HomepageEventDto> extractResultList(ResultSet resultSet) throws SQLException {
+    private List<HomepageEventDto> extractResultListfromEvents(ResultSet resultSet) throws SQLException {
         if (resultSet == null) {
             throw new SQLException("Invalid result set!");
         }

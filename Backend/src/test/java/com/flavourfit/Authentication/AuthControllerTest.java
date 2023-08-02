@@ -1,5 +1,6 @@
 package com.flavourfit.Authentication;
 
+import com.flavourfit.Exceptions.AuthException;
 import com.flavourfit.Exceptions.UserNotFoundException;
 import com.flavourfit.ResponsesDTO.AuthResponse;
 import com.flavourfit.ResponsesDTO.PutResponse;
@@ -7,12 +8,15 @@ import com.flavourfit.User.UserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class AuthControllerTest {
 
@@ -82,4 +86,25 @@ public class AuthControllerTest {
         assertFalse(putResponse.isSuccess());
         assertEquals("Failed to register user", putResponse.getMessage());
     }
+
+    @Test
+    void testRequestGuestOtp() throws Exception {
+        String email = "test@example.com";
+
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("email", email);
+
+        doNothing().when(authService).sendOtpMail(email);
+
+        ResponseEntity<Object> response = authController.requestGuestOtp(requestBody);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(new PutResponse(true, "Sent otp successfully to " + email).getMessage(), ((PutResponse) response.getBody()).getMessage());
+
+        doThrow(new AuthException("Error sending OTP")).when(authService).sendOtpMail(email);
+
+        response = authController.requestGuestOtp(requestBody);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals(new PutResponse(false, "Error sending OTP").getMessage(), ((PutResponse)response.getBody()).getMessage());
+    }
+
 }

@@ -22,8 +22,8 @@ public class IngredientsDaoImpl implements IIngredientsDao {
     private Connection connection;
 
     @Autowired
-    public IngredientsDaoImpl() {
-        this.database = DatabaseManagerImpl.getInstance();
+    public IngredientsDaoImpl(DatabaseManagerImpl database) {
+        this.database = database;
         if (this.database != null && this.database.getConnection() != null) {
             this.connection = this.database.getConnection();
         }

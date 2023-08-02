@@ -19,8 +19,8 @@ public class SavedRecipesDaoImpl implements ISavedRecipesDao {
     private Connection connection;
 
     @Autowired
-    public SavedRecipesDaoImpl() {
-        this.database = DatabaseManagerImpl.getInstance();
+    public SavedRecipesDaoImpl(DatabaseManagerImpl database) {
+        this.database = database;
         if (this.database != null && this.database.getConnection() != null) {
             this.connection = this.database.getConnection();
         }

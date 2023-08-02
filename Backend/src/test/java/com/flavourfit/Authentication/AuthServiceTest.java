@@ -1,5 +1,7 @@
 package com.flavourfit.Authentication;
 
+import com.flavourfit.Emails.IEmailService;
+import com.flavourfit.Exceptions.AuthException;
 import com.flavourfit.Exceptions.DuplicateUserException;
 import com.flavourfit.Exceptions.UserNotFoundException;
 import com.flavourfit.ResponsesDTO.AuthResponse;
@@ -41,6 +43,10 @@ public class AuthServiceTest {
 
     @Mock
     Authentication authentication;
+
+    @Mock
+    private IEmailService emailService;
+
 
     UserDto user;
 
@@ -144,5 +150,34 @@ public class AuthServiceTest {
         assertThrows(RuntimeException.class, () -> authService.extractUserIdFromToken(""));
     }
 
+    @Test
+    void sendOtpMailTest() throws Exception {
+        String email = "test@example.com";
+        String otp = "123456";
 
+        when(passwordEncoder.encode(any())).thenReturn("encoded_otp");
+        when(userDao.getUserByEmail(email)).thenReturn(null); // Simulate that the user doesn't exist
+
+        authService.sendOtpMail(email);
+        verify(emailService).sendMail(any());
+        verify(userDao).addUser(any());
+
+        try {
+            authService.sendOtpMail(null);
+        } catch (AuthException e) {
+            assertEquals("Invalid email", e.getMessage());
+        }
+
+        UserDto registeredUser = new UserDto();
+        registeredUser.setEmail(email);
+        registeredUser.setType("registered");
+
+        when(userDao.getUserByEmail(email)).thenReturn(registeredUser); // Simulate that the user already exists and is registered
+
+        try {
+            authService.sendOtpMail(email);
+        } catch (AuthException e) {
+            assertEquals("User is already registered", e.getMessage());
+        }
+    }
 }

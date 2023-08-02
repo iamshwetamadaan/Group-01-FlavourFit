@@ -21,7 +21,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/recipes")
-public class RecipeController {
+public class
+RecipeController {
     private static Logger logger = LoggerFactory.getLogger(RecipeController.class);
     private IRecipeService recipeService;
     private IAuthService authService;
@@ -133,14 +134,14 @@ public class RecipeController {
 
     @PostMapping("/convert-recipe")
     public ResponseEntity<PutResponse> covertRecipe(
-            @RequestParam("recipeID") int recipeId, @RequestParam("scale") int scale,
+            @RequestParam("recipeID") int recipeId, @RequestParam("scale") double scale,
             @RequestParam("system") String system
     ) {
         logger.info("Entered controller method covertRecipe()");
         try {
             CompleteRecipeDto convertedRecipe = this.recipeService.convertRecipe(recipeId, scale, system);
             logger.info("Converted recipe for recipeId:{}", recipeId);
-            return ResponseEntity.ok().body(new PutResponse(true, "Successfully converted recipe"));
+            return ResponseEntity.ok().body(new PutResponse(true, "Successfully converted recipe", convertedRecipe));
         } catch (RecipeExceptions e) {
             logger.error("Failed to convert recipe for recipeId:{}", recipeId);
             return ResponseEntity.internalServerError().body(new PutResponse(true, "Failed to convert recipe"));

@@ -21,8 +21,8 @@ public class CalorieHistoryDaoImpl implements ICalorieHistoryDao {
     private Connection connection;
 
     @Autowired
-    public CalorieHistoryDaoImpl() {
-        this.database = DatabaseManagerImpl.getInstance();
+    public CalorieHistoryDaoImpl(DatabaseManagerImpl database) {
+        this.database = database;
         if (this.database != null && this.database.getConnection() != null) {
             this.connection = this.database.getConnection();
         }
