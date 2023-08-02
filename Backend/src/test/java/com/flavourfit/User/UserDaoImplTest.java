@@ -192,7 +192,7 @@ public class UserDaoImplTest {
         when(resultSet.getInt(1)).thenReturn(premiumMembershipID);
 
         int result = userDao.startExtendPremiumMembership(userId,startDate,endDate,paymentID);
-        assertEquals(result,premiumMembershipID);
+        assertEquals(result, premiumMembershipID);
     }
 
     @Test

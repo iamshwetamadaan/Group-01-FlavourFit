@@ -51,7 +51,7 @@ public class FeedServiceImplTest {
     }
 
     @Test
-    public void getFeedsByIdTest() throws Exception {
+    public void getFeedsByIDTest() throws Exception {
         // Arrange
         int feedId = 9;
         FeedDto feed = new FeedDto();
@@ -89,7 +89,7 @@ public class FeedServiceImplTest {
     }
 
     @Test
-    public void updateLikesForFeedTest() throws Exception {
+    public void increaseFeedLikesTest() throws Exception {
         // Arrange
         //int feedId = 1;
         //int initialLikes = 10;
@@ -111,7 +111,7 @@ public class FeedServiceImplTest {
     }
 
     @Test
-    public void commentDeletionForFeedTest() throws Exception {
+    public void removeCommentFromFeedTest() throws Exception {
         // Arrange
         int feedId = 2;
         int commentId = 20;

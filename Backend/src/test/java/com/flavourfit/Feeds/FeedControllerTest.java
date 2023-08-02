@@ -59,7 +59,28 @@ public class FeedControllerTest {
     }
 
     @Test
-    public void deleteCommentForFeedId() throws SQLException {
+    public void fetchFeedsByID() throws Exception {
+        // Arrange
+        int feedID = 1;
+        FeedDto feed = new FeedDto();
+
+        // Set up the 'feed' object with appropriate data for testing.
+        when(feedService.getFeedsByID(feedID)).thenReturn(feed);
+
+        // Act
+        ResponseEntity<GetResponse> response = feedController.fetchFeedsByID(feedID);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(true, response.getBody().isSuccess());
+        assertEquals("Successfully retrieved feed", response.getBody().getMessage());
+        assertEquals(feed, response.getBody().getData());
+
+        verify(feedService).getFeedsByID(feedID);
+    }
+
+    @Test
+    public void removeCommentsByFeedIDTest() throws SQLException {
         // Arrange
         int feedID = 1;
         int commentID = 101;
@@ -87,7 +108,7 @@ public class FeedControllerTest {
     }
 
     @Test
-    public void updateLikesForFeedTest() throws Exception {
+    public void updateLikesByFeedIDTest() throws Exception {
         // Arrange
         int feedID = 1;
         int updatedFeedLikes = 11;

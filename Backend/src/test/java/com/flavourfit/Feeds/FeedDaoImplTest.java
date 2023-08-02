@@ -68,6 +68,7 @@ public class FeedDaoImplTest {
         assertThrows(SQLException.class, () -> feedDao.getFeedsByUser(1, 0));
     }
 
+    //error
     @Test
     public void getFeedsByIdTest() throws SQLException {
         // Arrange
@@ -91,6 +92,7 @@ public class FeedDaoImplTest {
         assertEquals("Test feed content", result.getFeedContent());
     }
 
+    //error
     @Test
     public void updateFeedLikesTest() throws Exception{
         // Arrange
