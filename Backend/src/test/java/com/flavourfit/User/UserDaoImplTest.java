@@ -1,12 +1,10 @@
 package com.flavourfit.User;
 
 import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
-import com.flavourfit.Recipes.RecipeDaoImpl;
-import com.flavourfit.Trackers.Weights.WeightHistoryDaoImpl;
+import com.flavourfit.Exceptions.UserNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -24,10 +22,9 @@ public class UserDaoImplTest {
     private Connection connection;
 
     @Mock
-    private Statement statement;
-
-    @Mock
     private PreparedStatement preparedStatement;
+
+    @Mock Statement statement;
 
     @Mock
     private ResultSet resultSet;
@@ -35,19 +32,19 @@ public class UserDaoImplTest {
     private UserDaoImpl userDao;
 
     @Before
-    public void setUp() throws SQLException {
+    public void initMocks() throws SQLException {
         MockitoAnnotations.openMocks(this);
-        reset(database,connection,preparedStatement,resultSet,statement);
+        reset(database,connection,resultSet,preparedStatement);
         when(database.getConnection()).thenReturn(connection);
-        when(connection.createStatement()).thenReturn(statement);
         when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
-        when(statement.executeQuery(anyString())).thenReturn(resultSet);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        when(connection.createStatement()).thenReturn(statement);
+        when(statement.executeQuery(anyString())).thenReturn(resultSet);
         userDao = new UserDaoImpl(database);
     }
 
     @BeforeEach
-    public void initBeforeEach(){
+    public void resetMocks() throws SQLException{
         reset(resultSet);
     }
 
@@ -99,55 +96,67 @@ public class UserDaoImplTest {
 
     @Test
     public void getUserByIdTest() throws SQLException {
-        int testUserId = 1;
-        UserDto expectedUser = new UserDto();
-        expectedUser.setUserId(testUserId);
-        expectedUser.setFirstName("User1");
+        UserDto user = new UserDto();
+        user.setUserId(1);
+        user.setEmail("test@test.com");
+        user.setFirstName("fname");
+        user.setLastName("lname");
 
-        // Normal flow
-        when(resultSet.next()).thenReturn(true).thenReturn(
-                false); // This will ensure the while loop in getUserById() runs once and then exits
-        when(resultSet.getInt("User_id")).thenReturn(expectedUser.getUserId());
-        when(resultSet.getString("First_name")).thenReturn(expectedUser.getFirstName());
 
-        UserDto user = userDao.getUserById(testUserId);
+        when(resultSet.next()).thenReturn(true, false); // Simulate a single row in the result
+        when(resultSet.getInt("User_id")).thenReturn(user.getUserId());
+        when(resultSet.getString("Email")).thenReturn(user.getEmail());
+        when(resultSet.getString("First_name")).thenReturn(user.getFirstName());
+        when(resultSet.getString("Last_name")).thenReturn(user.getLastName());
+        UserDto result = userDao.getUserById(user.getUserId());
+
+        assertNotNull(result);
+        assertEquals(user.getUserId(), result.getUserId());
+        assertEquals(user.getEmail(), result.getEmail());
+        assertEquals(user.getFirstName(), result.getFirstName());
+        assertEquals(user.getLastName(), result.getLastName());
     }
 
     @Test
-    public void addUserTest() throws Exception {
-        UserDto testUser = new UserDto();
-        testUser.setUserId(1);
-        testUser.setFirstName("Test");
-        testUser.setEmail("Test@test1111111.com");
+    public void addUserTest() throws SQLException {
+        UserDto user = new UserDto();
+        user.setUserId(1);
+        user.setEmail("test@test.com");
+        user.setFirstName("fname");
+        user.setLastName("lname");
+        user.setPassword("password");
 
-        // Normal flow
-        when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
-        when(resultSet.next()).thenReturn(true).thenReturn(false);
-        when(resultSet.getLong(1)).thenReturn(1L);
+        ResultSet keys = mock(ResultSet.class);
+        when(connection.prepareStatement(anyString(), eq(Statement.RETURN_GENERATED_KEYS))).thenReturn(preparedStatement);
+        when(preparedStatement.getGeneratedKeys()).thenReturn(keys);
+        when(keys.next()).thenReturn(true,false);
+        when(keys.getLong(1)).thenReturn(1L); // Simulate a generated user ID
 
+        userDao.addUser(user);
+        assertEquals(1, user.getUserId()); // Check if the user ID was set correctly
 
-        // Reset for the next scenario
-        reset(database, connection, preparedStatement, resultSet);
-        setUp();
-
-        // Null user scenario
-        Exception exception = assertThrows(SQLException.class, () -> userDao.addUser(null));
-        assertEquals("User object not valid!!", exception.getMessage());
-
+        assertThrows(SQLException.class, () -> {
+            userDao.addUser(null);
+        });
     }
 
     @Test
     public void testGetUserByEmail() throws Exception {
-        String testEmail = "test@test.com";
-        UserDto testUser = new UserDto();
-        testUser.setUserId(1);
-        testUser.setFirstName("Test");
+        String email = "test@example.com";
 
-        // Normal flow
-        when(preparedStatement.executeQuery()).thenReturn(resultSet);
-        when(resultSet.next()).thenReturn(true).thenReturn(false);
-        when(resultSet.getInt("User_id")).thenReturn(testUser.getUserId());
-        when(resultSet.getString("First_name")).thenReturn(testUser.getFirstName());
+        when(resultSet.next()).thenReturn(true, false);
+        when(resultSet.getString("Email")).thenReturn(email);
+
+        UserDto result = userDao.getUserByEmail(email);
+
+        assertNotNull(result);
+        assertEquals(email, result.getEmail());
+
+        when(resultSet.next()).thenReturn(false);
+
+        result = userDao.getUserByEmail(email);
+
+        assertNull(result);
     }
 
     @Test
@@ -164,5 +173,40 @@ public class UserDaoImplTest {
 
         // Assert
         assertEquals(1, result);
+    }
+
+    @Test
+    public void updateUserWeightTest() throws SQLException {
+        double weight = 75.0;
+        int userId = 1;
+
+        userDao.updateUserWeight(weight, userId);
+
+        verify(preparedStatement).setDouble(1, weight);
+        verify(preparedStatement).setInt(2, userId);
+        verify(preparedStatement).executeUpdate();
+
+        assertThrows(UserNotFoundException.class, () -> {
+            userDao.updateUserWeight(weight, 0);
+        });
+    }
+
+    @Test
+    public void getUserCurrentWeightTest() throws SQLException {
+        int userId = 1;
+        double currentWeight = 75.0;
+
+        when(resultSet.next()).thenReturn(true,false);
+        when(resultSet.getDouble("Current_weight")).thenReturn(currentWeight);
+
+        double result = userDao.getUserCurrentWeight(userId);
+
+        assertEquals(currentWeight, result,0);
+        verify(preparedStatement).setInt(1, userId);
+
+        // Sad path: invalid user ID
+        assertThrows(UserNotFoundException.class, () -> {
+            userDao.getUserCurrentWeight(0);
+        });
     }
 }
