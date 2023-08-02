@@ -1,6 +1,7 @@
 package com.flavourfit.Recipes;
 
 import com.flavourfit.Exceptions.RecipeExceptions;
+import com.flavourfit.Recipes.Ingredients.IngredientDto;
 import com.flavourfit.ResponsesDTO.SavedRecipesResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,5 +79,25 @@ class RecipeServiceImplTest {
 
         when(recipeService.getFilteredRecipesByUser(1,requestBody)).thenReturn(recipes);
         assertEquals(1,recipeService.getFilteredRecipesByUser(1,requestBody).size());
+    }
+
+    @Test
+    public void convertRecipeTest() throws Exception {
+        int recipeId = 2;
+        double scale = 0.5;
+        String system = "imperial";
+
+        RecipeDto recipe = new RecipeDto();
+        recipe.setRecipeId(recipeId);
+
+        List<IngredientDto> expectedConvertedIngredients = new ArrayList<>();
+
+        when(recipeDao.getRecipeById(recipeId)).thenReturn(recipe);
+        when(recipeDao.getRecipeIngredients(recipeId)).thenReturn(expectedConvertedIngredients);
+
+        // Act
+        CompleteRecipeDto result = recipeService.convertRecipe(recipeId, scale, system);
+
+        assertNotNull(result);
     }
 }

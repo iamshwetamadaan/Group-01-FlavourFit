@@ -135,4 +135,24 @@ class RecipeControllerTest {
         assertEquals(expectedRecipes, getResponse.getData());
     }
 
+    @Test
+    public void convertRecipeTest() throws Exception{
+
+        int recipeId = 1;
+        double scale = 2.0;
+        String system = "metric";
+
+        CompleteRecipeDto convertedRecipe = new CompleteRecipeDto();
+
+        when(recipeService.convertRecipe(recipeId, scale, system)).thenReturn(convertedRecipe);
+
+        ResponseEntity<PutResponse> response = recipeController.covertRecipe(recipeId, scale, system);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(true, response.getBody().isSuccess());
+        assertEquals("Successfully converted recipe", response.getBody().getMessage());
+        assertEquals(convertedRecipe, response.getBody().getData());
+
+        verify(recipeService).convertRecipe(recipeId, scale, system);
+    }
 }

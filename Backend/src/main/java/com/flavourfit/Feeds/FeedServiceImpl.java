@@ -56,11 +56,11 @@ public class FeedServiceImpl implements IFeedService {
     }
 
     @Override
-    public FeedDto removeCommentFromFeed(int commentId) throws SQLException {
+    public FeedDto removeCommentFromFeed(int feedId, int commentId) throws SQLException {
         logger.info("Started method removeCommentFromFeed()");
 
-        FeedDto feed = feedDao.getFeedsById(commentId);
-        int feedId = feed.getFeedId();
+        FeedDto feed = feedDao.getFeedsById(feedId);
+
         boolean commentRemove = commentsService.removeCommentFromFeed(feedId, commentId);
 
         if (commentRemove) {

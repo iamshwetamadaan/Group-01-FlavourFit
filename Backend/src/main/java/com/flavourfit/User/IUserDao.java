@@ -23,7 +23,7 @@ public interface IUserDao {
 
     public int userToPremiumPayment(int userId, PremiumUserPaymentDetailsDto details) throws SQLException;
 
-    public int startExtendPremiumMembership(int userId, Date startDate, Date expiryDate, int paymentID) throws SQLException;
+    public int startExtendPremiumMembership(int userId, String startDate, String expiryDate, int paymentID) throws SQLException;
 
     public boolean updateUserPayment(int userId, int paymentID, int premiumMembershipID) throws SQLException;
 

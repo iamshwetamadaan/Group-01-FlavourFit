@@ -55,14 +55,14 @@ public class FeedController {
         }
     }
 
-    @DeleteMapping("comment-feed")
+    @DeleteMapping("/comment-feed")
     public ResponseEntity<GetResponse> removeCommentsByFeedID(
             @RequestParam("feedID") int feedID, @RequestParam("commentID") int commentID
     ) {
         logger.info("Entered controller method removeCommentsByFeedID()");
         try {
-            FeedDto feed = this.feedService.removeCommentFromFeed(commentID);
-            return ResponseEntity.ok().body(new GetResponse(true, "Successfully removed comment"));
+            FeedDto feed = this.feedService.removeCommentFromFeed(feedID,commentID);
+            return ResponseEntity.ok().body(new GetResponse(true, "Successfully removed comment", feed));
         } catch (Exception e) {
             logger.error("Failed to remove the comment from feed");
             return ResponseEntity.badRequest().body(new GetResponse(false, "Failed to remove comment:" + e.getMessage()));

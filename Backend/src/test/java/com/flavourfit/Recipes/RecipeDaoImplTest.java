@@ -3,6 +3,7 @@ package com.flavourfit.Recipes;
 import com.flavourfit.DatabaseManager.DatabaseManagerImpl;
 import com.flavourfit.DatabaseManager.IDatabaseManager;
 import com.flavourfit.Feeds.FeedDaoImpl;
+import com.flavourfit.Recipes.Ingredients.IngredientDto;
 import com.flavourfit.ResponsesDTO.SavedRecipesResponse;
 import com.flavourfit.Trackers.Calories.CalorieHistoryDaoImpl;
 import com.flavourfit.Trackers.Calories.CalorieHistoryDto;
@@ -112,6 +113,48 @@ class RecipeDaoImplTest {
     @Test
     void updateRecipeTest() {
 
+    }
+
+    @Test
+    public void getRecipeByIdTest() throws Exception {
+        int recipeID = 1;
+
+        when(statement.executeQuery(anyString())).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true, false);
+        when(resultSet.getInt("recipe_id")).thenReturn(recipeID);
+        when(resultSet.getString("recipe_name")).thenReturn("Potato Bake");
+        when(resultSet.getString("recipe_description")).thenReturn("Description for Recipe 1");
+        when(resultSet.getString("types")).thenReturn("Vegetarian");
+
+        RecipeDto recipe = recipeDao.getRecipeById(recipeID);
+        assertNotNull(recipe);
+    }
+
+    @Test
+    public void getRecipeIngredientsTest() throws Exception {
+        int recipeID = 1;
+        int ingredientID = 3;
+
+        when(statement.executeQuery(anyString())).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true, true, true, false);
+        when(resultSet.getInt("Ingredient_id")).thenReturn(ingredientID);
+        when(resultSet.getString("Ingredient_name")).thenReturn("Potato");
+        when(resultSet.getInt("Recipe_id")).thenReturn(recipeID);
+        when(resultSet.getDouble("quantity")).thenReturn(5.0);
+        when(resultSet.getString("quantity_unit")).thenReturn("kg");
+        when(resultSet.getInt("Ingredient_id")).thenReturn(ingredientID+1);
+        when(resultSet.getString("Ingredient_name")).thenReturn("Cream");
+        when(resultSet.getInt("Recipe_id")).thenReturn(recipeID);
+        when(resultSet.getDouble("quantity")).thenReturn(3.0);
+        when(resultSet.getString("quantity_unit")).thenReturn("cups");
+        when(resultSet.getInt("Ingredient_id")).thenReturn(ingredientID+2);
+        when(resultSet.getString("Ingredient_name")).thenReturn("Garlic");
+        when(resultSet.getInt("Recipe_id")).thenReturn(recipeID);
+        when(resultSet.getDouble("quantity")).thenReturn(6.0);
+        when(resultSet.getString("quantity_unit")).thenReturn("g");
+
+        List<IngredientDto> ingredientList = recipeDao.getRecipeIngredients(recipeID);
+        assertNotNull(ingredientList);
     }
 
 }

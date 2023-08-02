@@ -20,6 +20,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class FeedDaoImplTest {
 
@@ -35,7 +36,11 @@ public class FeedDaoImplTest {
     private PreparedStatement preparedStatement;
 
     @Mock
+    private PreparedStatement preparedStatement2;
+
+    @Mock
     private ResultSet resultSet;
+
 
     @BeforeEach
     public void initMocks() throws SQLException {
@@ -44,6 +49,8 @@ public class FeedDaoImplTest {
         when(database.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement2);
+        when(preparedStatement2.executeUpdate()).thenReturn(anyInt());
         feedDao = new FeedDaoImpl(database);
     }
 
@@ -60,4 +67,53 @@ public class FeedDaoImplTest {
         when(connection.prepareStatement(anyString())).thenThrow(new SQLException("Error"));
         assertThrows(SQLException.class, () -> feedDao.getFeedsByUser(1, 0));
     }
+
+    //error
+    @Test
+    public void getFeedsByIdTest() throws SQLException {
+        // Arrange
+        int feedId = 1;
+        FeedDto expectedFeedDto = new FeedDto();
+        expectedFeedDto.setFeedId(feedId);
+        expectedFeedDto.setFeedContent("Test feed content");
+
+        when(resultSet.next()).thenReturn(true,false);
+        when(resultSet.getInt("Feed_id")).thenReturn(feedId);
+        when(resultSet.getString("Feed_content")).thenReturn("Test feed content");
+        when(resultSet.getInt("Like_count")).thenReturn(4);
+        //when(feedDao.extractUserFeedsFromResult(resultSet)).thenReturn(expectedFeedDto);
+
+        // Act
+        FeedDto result = feedDao.getFeedsById(feedId);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(feedId, result.getFeedId());
+        assertEquals("Test feed content", result.getFeedContent());
+    }
+
+    //error
+    @Test
+    public void updateFeedLikesTest() throws Exception{
+        // Arrange
+        int feedId = 1;
+        int initialLikes = 10;
+        int expectedUpdatedLikes = initialLikes + 1;
+
+        FeedDto feed = new FeedDto();
+        feed.setFeedId(feedId);
+        feed.setLikeCount(initialLikes);
+
+        when(resultSet.next()).thenReturn(true,false);
+        when(resultSet.getInt("Feed_id")).thenReturn(feedId);
+        when(resultSet.getString("Feed_content")).thenReturn("Test feed content");
+        when(resultSet.getInt("Like_count")).thenReturn(initialLikes);
+
+        // Act
+        int result = feedDao.updateFeedLikes(feedId);
+
+        // Assert
+        assertEquals(feedId, result);
+    }
+
 }

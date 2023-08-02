@@ -24,7 +24,8 @@ public class UserDaoImplTest {
     @Mock
     private PreparedStatement preparedStatement;
 
-    @Mock Statement statement;
+    @Mock
+    Statement statement;
 
     @Mock
     private ResultSet resultSet;
@@ -34,17 +35,18 @@ public class UserDaoImplTest {
     @Before
     public void initMocks() throws SQLException {
         MockitoAnnotations.openMocks(this);
-        reset(database,connection,resultSet,preparedStatement);
+        reset(database, connection, resultSet, preparedStatement);
         when(database.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
-        when(preparedStatement.executeQuery()).thenReturn(resultSet);
         when(connection.createStatement()).thenReturn(statement);
+        when(connection.prepareStatement(anyString(), anyInt())).thenReturn(preparedStatement);
         when(statement.executeQuery(anyString())).thenReturn(resultSet);
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
         userDao = new UserDaoImpl(database);
     }
 
     @BeforeEach
-    public void resetMocks() throws SQLException{
+    public void resetMocks() throws SQLException {
         reset(resultSet);
     }
 
@@ -60,7 +62,7 @@ public class UserDaoImplTest {
 
         when(resultSet.next()).thenReturn(true, false);
         when(resultSet.getInt("User_id")).thenReturn(user.getUserId()); // You can add more mock return values based on the user fields
-        when(resultSet.getString("Email")).thenReturn(user.getEmail());
+        when(resultSet.getString("Emailt")).thenReturn(user.getEmail());
         when(resultSet.getString("First_name")).thenReturn(user.getFirstName());
         when(resultSet.getString("Last_name")).thenReturn(user.getLastName());
 
@@ -92,7 +94,6 @@ public class UserDaoImplTest {
         when(resultSet.next()).thenReturn(false);
         user = userDao.getUserBymembership(testUserId);
     }
-
 
     @Test
     public void getUserByIdTest() throws SQLException {
@@ -129,7 +130,7 @@ public class UserDaoImplTest {
         ResultSet keys = mock(ResultSet.class);
         when(connection.prepareStatement(anyString(), eq(Statement.RETURN_GENERATED_KEYS))).thenReturn(preparedStatement);
         when(preparedStatement.getGeneratedKeys()).thenReturn(keys);
-        when(keys.next()).thenReturn(true,false);
+        when(keys.next()).thenReturn(true, false);
         when(keys.getLong(1)).thenReturn(1L); // Simulate a generated user ID
 
         userDao.addUser(user);
@@ -160,19 +161,70 @@ public class UserDaoImplTest {
     }
 
     @Test
-    public void updateUserTest() throws SQLException{
-        UserDto userDto = new UserDto();
+    public void testResetUserPassword() throws Exception {
+        UserDto user = new UserDto();
+        user.setUserId(1);
+        user.setPassword("newPassword");
 
+        when(preparedStatement.executeUpdate()).thenReturn(user.getUserId());
+        boolean result = userDao.resetUserPassword(user.getUserId(), user.getPassword());
+        assertTrue(result);
 
-        when(connection.prepareStatement(anyString(), eq(Statement.RETURN_GENERATED_KEYS)))
-                .thenReturn(preparedStatement);
-        when(preparedStatement.executeUpdate()).thenReturn(1); // Assuming the update is successful
+        //Invalid ID Case
+        user.setUserId(0);
+        assertThrows(SQLException.class, () -> {
+            userDao.resetUserPassword(user.getUserId(), user.getPassword());
+        });
+    }
 
-        // Act
-        int result = userDao.updateUser(userDto);
+    @Test
+    public void testUpdateUserPayment() throws Exception {
+        int userId = 1;
+        int paymentID = 2;
+        int premiumMembershipID = 3;
 
-        // Assert
-        assertEquals(1, result);
+        when(preparedStatement.executeUpdate()).thenReturn(paymentID);
+        boolean result = userDao.updateUserPayment(userId, paymentID, premiumMembershipID);
+        assertTrue(result);
+
+        //Invalid ID Case
+        userId = 0;
+        int finalUserId = userId;
+        assertThrows(SQLException.class, () -> {
+            userDao.updateUserPayment(finalUserId, paymentID, premiumMembershipID);
+        });
+
+    }
+
+    @Test
+    public void testStartExtendPremiumMembership() throws Exception {
+        int userId = 1;
+        String startDate = "2007-06-27";
+        String endDate = "2008-06-27";
+        int paymentID = 2;
+        int premiumMembershipID = 3;
+
+        when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true).thenReturn(false);
+        when(resultSet.getInt(1)).thenReturn(premiumMembershipID);
+
+        int result = userDao.startExtendPremiumMembership(userId, startDate, endDate, paymentID);
+        assertEquals(result, premiumMembershipID);
+    }
+
+    @Test
+    public void testUserToPremiumPayment() throws Exception {
+        int userId = 1;
+        PremiumUserPaymentDetailsDto details = new PremiumUserPaymentDetailsDto();
+        details.setAmount(3000.0);
+        int paymentID = 2;
+
+        when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true).thenReturn(false);
+        when(resultSet.getInt(1)).thenReturn(paymentID);
+
+        int result = userDao.userToPremiumPayment(userId, details);
+        assertEquals(result, paymentID);
     }
 
     @Test
@@ -196,12 +248,12 @@ public class UserDaoImplTest {
         int userId = 1;
         double currentWeight = 75.0;
 
-        when(resultSet.next()).thenReturn(true,false);
+        when(resultSet.next()).thenReturn(true, false);
         when(resultSet.getDouble("Current_weight")).thenReturn(currentWeight);
 
         double result = userDao.getUserCurrentWeight(userId);
 
-        assertEquals(currentWeight, result,0);
+        assertEquals(currentWeight, result, 0);
         verify(preparedStatement).setInt(1, userId);
 
         // Sad path: invalid user ID

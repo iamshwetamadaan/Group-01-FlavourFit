@@ -12,7 +12,7 @@ public interface IFeedService {
 
     public int increaseFeedLikes(int feedId) throws SQLException;
 
-    FeedDto removeCommentFromFeed(int commentId) throws SQLException;
+    FeedDto removeCommentFromFeed(int feedId, int commentId) throws SQLException;
 
     public ArrayList<FeedDto> getFeedsByUser(int userID, int offset) throws SQLException;
 
